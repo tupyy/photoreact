@@ -10,7 +10,7 @@ class App extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <PrivateRoute path="/" component={Home} />
+                <PrivateRoute path="/" component={Home} userLogged={this.props.authentication.userLogged} />
                 <Route path="/login" component={Login} />
             </BrowserRouter>
         );
@@ -19,7 +19,7 @@ class App extends React.Component {
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => (
-        true === true
+        props.userLogged === true
             ? <Component {...props} />
             : <Redirect to='/login' />
     )} />
@@ -27,9 +27,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const mapStateToProps = state => {
     return {
-        authentication: state
+        authentication: state.authentication
     }
 };
-connect(mapStateToProps)(App);
 
-export default App;
+export default connect(mapStateToProps)(App);

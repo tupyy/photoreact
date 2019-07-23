@@ -4,8 +4,14 @@
     "private": true,
     "main": "webpack/webpack.config.js",
     "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^1.2.19",
+        "@fortawesome/free-solid-svg-icons": "^5.9.0",
+        "@fortawesome/react-fontawesome": "^0.1.4",
+        "@material-ui/core": "^4.2.1",
+        "font-awesome-sass-loader": "^2.0.1",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
+        "react-native-svg": "^9.5.3",
         "react-redux": "^7.1.0",
         "react-router": "^5.0.1",
         "react-router-dom": "^5.0.1",
@@ -46,6 +52,9 @@
         "babel-preset-react": "^6.24.1",
         "html-loader": "^0.5.5",
         "html-webpack-plugin": "^3.2.0",
+        "image-webpack-loader": "^5.0.0",
+        "react-fontawesome": "^1.6.1",
+        "react-native-svg-loader": "^1.0.0",
         "svg-inline-loader": "^0.8.0"
     }
 }
