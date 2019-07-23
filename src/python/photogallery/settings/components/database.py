@@ -4,7 +4,7 @@
 DATABASES_DEV = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'photos',
+        'NAME': 'photo2',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
