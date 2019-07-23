@@ -1,7 +1,7 @@
 import {createReducers} from "./index";
 
 const initialAuthenticationState = {
-    isLogged: false,
+    userLogged: false,
     username: "",
     id: ""
 };

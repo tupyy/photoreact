@@ -1,5 +1,6 @@
 import authenticationReducer from "./authenticationReducer";
 import {combineReducers} from "redux";
+import {routerReducer} from "react-router-redux";
 
 export function createReducers(initialState, handlers) {
     return function reducer(state = initialState, action) {
@@ -12,7 +13,8 @@ export function createReducers(initialState, handlers) {
 }
 
 const rootReducer = combineReducers({
-    authentication: authenticationReducer
+    authentication: authenticationReducer,
+    routing: routerReducer
 });
 
 export default rootReducer;
