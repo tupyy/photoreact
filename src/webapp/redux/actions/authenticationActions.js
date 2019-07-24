@@ -1,9 +1,9 @@
 import {LOGIN_FAILED, LOGIN_SUCCESSFUL, LOGIN_USER, LOGOUT_USER} from "./authenticationActionTypes";
 
-export const LoginUser = (username, password) => ({
+export const loginUser = (username, id) => ({
    type: LOGIN_USER,
    username: username,
-   password: password
+   id: id
 });
 
 export const LogoutUser = (id) => ({
@@ -21,3 +21,5 @@ export const LoginFailed = (username) => ({
     type: LOGIN_FAILED,
     username: username
 });
+
+
