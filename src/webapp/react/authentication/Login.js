@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -15,14 +13,16 @@ import {faUser} from '@fortawesome/free-solid-svg-icons';
 import Container from "@material-ui/core/Container";
 import {authenticate} from "../../redux/reducers/authenticationReducer";
 import {connect} from "react-redux";
-import {Redirect, withRouter} from "react-router";
+import {withRouter} from "react-router";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             email: "",
-            password: ""
+            password: "",
+            loginRequested: false,
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,18 +40,27 @@ class Login extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        this.setState({
+            loginRequested: true
+        });
         this.props.authenticate(this.state.email, this.state.password);
     };
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.authentication.userAuthenticated) {
+            this.props.history.push('/');
+        }
+
+        if (nextProps.authentication.loginFailed === true) {
+            this.setState({
+                loginRequested: false
+            })
+        }
+    }
 
     render() {
 
         const {classes} = this.props;
-        if (this.props.authentication.userAuthenticated) {
-            return (
-                <Redirect to='/' />
-            )
-        }
-
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
@@ -89,20 +98,32 @@ class Login extends React.Component {
                             value={this.state.password}
                             onChange={this.handleChange}
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary"/>}
-                            label="Remember me"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            disabled={!this.validateForm()}
-                        >
-                            Sign In
-                        </Button>
+                        { this.props.authentication.loginFailed && (
+                            <Typography
+                                className={classes.loginFailed}
+                                component="h6"
+                            >
+                                Login failed! Please check your credentials.
+                            </Typography>
+                        )
+                        }
+                        <div className={classes.buttonContainer}>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                disabled={!this.validateForm() || this.state.loginRequested}
+                            >
+                                Sign In
+                            </Button>
+                            {
+                                this.state.loginRequested && (
+                                    <CircularProgress className={classes.progress}/>
+                                )
+                            }
+                        </div>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">

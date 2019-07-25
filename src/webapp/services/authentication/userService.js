@@ -11,6 +11,6 @@ export default function authenticationService(username, password) {
             } else {
                 reject({'reason': 'wrong password'});
             }
-        }, 1000);
+        }, 2000);
     });
 }

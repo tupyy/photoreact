@@ -24,9 +24,28 @@ const styles = theme => ({
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
     },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
+    buttonContainer: {
+        position: 'relative',
+        width: '100%',
+        height: '50px'
     },
+    submit: {
+        // margin: theme.spacing(3, 0, 2),
+        position: 'absolute',
+        top: '0',
+        left: '0',
+    },
+    progress : {
+      position: 'absolute',
+      top: '0',
+      left: '45%',
+        width: '100%',
+        height: '100%'
+    },
+    loginFailed: {
+        color: 'red',
+        fontWeight: 'bold'
+    }
 });
 
 export default styles;
