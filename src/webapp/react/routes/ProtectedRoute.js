@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, Route} from 'react-router';
+import {Redirect, Route, withRouter} from 'react-router';
 import {connect} from "react-redux";
 
 class ProtectedRoute extends React.Component {
