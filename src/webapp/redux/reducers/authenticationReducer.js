@@ -1,16 +1,18 @@
 import {createReducers} from "./index";
 import authenticationService from "../../services/authentication/userService";
-import {loginUser} from "../actions/authenticationActions";
+import {LoginFailed, LoginSuccessful} from "../actions/authenticationActions";
 
 const initialAuthenticationState = {
     userAuthenticated: false,
     username: "",
     id: "",
+    loginFailed: false
 };
 
 const authenticationReducer = createReducers(initialAuthenticationState, {
     AUTHENTICATE: authenticate,
-    LOGIN_USER: login
+    LOGIN_SUCCESSFUL: loginSuccessful,
+    LOGIN_FAILED: loginFailed
 });
 
 /**
@@ -21,7 +23,8 @@ const authenticationReducer = createReducers(initialAuthenticationState, {
 export function authenticate(username, password) {
     return function (dispatch) {
         return authenticationService(username, password)
-            .then(val => dispatch(loginUser(val.username, val.id)));
+            .then(val => dispatch(LoginSuccessful(val.username, val.id)))
+            .catch(() => dispatch(LoginFailed()));
     }
 }
 
@@ -31,7 +34,7 @@ export function authenticate(username, password) {
  * @param action
  * @return {any}
  */
-function login(state, action) {
+function loginSuccessful(state, action) {
     return Object.assign({}, state, {
         userAuthenticated: true,
         username: action.username,
@@ -39,4 +42,10 @@ function login(state, action) {
     });
 }
 
+function loginFailed(state) {
+    return Object.assign({},state, {
+        userAuthenticated: false,
+        loginFailed: true
+    })
+}
 export default authenticationReducer;

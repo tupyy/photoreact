@@ -1,10 +1,4 @@
-import {LOGIN_FAILED, LOGIN_SUCCESSFUL, LOGIN_USER, LOGOUT_USER} from "./authenticationActionTypes";
-
-export const loginUser = (username, id) => ({
-   type: LOGIN_USER,
-   username: username,
-   id: id
-});
+import {LOGIN_FAILED, LOGIN_SUCCESSFUL, LOGOUT_USER} from "./authenticationActionTypes";
 
 export const LogoutUser = (id) => ({
     type: LOGOUT_USER,
@@ -17,9 +11,9 @@ export const LoginSuccessful = (username, id) => ({
     id: id
 });
 
-export const LoginFailed = (username) => ({
+export const LoginFailed = (reason) => ({
     type: LOGIN_FAILED,
-    username: username
+    reason: reason
 });
 
 
