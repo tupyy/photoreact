@@ -83,14 +83,6 @@ class Navbar extends React.Component {
                 onClose={this.handleMobileMenuClose}
             >
                 <MenuItem>
-                    <IconButton aria-label="show 4 new mails" color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <MailIcon/>
-                        </Badge>
-                    </IconButton>
-                    <p>Messages</p>
-                </MenuItem>
-                <MenuItem>
                     <IconButton aria-label="show 11 new notifications" color="inherit">
                         <Badge badgeContent={11} color="secondary">
                             <NotificationsIcon/>
@@ -128,7 +120,7 @@ class Navbar extends React.Component {
                             <MenuIcon/>
                         </IconButton>
                         <Typography className={classes.title} variant="h6" noWrap>
-                            HomePhotos
+                                Photos
                         </Typography>
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>

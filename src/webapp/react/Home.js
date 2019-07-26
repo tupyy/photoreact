@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from './navbar/Navbar';
+import Navbar from './components/Navbar/Navbar';
 import {connect} from "react-redux";
 
 export default class Home extends React.Component {

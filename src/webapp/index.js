@@ -5,6 +5,7 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import store from "./redux/store";
 import App from "./react/App";
+import './i18n';
 
 const rootElement = document.getElementById('root');
 
