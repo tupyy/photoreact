@@ -1,4 +1,6 @@
 import React from 'react';
+import Navbar from './navbar/Navbar';
+import {connect} from "react-redux";
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -7,7 +9,17 @@ export default class Home extends React.Component {
 
     render() {
         return (
-            <div>Home</div>
+            <div>
+                <Navbar />
+            </div>
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        authentication: state.authentication
+    };
+};
+
+connect(mapStateToProps)(Home);

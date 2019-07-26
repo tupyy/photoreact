@@ -3,7 +3,7 @@ import authenticationService from "../../services/authentication/userService";
 import {LoginFailed, LoginSuccessful} from "../actions/authenticationActions";
 
 const initialAuthenticationState = {
-    userAuthenticated: false,
+    userAuthenticated: true, //FIX temporary
     username: "",
     id: "",
     loginFailed: false
