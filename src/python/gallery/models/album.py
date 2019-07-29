@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
-from src.python.gallery.models.category import Category, Tag
+from .category import Category, Tag
 
 
 class AccessPolicy(models.Model):
@@ -42,18 +42,18 @@ class AlbumManager(models.Manager):
 
 @python_2_unicode_compatible
 class Album(models.Model):
-    category = models.ManyToManyField(Category, on_delete=models.CASCADE)
+    category = models.ManyToManyField(Category)
     dirpath = models.CharField(max_length=200, verbose_name="directory path")
     date = models.DateField()
     name = models.CharField(max_length=100, blank=True)
-    owner = models.OneToOneField(User, on_delete=models.SET_NULL)
-    tags = models.ManyToManyField(Tag, on_delete=models.CASCADE)
+    owner = models.OneToOneField(User, null=True, on_delete=models.SET_NULL)
+    tags = models.ManyToManyField(Tag)
 
     objects = AlbumManager()
 
     class Meta:
-        ordering = ('date', 'name', 'dirpath', 'category')
-        unique_together = ('dirpath', 'category')
+        ordering = ('date', 'name', 'dirpath')
+        unique_together = ('dirpath',)
         verbose_name = _("album")
         verbose_name_plural = _("albums")
 

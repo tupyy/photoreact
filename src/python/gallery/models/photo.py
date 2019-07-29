@@ -12,10 +12,10 @@ from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
-from src.python.gallery.utils.imgutil import make_thumbnail
-from src.python.gallery.models.album import Album, AlbumAccessPolicy, AccessPolicy
-from src.python.gallery.utils.storages import get_storage
-from src.python.gallery.utils.s3_manager import get_signed_url, put_signed_url
+from gallery.models.album import Album, AlbumAccessPolicy, AccessPolicy
+from gallery.utils.storages import get_storage
+from gallery.utils.s3_manager import get_signed_url, put_signed_url
+
 
 class PhotoManager(models.Manager):
 
@@ -110,26 +110,6 @@ class Photo(models.Model):
 
     def image_name(self):
         return os.path.join(self.album.dirpath, self.filename)
-
-    def thumb_name(self, preset):
-        prefix = self.album.date.strftime('%y%m')
-        hsh = hashlib.md5()
-        hsh.update(str(settings.SECRET_KEY).encode())
-        hsh.update(str(self.album.pk).encode())
-        hsh.update(str(self.pk).encode())
-        hsh.update(str(settings.GALLERY_RESIZE_PRESETS[preset]).encode())
-        ext = os.path.splitext(self.filename)[1].lower()
-        return os.path.join(prefix, hsh.hexdigest() + ext)
-
-    def thumbnail(self, preset):
-        image_name = self.image_name()
-        thumb_name = self.thumb_name(preset)
-        photo_storage = get_storage('photo')
-        cache_storage = get_storage('cache')
-        if not cache_storage.exists(thumb_name):
-            make_thumbnail(image_name, thumb_name, preset,
-                           photo_storage, cache_storage)
-        return thumb_name
 
 
 @python_2_unicode_compatible

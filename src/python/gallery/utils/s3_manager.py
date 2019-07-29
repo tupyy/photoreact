@@ -1,6 +1,6 @@
 import boto3
 from botocore.config import Config
-from src.python.photogallery.settings import AWS_STORAGE_BUCKET_NAME
+from photogallery.settings import AWS_STORAGE_BUCKET_NAME
 
 
 def sign_url(method, filename, filetype):
