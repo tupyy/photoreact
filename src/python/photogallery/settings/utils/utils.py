@@ -1,6 +1,8 @@
 import logging
 
 # Get an instance of a logger
+import os
+
 logger = logging.getLogger("django")
 
 
@@ -18,3 +20,11 @@ def parse_db_variable(var_string):
     if m:
         return m.groups()
     return list()
+
+
+def load_env(env_file):
+    with open(env_file, 'r') as f:
+        for line in f:
+            if "=" in line:
+                env_var = line.split("=")
+                os.putenv(env_var[0], env_var[1])
