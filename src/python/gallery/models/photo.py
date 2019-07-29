@@ -15,7 +15,7 @@ from django.utils.translation import ugettext_lazy as _
 from src.python.gallery.utils.imgutil import make_thumbnail
 from src.python.gallery.models.album import Album, AlbumAccessPolicy, AccessPolicy
 from src.python.gallery.utils.storages import get_storage
-
+from src.python.gallery.utils.s3_manager import get_signed_url, put_signed_url
 
 class PhotoManager(models.Manager):
 
@@ -38,6 +38,12 @@ class Photo(models.Model):
     date = models.DateTimeField(null=True, blank=True)
 
     objects = PhotoManager()
+
+    def get_signed_url(self):
+        return get_signed_url(self.filename, self.filename[self.filename.index('.')+1:])
+
+    def put_signed_url(self):
+        return put_signed_url(self.filename, self.filename[self.filename.index('.')+1:])
 
     class Meta:
         ordering = ('date', 'filename')

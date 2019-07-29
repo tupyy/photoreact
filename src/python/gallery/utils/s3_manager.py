@@ -1,5 +1,6 @@
 import boto3
 from botocore.config import Config
+from src.python.photogallery.settings import AWS_STORAGE_BUCKET_NAME
 
 
 def sign_url(method, filename, filetype):
@@ -14,14 +15,14 @@ def sign_url(method, filename, filetype):
     return s3.generate_presigned_url(
         ClientMethod=method,
         Params={
-            'Bucket': S3_BUCKET,
+            'Bucket': AWS_STORAGE_BUCKET_NAME,
             'Key': filename,
             'ContentType': filetype
         }
     )
 
 
-def put_signed(filename, filetype):
+def put_signed_url(filename, filetype):
     return sign_url('put_object', filename, filetype)
 
 
