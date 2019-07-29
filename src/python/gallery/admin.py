@@ -17,7 +17,7 @@ from django.urls import reverse
 from django.utils import six
 from django.utils.translation import ugettext, ugettext_lazy
 
-from .models import Album, AlbumAccessPolicy, Photo, PhotoAccessPolicy
+from src.python.gallery.models import Album, AlbumAccessPolicy, Photo, PhotoAccessPolicy
 
 
 class SetAccessPolicyMixin(object):

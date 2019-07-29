@@ -19,8 +19,8 @@ from django.core.management import base
 from django.db import transaction
 from django.utils import timezone
 
-from ...models import Album, Photo
-from ...storages import get_storage
+from src.python.gallery.models.models import Album, Photo
+from src.python.gallery.utils.storages import get_storage
 
 
 class Command(base.BaseCommand):
