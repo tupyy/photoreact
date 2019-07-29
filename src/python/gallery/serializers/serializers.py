@@ -1,12 +1,27 @@
 from rest_framework import serializers
 
-from src.python.gallery.models import Album, Photo
+from gallery.models import Album, Photo, Category, Tag
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = '__all__'
 
 
 class AlbumSerializer(serializers.ModelSerializer):
+    categories = CategorySerializer(read_only=True, many=True)
+    tags = TagSerializer(read_only=True, many=True)
+
     class Meta:
         model = Album
-        fields = ['__all__']
+        fields = '__all__'
 
 
 class PhotoSerializer(serializers.ModelSerializer):
