@@ -1,7 +1,7 @@
 import logging
 
 # Get an instance of a logger
-import os
+from photogallery import settings
 
 logger = logging.getLogger("django")
 
@@ -27,4 +27,4 @@ def load_env(env_file):
         for line in f:
             if "=" in line:
                 env_var = line.split("=")
-                os.putenv(env_var[0], env_var[1])
+                setattr(settings, env_var[0], env_var[1])

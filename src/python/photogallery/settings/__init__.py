@@ -23,7 +23,6 @@ base_settings = [
     'components/logging.py',
     'components/common.py',
     'components/database.py',
-    'components/aws.py',
     # You can even use glob:
     # 'components/*.py'
 
