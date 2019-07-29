@@ -1,10 +1,10 @@
-from django.contrib.auth.models import Group, User
-from django.test import TestCase
 import datetime
 
-from gallery.models import Album, Photo, Tag
+from django.contrib.auth.models import Group, User
+from django.test import TestCase
+
+from gallery.models import Album, Photo
 from gallery.models import Category
-from gallery.serializers.serializers import AlbumSerializer
 
 
 class AlbumTests(TestCase):
@@ -12,7 +12,7 @@ class AlbumTests(TestCase):
     def setUp(self) -> None:
         today = datetime.date.today()
         self.album = Album.objects.create(dirpath='foo', date=today)
-        self.photo = Photo.objects.create(album=self.album, filename='bar')
+        self.photo = Photo.objects.create(album=self.album, filename='bar.jpg')
         self.category = Category.objects.create(name="categorie")
 
         self.album.save()
@@ -26,10 +26,8 @@ class AlbumTests(TestCase):
     def test_category(self):
         self.assertEqual(self.album.categories.all().count(), 1)
 
-    def test_album_serializer(self):
-        self.album.tags.add(Tag.objects.create(name="my tag"))
-        albumS = AlbumSerializer(self.album)
-        print(albumS.data)
-        self.assertTrue(True)
+    def test_photo_urls(self):
+        get_url = self.photo.get_signed_url()
+        print(get_url)
 
 

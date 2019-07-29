@@ -40,10 +40,10 @@ class Photo(models.Model):
     objects = PhotoManager()
 
     def get_signed_url(self):
-        return get_signed_url(self.filename, self.filename[self.filename.index('.')+1:])
+        return get_signed_url(self.filename)
 
     def put_signed_url(self):
-        return put_signed_url(self.filename, self.filename[self.filename.index('.')+1:])
+        return put_signed_url(self.filename)
 
     class Meta:
         ordering = ('date', 'filename')
