@@ -4,6 +4,7 @@
 from django.contrib import admin
 from django.urls import path
 from rest_framework_simplejwt import views as jwt_views
+from gallery.urls import urlpatterns as gallery_url
 
 # Authentication
 authentication_urls = [
@@ -16,3 +17,4 @@ urlpatterns = [
 ]
 
 urlpatterns += authentication_urls
+urlpatterns += gallery_url
