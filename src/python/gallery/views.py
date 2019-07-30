@@ -26,8 +26,8 @@ from django.utils.http import http_date
 from django.views.generic import ArchiveIndexView, DetailView, YearArchiveView
 from django.views.static import was_modified_since
 
-from src.python.gallery.models import Album, Photo
-from src.python.gallery.utils.storages import get_storage
+from gallery.models import Album, Photo
+from gallery.utils.storages import get_storage
 
 
 class GalleryCommonMixin(object):
