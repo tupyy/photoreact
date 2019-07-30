@@ -37,17 +37,24 @@ class AlbumManager(models.Manager):
         if user.is_authenticated:
             album_cond |= Q(access_policy__users=user)
             album_cond |= Q(access_policy__groups__user=user)
+            album_cond |= Q(owner__exact=user)
+        return self.filter(album_cond).distinct()
+
+    def allow_only_for_owner(self, user):
+        album_cond = Q()
+        if user.is_authenticated:
+            album_cond |= Q(owner__exact=user)
         return self.filter(album_cond).distinct()
 
 
 @python_2_unicode_compatible
 class Album(models.Model):
-    categories = models.ManyToManyField(Category)
+    categories = models.ManyToManyField(Category, blank=True)
     dirpath = models.CharField(max_length=200, verbose_name="directory path")
     date = models.DateField()
     name = models.CharField(max_length=100, blank=True)
     owner = models.OneToOneField(User, null=True, on_delete=models.SET_NULL)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     objects = AlbumManager()
 
