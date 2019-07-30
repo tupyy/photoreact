@@ -188,7 +188,7 @@ class PhotoAdmin(SetAccessPolicyMixin, admin.ModelAdmin):
     # Since date is mandatory on albums, '-album_date' avoids showing photos
     # without date first on some databases (PostgreSQL).
     ordering = ('-album__date', '-date', '-filename')
-    readonly_fields = ('filename',)
+    # readonly_fields = ('filename',)
     search_fields = ('album__name', 'album__dirpath', 'filename')
 
     def get_urls(self):

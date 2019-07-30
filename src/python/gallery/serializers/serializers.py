@@ -18,10 +18,11 @@ class TagSerializer(serializers.ModelSerializer):
 class AlbumSerializer(serializers.ModelSerializer):
     categories = CategorySerializer(read_only=True, many=True)
     tags = TagSerializer(read_only=True, many=True)
+    preview = serializers.StringRelatedField()
 
     class Meta:
         model = Album
-        fields = '__all__'
+        fields = ['id', 'name', 'categories', 'tags', 'owner', 'preview']
 
 
 class PhotoSerializer(serializers.ModelSerializer):
