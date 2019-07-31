@@ -16,5 +16,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-urlpatterns += authentication_urls
 urlpatterns += gallery_url
+urlpatterns += authentication_urls
+
