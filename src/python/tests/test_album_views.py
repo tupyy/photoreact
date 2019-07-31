@@ -53,10 +53,32 @@ class AlbumViewTests(TestCase):
 
     def test_list_albums(self):
         """ test get all albums by owner"""
-        self.album = Album.objects.create(dirpath='bar', date=datetime.date.today(), owner=self.user, name='bar')
+        self.album2 = Album.objects.create(dirpath='bar', date=datetime.date.today(), owner=self.user, name='bar')
         client = APIClient()
         client.login(username='user', password='pass')
         request = client.get(reverse('album-list'))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data), 2)
 
+    def test_list_albums2(self):
+        """ test get all albums by batman"""
+        album2 = Album.objects.create(dirpath='bar', date=datetime.date.today(), owner=self.user, name='bar')
+        album2.save()
+        policy1 = AlbumAccessPolicy.objects.create(album=self.album, public=False)
+        policy1.users.add(self.batman)
+        policy2 = AlbumAccessPolicy.objects.create(album=album2, public=False)
+        policy2.users.add(self.batman)
+
+        client = APIClient()
+        client.login(username='batman', password='word')
+        request = client.get(reverse('album-list'))
+        self.assertEqual(request.status_code, 200)
+        self.assertEqual(len(request.data), 2)
+
+    def test_list_albums_404(self):
+        """ test get all albums by other"""
+        client = APIClient()
+        client.login(username='other', password='word')
+        request = client.get(reverse('album-list'))
+        self.assertEqual(request.status_code, 200)
+        self.assertEqual(len(request.data), 0)
