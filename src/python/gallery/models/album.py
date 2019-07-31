@@ -63,9 +63,9 @@ class Album(models.Model):
 
     @property
     def preview(self):
-        photo = Photo.objects.filter(album__id__exact=self.id)
+        photo = Photo.objects.filter(album_id__exact=self.id)
         if photo.count() > 0:
-            return photo.get(0).get_signed_url()
+            return photo[0].get_signed_url()
         return ""
 
     class Meta:
