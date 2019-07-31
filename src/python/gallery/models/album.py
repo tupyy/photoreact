@@ -56,7 +56,7 @@ class Album(models.Model):
     dirpath = models.CharField(max_length=200, verbose_name="directory path")
     date = models.DateField()
     name = models.CharField(max_length=100, blank=True)
-    owner = models.OneToOneField(User, null=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
 
     objects = AlbumManager()
