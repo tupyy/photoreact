@@ -52,6 +52,11 @@ class AlbumViewTests(TestCase):
         self.assertEqual(request.data['id'], self.album.id)
 
     def test_list_albums(self):
-        pass
-
+        """ test get all albums by owner"""
+        self.album = Album.objects.create(dirpath='bar', date=datetime.date.today(), owner=self.user, name='bar')
+        client = APIClient()
+        client.login(username='user', password='pass')
+        request = client.get(reverse('album-list'))
+        self.assertEqual(request.status_code, 200)
+        self.assertEqual(len(request.data), 2)
 

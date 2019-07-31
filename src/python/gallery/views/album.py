@@ -83,3 +83,8 @@ class AlbumView(GalleryCommonMixin, AlbumListMixin, ModelViewSet):
         album = self.get_object()
         serializer = self.get_serializer(album)
         return Response(serializer.data)
+
+    def list(self, request, *args, **kwargs):
+        qs = self.get_queryset()
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
