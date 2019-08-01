@@ -11,3 +11,14 @@ DATABASES_DEV = {
         'PORT': '5432',
     }
 }
+
+DATABASES_DEV_WORK = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'photo2',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '5432'
+    }
+}
