@@ -20,7 +20,7 @@ class AlbumViewTests(TestCase):
 
         today = datetime.date.today()
         self.album = Album.objects.create(dirpath='foo', date=today, owner=self.user, name='foo')
-        self.photo = Photo.objects.create(album=self.album, filename='bar.jpg')
+        self.photo = Photo.objects.create(album=self.album, filename='bar.jpg', thumbnail='thumbnail')
         self.category = Category.objects.create(name="categorie")
 
         self.album.save()

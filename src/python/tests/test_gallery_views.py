@@ -18,7 +18,7 @@ class GalleryTests(TestCase):
 
         today = datetime.date.today()
         self.album = Album.objects.create(dirpath='foo', date=today, owner=self.user)
-        self.photo = Photo.objects.create(album=self.album, filename='bar.jpg')
+        self.photo = Photo.objects.create(album=self.album, filename='bar.jpg', thumbnail='thumbnail')
         self.category = Category.objects.create(name="categorie")
 
         self.album.save()
@@ -52,6 +52,3 @@ class GalleryTests(TestCase):
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data), 1)
 
-    def test_photo_urls(self):
-        get_url = self.photo.get_signed_url()
-        print(get_url)
