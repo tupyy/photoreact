@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
-from gallery.utils.s3_manager import get_signed_url, put_signed_url
+from gallery.utils.s3_manager import get_signed_url
 from .category import Category, Tag
 
 
@@ -65,7 +65,7 @@ class Album(models.Model):
     def preview(self):
         photo = Photo.objects.filter(album_id__exact=self.id)
         if photo.count() > 0:
-            return photo[0].get_signed_url()
+            return get_signed_url(photo[0].thumbnail)
         return ""
 
     class Meta:
@@ -128,14 +128,9 @@ class Photo(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     filename = models.CharField(max_length=100, verbose_name="file name")
     date = models.DateTimeField(null=True, blank=True)
+    thumbnail = models.CharField(max_length=100, verbose_name='thumbnail_path')
 
     objects = PhotoManager()
-
-    def get_signed_url(self):
-        return get_signed_url(self.filename)
-
-    def put_signed_url(self):
-        return put_signed_url(self.filename)
 
     class Meta:
         ordering = ('date', 'filename')
