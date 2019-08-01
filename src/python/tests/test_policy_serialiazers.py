@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
+from rest_framework.exceptions import ValidationError
 
 from gallery.models import Album, Photo, AlbumAccessPolicy
 from gallery.models import Category
@@ -45,6 +46,19 @@ class PolicySerializersTests(TestCase):
         album_access_policy_serializer = AlbumAccessPolicySerializer()
         album_access_policy = album_access_policy_serializer.create(data)
         self.assertTrue(album_access_policy is not None)
+
+    def test_create_policy2(self):
+        """
+            test create policy without groups or users
+            Raise ValidationError
+         """
+        data = dict()
+        data['album_id'] = self.album.id
+        data['public'] = True
+        album_access_policy_serializer = AlbumAccessPolicySerializer()
+
+        with self.assertRaises(ValidationError):
+            album_access_policy_serializer.create(data)
 
     def test_auth_id_serializers(self):
         serializer = UserIDSerializer()
