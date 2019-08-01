@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from gallery.models import Album, Photo, AlbumAccessPolicy
 from gallery.models import Category
+from gallery.serializers.auth_serializer import UserIDSerializer
 from gallery.serializers.policy_serializers import AlbumAccessPolicySerializer
 
 
@@ -33,3 +34,19 @@ class PolicySerializersTests(TestCase):
         serializer = AlbumAccessPolicySerializer(policy)
         self.assertEqual(serializer.data['album_id'], self.album.id)
         self.assertEqual(serializer.data['users'][0]['id'], self.batman.id)
+
+    def test_create_policy(self):
+        """ test create policy """
+        data = dict()
+        data['album_id'] = self.album.id
+        data['public'] = True
+        data['users'] = [self.user.id, ]
+        data['groups'] = [self.group.id, ]
+        album_access_policy_serializer = AlbumAccessPolicySerializer()
+        album_access_policy = album_access_policy_serializer.create(data)
+        self.assertTrue(album_access_policy is not None)
+
+    def test_auth_id_serializers(self):
+        serializer = UserIDSerializer()
+        user = serializer.get_object(self.user.id)
+        self.assertTrue(user is not None)
