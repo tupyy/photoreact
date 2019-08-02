@@ -1,8 +1,9 @@
+from rest_framework import status, mixins
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from gallery.models import Album
 from gallery.serializers.policy_serializers import AlbumAccessPolicySerializer
@@ -72,7 +73,10 @@ class GalleryIndexView(GalleryCommonMixin, AlbumListMixin, ListAPIView):
         return qs
 
 
-class AlbumView(GalleryCommonMixin, AlbumListMixin, ModelViewSet):
+class AlbumView(GalleryCommonMixin,
+                AlbumListMixin,
+                ModelViewSet):
+
     model = Album
     serializer_class = AlbumSerializer
     policies_serializer_class = AlbumAccessPolicySerializer
@@ -106,8 +110,17 @@ class AlbumView(GalleryCommonMixin, AlbumListMixin, ModelViewSet):
             # If 'prefetch_related' has been applied to a queryset, we need to
             # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
-
         return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.owner.id != self.request.user.id:
+            return Response(status=404)
+
+        instance.photo_set.all().delete()
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 
