@@ -1,9 +1,12 @@
-from rest_framework import status, mixins
+from datetime import datetime
+
+from django.db.models import Q
+from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from gallery.models import Album
 from gallery.serializers.policy_serializers import AlbumAccessPolicySerializer
@@ -39,12 +42,6 @@ class AlbumListMixin(object):
     model = Album
     date_field = 'date'
 
-    def get_context_data(self, **kwargs):
-        context = dict()
-        context['object_list'] = self.get_queryset()
-        context['show_public'] = self.show_public()
-        return context
-
     def get_queryset(self):
         if self.can_view_all():
             qs = Album.objects.all()
@@ -56,6 +53,53 @@ class AlbumListMixin(object):
             qs = qs.prefetch_related('photo_set__access_policy__groups')
             qs = qs.prefetch_related('photo_set__access_policy__users')
         return qs.order_by('-date', '-name')
+
+
+class AlbumFilterListMixin(object):
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = self.filter_by_name(qs)
+        qs = self.filter_by_period(qs)
+        qs = self.filter_by_category(qs)
+        qs = self.filter_by_tag(qs)
+        return qs
+
+    def filter_by_name(self, qs):
+        owner = self.request.query_params.get('owner', None)
+        if owner is not None:
+            qs = qs.filter(owner__id=owner)
+        return qs
+
+    def filter_by_period(self, qs):
+        start_date_str = self.request.query_params.get('start_date', None)
+        end_date_str = self.request.query_params.get('end_date', None)
+
+        if (start_date_str and end_date_str) is not None:
+            start_date = datetime.strptime(start_date_str, "%d-%m-%Y")
+            end_date = datetime.strptime(end_date_str, "%d-%m-%Y")
+            date_cond = Q(date__gte=start_date)
+            date_cond &= Q(date__lte=end_date)
+            qs = qs.filter(date_cond)
+        return qs
+
+    def filter_by_category(self, qs):
+        categories_names = self.request.query_params.get('category')
+        if categories_names is not None:
+            if type(categories_names) is list:
+                qs = qs.filter(categories__name__in=categories_names)
+            else:
+                qs = qs.filter(categories__name__in=[categories_names])
+        return qs
+
+    def filter_by_tag(self, qs):
+        tag_names = self.request.query_params.get('tag')
+        if tag_names is not None:
+            if type(tag_names) is list:
+                qs = qs.filter(tag__name__in=tag_names)
+            else:
+                qs = qs.filter(tag__name__in=[tag_names])
+        return qs
 
 
 class GalleryIndexView(GalleryCommonMixin, AlbumListMixin, ListAPIView):
@@ -74,9 +118,9 @@ class GalleryIndexView(GalleryCommonMixin, AlbumListMixin, ListAPIView):
 
 
 class AlbumView(GalleryCommonMixin,
+                AlbumFilterListMixin,
                 AlbumListMixin,
                 ModelViewSet):
-
     model = Album
     serializer_class = AlbumSerializer
     policies_serializer_class = AlbumAccessPolicySerializer
@@ -120,9 +164,3 @@ class AlbumView(GalleryCommonMixin,
         instance.photo_set.all().delete()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
-
-
