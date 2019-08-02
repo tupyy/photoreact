@@ -47,6 +47,22 @@ class AlbumSerializer(serializers.ModelSerializer):
 
         return album_instance
 
+    def update(self, instance, validated_data):
+        """ Don't allow dirpath update"""
+        instance.name = validated_data.pop('name')
+        instance.date = validated_data.pop('date')
+
+        categories = self._get_objects(Category,validated_data.pop('categories'))
+        for category in categories:
+            if category not in instance.categories.all():
+                instance.categories.add(category)
+
+        tags = self._get_objects(Tag, validated_data.pop('tags'))
+        for tag in tags:
+            if tag not in instance.tags.all():
+                instance.tags.add(tag)
+        return instance
+
     def _get_objects(self, model, data):
         """ Get categories or tags """
         objects = [model.objects.get_or_create(name=entry.get('name'))[0]

@@ -95,14 +95,74 @@ class AlbumViewTests(TestCase):
         response = client.post(reverse('album-list'), data=data, format='json')
         self.assertEqual(response.status_code, 201)
 
+    def test_update_album(self):
+        client = APIClient()
+        client.login(username='user', password='pass')
+        data = dict()
+        data['name'] = 'bar'
+        data['tags'] = ({'name': 'foo'},)
+        data['date'] = datetime.date.today()
+        data['categories'] = ({'name': 'foo'},)
+        response = client.patch(reverse('album-detail', args=[self.album.id]), data=data, format='json')
+        self.assertEqual(response.status_code, 200)
+
     def test_create_album2(self):
         client = APIClient()
         client.login(username='user', password='pass')
         data = dict()
         data['name'] = 'foo'
         data['dirpath'] = 'dirpath'
-        data['tags'] = ({'name':'foo'},)
+        data['tags'] = ({'name': 'foo'},)
         data['date'] = datetime.date.today()
-        data['categories'] = ({'name':'foo'},)
+        data['categories'] = ({'name': 'foo'},)
         response = client.post(reverse('album-list'), data=data, format='json')
         self.assertEqual(response.status_code, 201)
+
+    def test_update_album2(self):
+        category = Category.objects.create(name='bar')
+        self.album.categories.add(category)
+        self.album.save()
+
+        client = APIClient()
+        client.login(username='user', password='pass')
+        data = dict()
+        data['name'] = 'bar'
+        data['tags'] = ({'name': 'foo'},)
+        data['date'] = datetime.date.today()
+        data['categories'] = ({'name': 'foo'},)
+        response = client.patch(reverse('album-detail', args=[self.album.id]), data=data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_album3(self):
+        """ only the owner can update its album """
+        category = Category.objects.create(name='bar')
+        self.album.categories.add(category)
+        self.album.save()
+
+        client = APIClient()
+        client.login(username='batman', password='word')
+        data = dict()
+        data['name'] = 'bar'
+        data['tags'] = ({'name': 'foo'},)
+        data['date'] = datetime.date.today()
+        data['categories'] = ({'name': 'foo'},)
+        response = client.patch(reverse('album-detail', args=[self.album.id]), data=data, format='json')
+        self.assertEqual(response.status_code, 404)
+
+    def test_update_album4(self):
+        """
+            only the owner can update its album
+            Test the access policy
+        """
+        policy = AlbumAccessPolicy.objects.create(album=self.album, public=False)
+        policy.users.add(self.batman)
+
+        client = APIClient()
+        client.login(username='batman', password='word')
+        data = dict()
+        data['name'] = 'bar'
+        data['tags'] = ({'name': 'foo'},)
+        data['date'] = datetime.date.today()
+        data['categories'] = ({'name': 'foo'},)
+        response = client.patch(reverse('album-detail', args=[self.album.id]), data=data, format='json')
+        self.assertEqual(response.status_code, 404)
