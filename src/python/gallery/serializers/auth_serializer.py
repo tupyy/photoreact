@@ -22,6 +22,9 @@ class UserIDSerializer(IDSerializerMixin, serializers.ModelSerializer):
         model = User
         fields = ['id']
 
+    def validate(self, data):
+        return data
+
 
 class GroupIDSerializer(IDSerializerMixin, serializers.ModelSerializer):
     class Meta:

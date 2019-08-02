@@ -91,17 +91,7 @@ class AlbumView(GalleryCommonMixin, AlbumListMixin, ModelViewSet):
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-        album_serializer = self.get_serializer(data=request.data['album'])
-        album_serializer.is_valid(raise_exception=True)
-        self.perform_create(album_serializer)
 
-        # search for access polices if any
-        polices = request.data.get('polices', None)
-        if not polices:
-            for policy in polices:
-                policy_serializer = self.policies_serializer_class(policy)
-                policy_serializer.is_valid(raise_exception=True)
 
 
 

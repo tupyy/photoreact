@@ -17,13 +17,41 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class AlbumSerializer(serializers.ModelSerializer):
-    categories = CategorySerializer(read_only=True, many=True)
-    tags = TagSerializer(read_only=True, many=True)
+    categories = CategorySerializer(many=True)
+    tags = TagSerializer(many=True)
+    dirpath = serializers.CharField()
+    date = serializers.DateField()
+    owner = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
     preview = serializers.StringRelatedField()
 
     class Meta:
         model = Album
-        fields = ['id', 'name', 'categories', 'tags', 'owner', 'preview']
+        fields = ['id', 'name', 'categories', 'date', 'dirpath', 'tags', 'owner', 'preview']
+
+    def validate(self, data):
+        return data
+
+    def create(self, validated_data):
+        owner = validated_data.pop('owner')
+        categories_data = validated_data.pop('categories')
+        tags_data = validated_data.pop('tags')
+
+        album_instance = Album.objects.create(**validated_data, owner=owner)
+        for category in self._get_objects(Category, categories_data):
+            album_instance.categories.add(category)
+
+        for tag in self._get_objects(Tag, tags_data):
+            album_instance.tags.add(tag)
+
+        return album_instance
+
+    def _get_objects(self, model, data):
+        """ Get categories or tags """
+        objects = [model.objects.get_or_create(name=entry.get('name'))[0]
+                   for entry in data]
+        return objects
 
 
 class PhotoSerializer(serializers.ModelSerializer):
