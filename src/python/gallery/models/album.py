@@ -52,9 +52,9 @@ class AlbumManager(models.Manager):
 
 @python_2_unicode_compatible
 class Album(models.Model):
-    categories = models.ManyToManyField(Category, blank=True)
+    categories = models.ManyToManyField(Category, blank=True, verbose_name="categories")
     dirpath = models.CharField(max_length=200, verbose_name="directory path")
-    date = models.DateField()
+    date = models.DateField(verbose_name="creation_date")
     name = models.CharField(max_length=100, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
