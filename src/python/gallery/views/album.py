@@ -143,7 +143,7 @@ class AlbumView(GalleryCommonMixin,
         """ Add a extra check. Only owner has the right to update the album """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        if instance.owner.id != self.request.user.id:
+        if not instance.is_owner(self.request.user):
             return Response(status=404)
 
         serializer = self.get_serializer(instance, data=request.data, partial=partial)

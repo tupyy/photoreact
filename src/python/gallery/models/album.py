@@ -94,6 +94,9 @@ class Album(models.Model):
         access_policy = self.get_access_policy()
         return access_policy is not None and access_policy.allows(user)
 
+    def is_owner(self, user):
+        return self.owner.id == user.id
+
 
 @python_2_unicode_compatible
 class AlbumAccessPolicy(AccessPolicy):

@@ -17,7 +17,7 @@ class AlbumAccessPolicySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         album = get_object_or_404(Album, pk=validated_data.get('album_id'))
-        is_public = bool(validated_data.get('public',False))
+        is_public = bool(validated_data.get('public', False))
         album_access_policy = AlbumAccessPolicy.objects.create(album=album, public=is_public)
 
         # check if we have either users or groups
@@ -41,5 +41,3 @@ class AlbumAccessPolicySerializer(serializers.ModelSerializer):
 
         album_access_policy.save()
         return album_access_policy
-
-
