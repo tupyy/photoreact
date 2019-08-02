@@ -82,3 +82,27 @@ class AlbumViewTests(TestCase):
         request = client.get(reverse('album-list'))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data), 0)
+
+    def test_create_album(self):
+        client = APIClient()
+        client.login(username='user', password='pass')
+        data = dict()
+        data['name'] = 'foo'
+        data['dirpath'] = 'dirpath'
+        data['categories'] = list()
+        data['tags'] = list()
+        data['date'] = datetime.date.today()
+        response = client.post(reverse('album-list'), data=data, format='json')
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_album2(self):
+        client = APIClient()
+        client.login(username='user', password='pass')
+        data = dict()
+        data['name'] = 'foo'
+        data['dirpath'] = 'dirpath'
+        data['tags'] = ({'name':'foo'},)
+        data['date'] = datetime.date.today()
+        data['categories'] = ({'name':'foo'},)
+        response = client.post(reverse('album-list'), data=data, format='json')
+        self.assertEqual(response.status_code, 201)
