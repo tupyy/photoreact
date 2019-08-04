@@ -3,10 +3,11 @@ import datetime
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
+from guardian.shortcuts import assign_perm
 from rest_framework.test import APIClient
 
-from gallery.models import Album, Photo, AlbumAccessPolicy
-from gallery.models import Category
+from gallery.models.album import Album
+from gallery.models.photo import Photo
 
 
 class AlbumViewTests(TestCase):
@@ -21,12 +22,11 @@ class AlbumViewTests(TestCase):
         today = datetime.date.today()
         self.album = Album.objects.create(dirpath='foo', date=today, owner=self.user, name='foo')
         self.photo = Photo.objects.create(album=self.album, filename='bar.jpg', thumbnail='thumbnail')
-        self.category = Category.objects.create(name="categorie")
 
         self.album.save()
-        self.album.categories.add(self.category)
 
     def test_get_album(self):
+        assign_perm('view_album', self.user, self.album)
         client = APIClient()
         client.login(username='user', password='pass')
         request = client.get(reverse('album-detail', args=[self.album.id]))
@@ -38,69 +38,45 @@ class AlbumViewTests(TestCase):
         client = APIClient()
         client.login(username='other', password='word')
         request = client.get(reverse('album-detail', args=[self.album.id]))
-        self.assertEqual(request.status_code, 404)
-
-    def test_get_albums3(self):
-        """ get album by user which is allowed to view the album """
-        policy = AlbumAccessPolicy.objects.create(album=self.album, public=False)
-        policy.users.add(self.batman)
-
-        client = APIClient()
-        client.login(username='batman', password='word')
-        request = client.get(reverse('album-detail', args=[self.album.id]))
-        self.assertEqual(request.status_code, 200)
-        self.assertEqual(request.data['id'], self.album.id)
+        self.assertEqual(request.status_code, 403)
 
     def test_list_albums(self):
         """ test get all albums by owner"""
-        self.album2 = Album.objects.create(dirpath='bar', date=datetime.date.today(), owner=self.user, name='bar')
+        assign_perm('view_album', self.user, self.album)
+
+        album2 = Album.objects.create(dirpath='bar', date=datetime.date.today(), owner=self.user, name='bar')
+        assign_perm('view_album', self.user, album2)
+
         client = APIClient()
         client.login(username='user', password='pass')
-        request = client.get(reverse('album-list'))
+        request = client.get(reverse('albums-list'))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data), 2)
 
-    def test_list_albums2(self):
-        """ test get all albums by batman"""
+    def test_list_albums6(self):
+        assign_perm('view_album', self.user, self.album)
+
         album2 = Album.objects.create(dirpath='bar', date=datetime.date.today(), owner=self.user, name='bar')
-        album2.save()
-        policy1 = AlbumAccessPolicy.objects.create(album=self.album, public=False)
-        policy1.users.add(self.batman)
-        policy2 = AlbumAccessPolicy.objects.create(album=album2, public=False)
-        policy2.users.add(self.batman)
 
         client = APIClient()
-        client.login(username='batman', password='word')
-        request = client.get(reverse('album-list'))
-        self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 2)
-
-    def test_list_albums3(self):
-        """ test get all albums owned by other and can be accessed by batman"""
-        album2 = Album.objects.create(dirpath='bar', date=datetime.date.today(), owner=self.other, name='bar')
-        album2.save()
-        policy1 = AlbumAccessPolicy.objects.create(album=self.album, public=False)
-        policy1.users.add(self.batman)
-        policy2 = AlbumAccessPolicy.objects.create(album=album2, public=False)
-        policy2.users.add(self.batman)
-
-        client = APIClient()
-        client.login(username='batman', password='word')
-
-        url = "{}?{}".format(reverse('album-list'), "owner=" + str(self.user.id))
-        request = client.get(url)
+        client.login(username='user', password='pass')
+        request = client.get(reverse('albums-list'))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data), 1)
 
     def test_list_albums4(self):
         """ filter by period """
+        assign_perm('view_album', self.user, self.album)
+
         album_date = datetime.date.today() + datetime.timedelta(days=10)
         album2 = Album.objects.create(dirpath='bar', date=album_date, owner=self.user, name='bar')
+        assign_perm('view_album', self.user, album2)
+
         album2.save()
         client = APIClient()
         client.login(username='user', password='pass')
 
-        url = "{}?{}&{}".format(reverse('album-list'),
+        url = "{}?{}&{}".format(reverse('albums-list'),
                                 "start_date=" + datetime.date.today().strftime("%d-%m-%Y"),
                                 "end_date=" + datetime.date.today().strftime("%d-%m-%Y"))
 
@@ -110,14 +86,18 @@ class AlbumViewTests(TestCase):
 
     def test_list_albums5(self):
         """ filter by period """
+        assign_perm('view_album', self.user, self.album)
+
         album_date = datetime.date.today() + datetime.timedelta(days=10)
         album2 = Album.objects.create(dirpath='bar', date=album_date, owner=self.user, name='bar')
+        assign_perm('view_album', self.user, album2)
+
         album2.save()
         client = APIClient()
         client.login(username='user', password='pass')
 
         end_date = datetime.date.today() + datetime.timedelta(days=30)
-        url = "{}?{}&{}".format(reverse('album-list'),
+        url = "{}?{}&{}".format(reverse('albums-list'),
                                 "start_date=" + datetime.date.today().strftime("%d-%m-%Y"),
                                 "end_date=" + end_date.strftime("%d-%m-%Y"))
 
@@ -125,54 +105,11 @@ class AlbumViewTests(TestCase):
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data), 2)
 
-    def test_list_albums6(self):
-        """ filter by category single query parameter """
-        album_date = datetime.date.today() + datetime.timedelta(days=10)
-        album2 = Album.objects.create(dirpath='bar', date=album_date, owner=self.user, name='bar')
-        album2.save()
-        client = APIClient()
-        client.login(username='user', password='pass')
-
-        url = "{}?{}".format(reverse('album-list'),
-                             "category=categorie")
-        request = client.get(url)
-        self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 1)
-
-    def test_list_albums7(self):
-        """ filter by category single query parameter """
-        album_date = datetime.date.today() + datetime.timedelta(days=10)
-        album2 = Album.objects.create(dirpath='bar', date=album_date, owner=self.user, name='bar')
-        album2.save()
-        client = APIClient()
-        client.login(username='user', password='pass')
-
-        url = "{}?{}".format(reverse('album-list'),
-                             "category=bar")
-        request = client.get(url)
-        self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 0)
-
-    def test_list_albums8(self):
-        """ filter by category multiple query parameter """
-        album_date = datetime.date.today() + datetime.timedelta(days=10)
-        album2 = Album.objects.create(dirpath='bar', date=album_date, owner=self.user, name='bar')
-        album2.save()
-        client = APIClient()
-        client.login(username='user', password='pass')
-
-        url = "{}?{}&{}".format(reverse('album-list'),
-                                "category=bar",
-                                "category=categorie")
-        request = client.get(url)
-        self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 1)
-
     def test_list_albums_404(self):
         """ test get all albums by other"""
         client = APIClient()
         client.login(username='other', password='word')
-        request = client.get(reverse('album-list'))
+        request = client.get(reverse('albums-list'))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data), 0)
 
@@ -182,85 +119,27 @@ class AlbumViewTests(TestCase):
         data = dict()
         data['name'] = 'foo'
         data['dirpath'] = 'dirpath'
-        data['categories'] = list()
-        data['tags'] = list()
         data['date'] = datetime.date.today()
         response = client.post(reverse('album-list'), data=data, format='json')
         self.assertEqual(response.status_code, 201)
+        album = Album.objects.get(pk=response.data['id'])
+        self.assertTrue(self.user.has_perm('add_permissions', album))
 
     def test_update_album(self):
+        assign_perm('change_album', self.user, self.album)
+
         client = APIClient()
         client.login(username='user', password='pass')
         data = dict()
         data['name'] = 'bar'
         data['tags'] = ({'name': 'foo'},)
         data['date'] = datetime.date.today()
-        data['categories'] = ({'name': 'foo'},)
         response = client.patch(reverse('album-detail', args=[self.album.id]), data=data, format='json')
         self.assertEqual(response.status_code, 200)
-
-    def test_create_album2(self):
-        client = APIClient()
-        client.login(username='user', password='pass')
-        data = dict()
-        data['name'] = 'foo'
-        data['dirpath'] = 'dirpath'
-        data['tags'] = ({'name': 'foo'},)
-        data['date'] = datetime.date.today()
-        data['categories'] = ({'name': 'foo'},)
-        response = client.post(reverse('album-list'), data=data, format='json')
-        self.assertEqual(response.status_code, 201)
-
-    def test_update_album2(self):
-        category = Category.objects.create(name='bar')
-        self.album.categories.add(category)
-        self.album.save()
-
-        client = APIClient()
-        client.login(username='user', password='pass')
-        data = dict()
-        data['name'] = 'bar'
-        data['tags'] = ({'name': 'foo'},)
-        data['date'] = datetime.date.today()
-        data['categories'] = ({'name': 'foo'},)
-        response = client.patch(reverse('album-detail', args=[self.album.id]), data=data, format='json')
-        self.assertEqual(response.status_code, 200)
-
-    def test_update_album3(self):
-        """ only the owner can update its album """
-        category = Category.objects.create(name='bar')
-        self.album.categories.add(category)
-        self.album.save()
-
-        client = APIClient()
-        client.login(username='batman', password='word')
-        data = dict()
-        data['name'] = 'bar'
-        data['tags'] = ({'name': 'foo'},)
-        data['date'] = datetime.date.today()
-        data['categories'] = ({'name': 'foo'},)
-        response = client.patch(reverse('album-detail', args=[self.album.id]), data=data, format='json')
-        self.assertEqual(response.status_code, 404)
-
-    def test_update_album4(self):
-        """
-            only the owner can update its album
-            Test the access policy
-        """
-        policy = AlbumAccessPolicy.objects.create(album=self.album, public=False)
-        policy.users.add(self.batman)
-
-        client = APIClient()
-        client.login(username='batman', password='word')
-        data = dict()
-        data['name'] = 'bar'
-        data['tags'] = ({'name': 'foo'},)
-        data['date'] = datetime.date.today()
-        data['categories'] = ({'name': 'foo'},)
-        response = client.patch(reverse('album-detail', args=[self.album.id]), data=data, format='json')
-        self.assertEqual(response.status_code, 404)
 
     def test_delete_album(self):
+        assign_perm('delete_album', self.user, self.album)
+
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.delete(reverse('album-detail', args=[self.album.id]))
@@ -273,4 +152,4 @@ class AlbumViewTests(TestCase):
         client = APIClient()
         client.login(username='batman', password='word')
         response = client.delete(reverse('album-detail', args=[self.album.id]))
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 403)

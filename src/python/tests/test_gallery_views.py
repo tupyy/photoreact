@@ -4,8 +4,9 @@ from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from rest_framework.test import APIClient
 
-from gallery.models import Album, Photo, AlbumAccessPolicy
-from gallery.models import Category
+from gallery.models.album import Album
+from gallery.models.photo import Photo
+from gallery.models.category import Category
 
 
 class GalleryTests(TestCase):
@@ -38,17 +39,4 @@ class GalleryTests(TestCase):
         request = client.get('/')
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data), 0)
-
-    def test_get_album3(self):
-        """ Log the other user. set policy for user"""
-
-        policy = AlbumAccessPolicy.objects.create(album=self.album, public=False)
-        policy.users.add(self.other)
-        self.assertTrue(self.album.is_allowed_for_user(self.other))
-
-        client = APIClient()
-        client.login(username='other', password='word')
-        request = client.get('/')
-        self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 1)
 

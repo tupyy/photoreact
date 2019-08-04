@@ -4,12 +4,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
-from gallery.models import Photo
+from gallery.models.photo import Photo
 from gallery.serializers.serializers import PhotoSerializer
-from gallery.views.album import GalleryCommonMixin
 
 
-class PhotoView(GalleryCommonMixin, GenericAPIView, ViewSet):
+class PhotoView(GenericAPIView, ViewSet):
     model = Photo
     serializer_class = PhotoSerializer
 
