@@ -13,6 +13,7 @@ router = routers.SimpleRouter()
 router.register(r'album', gallery_views.AlbumView, basename='album')
 
 urlpatterns = [
+    url(r'^albums/$', gallery_views.album.AlbumListView.as_view(), name='albums-list'),
     url(r'^$', gallery_views.GalleryIndexView.as_view(), name='index'),
 ]
 
