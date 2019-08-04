@@ -1,6 +1,9 @@
+from guardian.shortcuts import assign_perm
 from rest_framework import serializers
 
-from gallery.models import Album, Photo, Category, Tag
+from gallery.models.album import Album
+from gallery.models.photo import Photo
+from gallery.models.category import Category, Tag
 from gallery.utils.s3_manager import get_signed_url, put_signed_url
 
 
@@ -17,8 +20,6 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class AlbumSerializer(serializers.ModelSerializer):
-    categories = CategorySerializer(many=True)
-    tags = TagSerializer(many=True)
     dirpath = serializers.CharField()
     date = serializers.DateField()
     owner = serializers.HiddenField(
@@ -28,40 +29,24 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Album
-        fields = ['id', 'name', 'categories', 'date', 'dirpath', 'tags', 'owner', 'preview']
+        fields = ['id', 'name', 'date', 'dirpath', 'owner', 'preview']
 
     def validate(self, data):
         return data
 
     def create(self, validated_data):
         owner = validated_data.pop('owner')
-        categories_data = validated_data.pop('categories')
-        tags_data = validated_data.pop('tags')
-
         album_instance = Album.objects.create(**validated_data, owner=owner)
-        for category in self._get_objects(Category, categories_data):
-            album_instance.categories.add(category)
 
-        for tag in self._get_objects(Tag, tags_data):
-            album_instance.tags.add(tag)
+        # Assign all permissions to user
+        assign_perm('add_photos', owner, album_instance)
+        assign_perm('change_album', owner, album_instance)
+        assign_perm('delete_album', owner, album_instance)
+        assign_perm('add_permissions', owner, album_instance)
+        assign_perm('change_permissions', owner, album_instance)
+        assign_perm('delete_permissions', owner, album_instance)
 
         return album_instance
-
-    def update(self, instance, validated_data):
-        """ Don't allow dirpath update"""
-        instance.name = validated_data.pop('name')
-        instance.date = validated_data.pop('date')
-
-        categories = self._get_objects(Category,validated_data.pop('categories'))
-        for category in categories:
-            if category not in instance.categories.all():
-                instance.categories.add(category)
-
-        tags = self._get_objects(Tag, validated_data.pop('tags'))
-        for tag in tags:
-            if tag not in instance.tags.all():
-                instance.tags.add(tag)
-        return instance
 
     def _get_objects(self, model, data):
         """ Get categories or tags """
