@@ -107,3 +107,12 @@ class AlbumView(mixins.CreateModelMixin,
             return Response(status=status.HTTP_403_FORBIDDEN)
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# class AlbumViewPermissions(mixins.RetrieveModelMixin):
+#
+#     authentication_classes = [SessionAuthentication, TokenAuthentication]
+#     permission_classes = [IsAuthenticated, IsOwner]
+#
+#     def retrieve(self, request, *args, **kwargs):
+#         album = self.get_object()
