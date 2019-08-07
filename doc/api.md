@@ -3,7 +3,7 @@
 
 **GET** */albums/*
 
->listeaza toate albumele pe care current_user poate sa le vizualizeze
+>get all albums which the current user can view them
 
 Permissions requested:
 - view_album
@@ -25,6 +25,28 @@ Filters:
 
 Response:
 
+- status code : 200 OK
+```json
+{
+    "id": "id album",
+    "name": "name album",
+    "description": "descriere album",
+    "date": "data album",
+    "preview": "URL preview photo S3",
+    "categories" : [ "categorie_1", "categorie_2" ],
+    "tags" : ["tag 1", "tag 2"],
+    "favorites": "true"
+}
+```
+
+**GET** */albums/user/{user_id}*
+
+> Get all albums for which the owner is *user_id* and the 
+>current owner has the right to view them.
+
+Response:
+
+- status code : 200 OK
 ```json
 {
     "id": "id album",
