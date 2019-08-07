@@ -8,10 +8,20 @@
 Permissions requested:
 - view_album
 
-Filtre:
- - perioada: start, end
- - categorie: category
+Filters:
+ - period: start, end
+ 
+ > /albums/?start=01/01/2019&end=02/02/2019
+ - category: category
+ 
+ > /albums/?category=cat1&category=cat2
  - tag: tag
+ 
+ >/albums/?tag=tag1&tag=tag2
+
+ - favorites
+
+> /albums/?favorites
 
 Response:
 
@@ -23,7 +33,8 @@ Response:
     "date": "data album",
     "preview": "URL preview photo S3",
     "categories" : [ "categorie_1", "categorie_2" ],
-    "tags" : ["tag 1", "tag 2"] 
+    "tags" : ["tag 1", "tag 2"],
+    "favorites": "true"
 }
 ```
 
@@ -31,20 +42,21 @@ Response:
  
 > Create album
  
- Request:
-  
+Permission required:
+- create_album
+
+Request:
+ 
 ```json
     {
       "name": "name album",
       "description": "descriere album",
-      "date": "data album",
-      "categories" : [ "categorie_1", "categorie_2" ],
-      "tags" : ["tag 1", "tag 2"]
+      "date": "data album"
     }
 ```
 
 Reponse:
-- status_code: 201 (CREATED)
+- status code: 201 (CREATED)
 - body: 
 ```json
 { 
@@ -52,7 +64,7 @@ Reponse:
 }
 ```
 
-- status_code: 403 FORBIDDEN if user has no right to create album 
+- status code: 403 FORBIDDEN if user has no right to create album 
 	
 **DELETE** */album/{id}*
 
@@ -62,9 +74,9 @@ Permissions requested:
 - delete_album
 
 Response:
-- status_code: 200 OK
-- status_code: 403 FORBIDDEN if the user has no delete permission
-- status_code: 404 Not found
+- status code: 200 OK
+- status code: 403 FORBIDDEN if the user has no delete permission
+- status code: 404 album not found
 
 **PUT** */album/*
 
@@ -80,16 +92,14 @@ Request:
     "id": "id album",
     "name": "name album",
     "description": "descriere album",
-    "date": "data album",
-    "categories" : [ "categorie_1", "categorie_2" ],
-    "tags" : ["tag 1", "tag 2"]
+    "date": "data album"
 }
 ```
 Response:
-- status_code: 200 (CREATED)
-- status_code: 403 FORBIDDEN 
+- status code: 200 (CREATED)
+- status code: 403 FORBIDDEN 
   if user has no "delete" permission
-- status_code: 404 Not found
+- status code: 404 album not found
 
 **GET** */album/{id}/permissions/*
 
@@ -113,6 +123,7 @@ Response:
 ]
 ```
 - status code: 403 if current user is not the owner
+- status code: 404 album not found
 
 **POST** */album/{id}/permissions/*
 
@@ -134,6 +145,7 @@ Response:
 ]
 ```
 - status code: 403 if current user is not the owner
+- status code: 404 album not found
 
 **DELETE** */album/{id}/permissions*
 
@@ -156,6 +168,125 @@ Response:
 ]
 ```
 - status code: 403 if current user is not the owner
+- status code: 404 album not found
+
+**GET** */album/{id}/categories*
+
+> Get categories for album *id*
+
+Permissions required:
+- view_album
+
+Response:
+- status code: 200 OK
+```json
+    ["category1", "category2"]
+```
+- status code: 403 if no *view_album* permission
+- status code: 404 album not found
+
+**POST** */album/{id}/category*
+
+Permission required:
+- change_album
+
+Request:
+```json
+["cateogry1", "category2"]
+```
+
+Response:
+- status code: 200 OK
+- status code: 403 if no *change_album* permission
+
+**DELETE** */album/{id}/category/{name category}/*
+
+Permission required:
+- change_album
+
+Response:
+- status code: 200 OK
+- status code: 403 if no *change_album* permission
+- status code: 404 album not found
+
+**PUT** */album/{id}/category/{name category}/*
+
+> Update *name category*
+
+Request:
+```json
+    {"category": "new category"}
+```
+
+Response:
+- status code: 200 OK
+- status code: 403 if no *change_album* permission
+- status code: 404 album not found
+
+**GET** */album/{id}/tags*
+
+> Get tags for album *id*
+
+Permissions required:
+- view_album
+
+Response:
+- status code: 200 OK
+```json
+    ["tag 1", "tag 2"]
+```
+- status code: 403 if no *view_album* permission
+- status code: 404 album not found
+
+**POST** */album/{id}/tag*
+
+Permission required:
+- change_album
+
+Request:
+```json
+["tag 1", "tag 2"]
+```
+
+Response:
+- status code: 200 OK
+- status code: 403 if no *change_album* permission
+
+**DELETE** */album/{id}/tag/{name tag}/*
+
+Permission required:
+- change_album
+
+Response:
+- status code: 200 OK
+- status code: 403 if no *change_album* permission
+- status code: 404 album not found
+
+**PUT** */album/{id}/tag/{name tag}/*
+
+> Update *name category*
+
+Request:
+```json
+    {"tag": "new tag"}
+```
+
+Response:
+- status code: 200 OK
+- status code: 403 if no *change_album* permission
+- status code: 404 album not found
+
+**POST** */album/{id}/favorites/*
+
+> Set album as favorites for current user
+
+Permission required:
+- view_album
+
+Response:
+- status code: 200 OK
+- status code: 403 if no *view_album* permission
+- status code: 404 album not found
 
 ## Photo
  
@@ -169,7 +300,7 @@ Permissions requested:
 - view_album
 
 Response:
-- status_code = 200
+- status code = 200
 - body:
 
 ```json
@@ -184,8 +315,8 @@ Response:
                 }]
 }
 ```  
-- status_code = 403 FORBIDDEN daca nu are acces la album
-- status_code = 404 Not found
+- status code = 403 FORBIDDEN daca nu are acces la album
+- status code = 404 Not found
 
 
 **POST** */photo/sign/*
@@ -206,7 +337,7 @@ Request:
 ```
 Response:
 
-- status_code=200
+- status code=200
     - body:
 ```json
 {
@@ -216,8 +347,8 @@ Response:
 ```
             
             
-- status_code=403 daca utilizatorul nu are dreptul de a adauga poze
-- status_code=404 daca album nu exista
+- status code=403 daca utilizatorul nu are dreptul de a adauga poze
+- status code=404 daca album nu exista
 
 **POST** */photo/*
  
@@ -237,9 +368,9 @@ Request:
 ```
 
 Response:
-- status_code = 200 OK
-- status_code = 403 if user has no *add_photo* permission
-- status_code=404 
+- status code = 200 OK
+- status code = 403 if user has no *add_photo* permission
+- status code=404 
 
 **DELETE** */photo/{id}*
  
@@ -249,9 +380,9 @@ Permissions requested:
 - delete_photo
 
 Response:
-- status_code = 200 OK
-- status_code = 403 FORBIDDEN
-- status_code = 404 Not found
+- status code = 200 OK
+- status code = 403 FORBIDDEN
+- status code = 404 Not found
 
 
  
