@@ -1,5 +1,5 @@
 
-##Album 
+## Album 
 
 **GET** */albums/*
 
@@ -30,16 +30,15 @@
 			body:
 				{
 					"photos" : [ lista cu URL S3 presigned ale pozelor pe care utilizatorul are dreptul sa le vizualizeze
-									{ 
-										'id': 'id_poze',
-										'url': 's3 url'
-									},
-									{ 
-										'id': 'id poze',
-										'url': 's3 url'
-									}
-
-							   ]
+								{ 
+									'id': 'id_poze',
+									'url': 's3 url'
+								},
+								{ 
+									'id': 'id poze',
+									'url': 's3 url'
+								}
+				    ]
 					"thumbnails" : [ list cu URL S3 presigned ale thumbnails pe care utilizatorul are dreptul sa le vizualizeze
 										{ 
 											'id': 'id_poze',
@@ -102,7 +101,8 @@
 		status_code: 404 Not found
 
 
-##Photo
+## Photo
+	
 	Api-uri pentru poze
 
 *POST* **/photo/sign/**
