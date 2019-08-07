@@ -310,6 +310,18 @@ Response:
 - status code: 403 if no *view_album* permission
 - status code: 404 album not found
 
+**DELETE** */album/{id}/favorites/*
+
+> Unset album as favorites for current user
+
+Permission required:
+- view_album
+
+Response:
+- status code: 200 OK
+- status code: 403 if no *view_album* permission
+- status code: 404 album not found
+
 ## Photo
  
 > Api-uri pentru poze
