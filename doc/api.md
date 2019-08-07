@@ -105,7 +105,7 @@
 	
 	Api-uri pentru poze
 
-*POST* **/photo/sign/**
+**POST** */photo/sign/*
 	
 	Sign S3 url pentru poze
 	Request:
@@ -124,7 +124,7 @@
 		status_code=403 daca utilizatorul nu are dreptul de a adauga poze
 		status_code=404 daca album nu exista
 
-*POST* **/photo/**
+**POST** */photo/*
 	
 	Adauga poza in album (in prealabil poza a fost uploadata in S3)
 	Request:
@@ -138,7 +138,7 @@
 		status_code = 403 daca utilizatorul nu are dreptul de a adauga poze
 		status_code=404 daca album nu exista
 
-*DELETE* **/photo/{id}**
+**DELETE** */photo/{id}*
 	
 	Sterge poza 
 	Response:
