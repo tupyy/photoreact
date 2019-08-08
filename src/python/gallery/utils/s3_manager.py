@@ -21,9 +21,9 @@ def sign_url(http_method, filename):
     )
 
 
-def put_signed_url(filename):
+def get_put_signed_url(filename):
     return sign_url('put_object', filename)
 
 
-def get_signed_url(filename):
+def get_get_signed_url(filename):
     return sign_url('get_object', filename)

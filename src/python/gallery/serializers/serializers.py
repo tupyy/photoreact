@@ -4,7 +4,7 @@ from rest_framework import serializers
 from gallery.models.album import Album
 from gallery.models.photo import Photo
 from gallery.models.category import Category, Tag
-from gallery.utils.s3_manager import get_signed_url, put_signed_url
+from gallery.utils.s3_manager import get_get_signed_url, get_put_signed_url
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -62,16 +62,16 @@ class PhotoSerializer(serializers.ModelSerializer):
     put_thumbnail_url = serializers.SerializerMethodField(source='put_thumbnail_signed_url')
 
     def get_photo_signed_url(self):
-        return get_signed_url(self.album.dirpath + '/' + self.filename)
+        return get_get_signed_url(self.album.dirpath + '/' + self.filename)
 
     def put_photo_signed_url(self):
-        return put_signed_url(self.album.dirpath + '/' + self.filename)
+        return get_put_signed_url(self.album.dirpath + '/' + self.filename)
 
     def get_thumbnail_signed_url(self):
-        return get_signed_url(self.thumbnail)
+        return get_get_signed_url(self.thumbnail)
 
     def put_thumbnail_signed_url(self):
-        return put_signed_url(self.thumbnail)
+        return get_put_signed_url(self.thumbnail)
 
     class Meta:
         model = Photo

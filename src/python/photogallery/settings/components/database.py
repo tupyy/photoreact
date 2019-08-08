@@ -15,7 +15,7 @@ DATABASES_DEV = {
 DATABASES_DEV_WORK = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'photo2',
+        'NAME': 'photo3',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
