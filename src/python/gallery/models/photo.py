@@ -31,20 +31,14 @@ class Media(models.Model):
 
 class Video(Media):
     class Meta:
-        default_permissions = (
-            ('view_video', 'View video'),
-            ('delete_video', 'Delete video')
-        )
+        default_permissions = ('view', 'delete')
 
 
 class Photo(Media):
     thumbnail_file = models.CharField(max_length=100, verbose_name="thumbnail_name")
 
     class Meta:
-        default_permissions = (
-            ('view_photo', 'View photo'),
-            ('delete_photo', 'Delete photo')
-        )
+        default_permissions = ('view', 'delete')
 
     def image_name(self):
         return os.path.join(self.album.folder_name, self.filename)
