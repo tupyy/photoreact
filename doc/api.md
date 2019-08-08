@@ -100,7 +100,7 @@ Response:
 - status code: 403 FORBIDDEN if the user has no delete permission
 - status code: 404 album not found
 
-#### **PUT** */album/*
+#### **PUT** */album/{id}/*
 
 Update album
 
@@ -111,7 +111,6 @@ Request:
 
 ```json
 {
-    "id": "id album",
     "name": "name album",
     "description": "descriere album",
     "date": "data album"
@@ -424,7 +423,7 @@ Response:
 | GET    | /albums/                              | Get albums                           |       view_album      |       |         |
 | POST   | /album/                               | Create album                         |      create_album     |       |         |
 | DELETE | /album/{id}                           | Delete album                         |      delete_album     |       |         |
-| PUT    | /album/                               | Update album                         |      update_album     |       |         |
+| PUT    | /album/{id}                           | Update album *id*                    |      update_album     |       |         |
 | GET    | /album/{id}/permissions/*             | Get users permissions for album *id* |          N/A          |  Yes  |         |
 | POST   | /album/{id}/permissions/              | Add permissions                      |          N/A          |  Yes  |         |
 | DELETE | /album/{id}/permissions               | Delete permissions                   |          N/A          |  Yes  |         |
