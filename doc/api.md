@@ -1,9 +1,9 @@
 
 ## Album 
 
-**GET** */albums/*
+#### **GET** */albums/*
 
->get all albums which the current user can view them
+Get all albums which the current user can view them
 
 Permissions requested:
 - view_album
@@ -39,10 +39,10 @@ Response:
 }
 ```
 
-**GET** */albums/user/{user_id}*
+#### **GET** */albums/user/{user_id}*
 
-> Get all albums for which the owner is *user_id* and the 
->current owner has the right to view them.
+Get all albums for which the owner is *user_id* and the 
+current owner has the right to view them.
 
 Response:
 
@@ -60,9 +60,9 @@ Response:
 }
 ```
 
-**POST** */album/*
+#### **POST** */album/*
  
-> Create album
+Create album
  
 Permission required:
 - create_album
@@ -77,7 +77,7 @@ Request:
     }
 ```
 
-Reponse:
+Response:
 - status code: 201 (CREATED)
 - body: 
 ```json
@@ -88,9 +88,9 @@ Reponse:
 
 - status code: 403 FORBIDDEN if user has no right to create album 
 	
-**DELETE** */album/{id}*
+#### **DELETE** */album/{id}*
 
-> Delete the album
+Delete the album
 
 Permissions requested:
 - delete_album
@@ -100,12 +100,12 @@ Response:
 - status code: 403 FORBIDDEN if the user has no delete permission
 - status code: 404 album not found
 
-**PUT** */album/*
+#### **PUT** */album/*
+
+Update album
 
 Permissions requested:
 - update_album
-
-> Update album
 
 Request:
 
@@ -123,9 +123,9 @@ Response:
   if user has no "delete" permission
 - status code: 404 album not found
 
-**GET** */album/{id}/permissions/*
+#### **GET** */album/{id}/permissions/*
 
-> Get the permissions of all users for album *id*.
+Get the permissions of all users for album *id*.
 
 > **The current user has to be the owner of the album.**
 
@@ -147,32 +147,9 @@ Response:
 - status code: 403 if current user is not the owner
 - status code: 404 album not found
 
-**POST** */album/{id}/permissions/*
+#### **POST** */album/{id}/permissions/*
 
-> Add new permissions to album *id* by the owner 
-
-Response:
-- status code: 200 OK
-    - body
-```json
-[
-  {
-    "user_id": 1,
-    "permissions": ["add_photo","view_photo"]
-  }, 
-  {
-    "user_id": 2,
-    "permissions": ["add_photo","view_photo"]
-  }
-]
-```
-- status code: 403 if current user is not the owner
-- status code: 404 album not found
-
-**DELETE** */album/{id}/permissions*
-
-> Remove permissions for album *id* 
->
+Add new permissions to album *id* by the owner 
 
 Response:
 - status code: 200 OK
@@ -192,9 +169,31 @@ Response:
 - status code: 403 if current user is not the owner
 - status code: 404 album not found
 
-**GET** */album/{id}/categories*
+#### **DELETE** */album/{id}/permissions*
 
-> Get categories for album *id*
+Remove permissions for album *id* 
+
+Response:
+- status code: 200 OK
+    - body
+```json
+[
+  {
+    "user_id": 1,
+    "permissions": ["add_photo","view_photo"]
+  }, 
+  {
+    "user_id": 2,
+    "permissions": ["add_photo","view_photo"]
+  }
+]
+```
+- status code: 403 if current user is not the owner
+- status code: 404 album not found
+
+#### **GET** */album/{id}/categories*
+
+Get categories for album *id*
 
 Permissions required:
 - view_album
@@ -207,7 +206,7 @@ Response:
 - status code: 403 if no *view_album* permission
 - status code: 404 album not found
 
-**POST** */album/{id}/category*
+#### **POST** */album/{id}/category*
 
 Permission required:
 - change_album
@@ -221,7 +220,7 @@ Response:
 - status code: 200 OK
 - status code: 403 if no *change_album* permission
 
-**DELETE** */album/{id}/category/{name category}/*
+#### **DELETE** */album/{id}/category/{name category}/*
 
 Permission required:
 - change_album
@@ -231,9 +230,9 @@ Response:
 - status code: 403 if no *change_album* permission
 - status code: 404 album not found
 
-**PUT** */album/{id}/category/{name category}/*
+#### **PUT** */album/{id}/category/{name category}/*
 
-> Update *name category*
+Update *name category*
 
 Request:
 ```json
@@ -245,9 +244,9 @@ Response:
 - status code: 403 if no *change_album* permission
 - status code: 404 album not found
 
-**GET** */album/{id}/tags*
+#### **GET** */album/{id}/tags*
 
-> Get tags for album *id*
+Get tags for album *id*
 
 Permissions required:
 - view_album
@@ -260,7 +259,7 @@ Response:
 - status code: 403 if no *view_album* permission
 - status code: 404 album not found
 
-**POST** */album/{id}/tag*
+#### **POST** */album/{id}/tag*
 
 Permission required:
 - change_album
@@ -274,7 +273,7 @@ Response:
 - status code: 200 OK
 - status code: 403 if no *change_album* permission
 
-**DELETE** */album/{id}/tag/{name tag}/*
+#### **DELETE** */album/{id}/tag/{name tag}/*
 
 Permission required:
 - change_album
@@ -284,9 +283,9 @@ Response:
 - status code: 403 if no *change_album* permission
 - status code: 404 album not found
 
-**PUT** */album/{id}/tag/{name tag}/*
+#### **PUT** */album/{id}/tag/{name tag}/*
 
-> Update *name category*
+Update *name category*
 
 Request:
 ```json
@@ -298,9 +297,9 @@ Response:
 - status code: 403 if no *change_album* permission
 - status code: 404 album not found
 
-**POST** */album/{id}/favorites/*
+#### **POST** */album/{id}/favorites/*
 
-> Set album as favorites for current user
+Set album as favorites for current user
 
 Permission required:
 - view_album
@@ -310,9 +309,9 @@ Response:
 - status code: 403 if no *view_album* permission
 - status code: 404 album not found
 
-**DELETE** */album/{id}/favorites/*
+#### **DELETE** */album/{id}/favorites/*
 
-> Unset album as favorites for current user
+Unset album as favorites for current user
 
 Permission required:
 - view_album
@@ -324,13 +323,12 @@ Response:
 
 ## Photo
  
-> Api-uri pentru poze
-
-**GET** */photo/album/{id}*
+#### **GET** */photo/album/{id}*
  
-> Get all photos from album *id*
+Get all photos from album *id*
 
 Permissions requested:
+- view_photo
 - view_album
 
 Response:
@@ -353,9 +351,9 @@ Response:
 - status code = 404 Not found
 
 
-**POST** */photo/sign/*
+#### **POST** */photo/sign/*
  
-> Sign S3 url pentru poze
+Sign S3 url for upload
 
 Permissions requested:
 - add_photo
@@ -384,9 +382,9 @@ Response:
 - status code=403 daca utilizatorul nu are dreptul de a adauga poze
 - status code=404 daca album nu exista
 
-**POST** */photo/*
+#### **POST** */photo/album/{id}*
  
-> Adauga poza in album (in prealabil poza a fost uploadata in S3)
+Adauga poza in album (in prealabil poza a fost uploadata in S3)
 
 Permissions requested:
 - add_photo
@@ -406,9 +404,9 @@ Response:
 - status code = 403 if user has no *add_photo* permission
 - status code=404 
 
-**DELETE** */photo/{id}*
+#### **DELETE** */photo/{id}*
  
-> Sterge poza 
+Delete the photo
 
 Permissions requested:
 - delete_photo
@@ -418,5 +416,29 @@ Response:
 - status code = 403 FORBIDDEN
 - status code = 404 Not found
 
+### Summary
 
- 
+
+| Method | API                                   | Action                               |       Permission      | Owner | Comment |
+|--------|---------------------------------------|--------------------------------------|:---------------------:|:-----:|---------|
+| GET    | /albums/                              | Get albums                           |       view_album      |       |         |
+| POST   | /album/                               | Create album                         |      create_album     |       |         |
+| DELETE | /album/{id}                           | Delete album                         |      delete_album     |       |         |
+| PUT    | /album/                               | Update album                         |      update_album     |       |         |
+| GET    | /album/{id}/permissions/*             | Get users permissions for album *id* |          N/A          |  Yes  |         |
+| POST   | /album/{id}/permissions/              | Add permissions                      |          N/A          |  Yes  |         |
+| DELETE | /album/{id}/permissions               | Delete permissions                   |          N/A          |  Yes  |         |
+| GET    | /album/{id}/categories                | Get categories for album *id*        |       view_album      |       |         |
+| POST   | /album/{id}/category                  | Add category to album                | update_album          |       |         |
+| DELETE | album/{id}/category/{name category}/  | Delete category from album           | update_album          |       |         |
+| PUT    | /album/{id}/category/{name category}/ | Update *name category*               | update_album          |       |         |
+| GET    | /album/{id}/tags                      | Get tags for album *id*              | view_album            |       |         |
+| POST   | /album/{id}/tag                       | Add tag to album                     | update_album          |       |         |
+| DELETE | /album/{id}/tag/{name_tag}            | Delete tag                           | update_album          |       |         |
+| PUT    | /album/{id}/tag/{name tag}/           | Update *name tag*                    | update_album          |       |         |
+| POST   | /album/{id}/favorites/                | Make album favorites for user        |                       |       |         |
+| DELETE | /album/{id}/favorites/                | Remove album from favorites          |                       |       |         |
+| GET    | /photo/album/{id}                     | Get photos for album *id*            | view_photo view_album |       |         |
+| POST   | /photo/sign/                          | Generate presign S3 URL              | add_photo             |       |         |
+| POST   | /photo/album/{id}                     | Add photo to album *id*              | add_photo             |       |         |
+| DELETE | /photo/{id}                           | Delete photo *id*                    | delete_photo          |       |         |
