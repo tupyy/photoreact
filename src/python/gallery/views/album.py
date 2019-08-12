@@ -117,6 +117,7 @@ class AlbumView(mixins.CreateModelMixin,
 
 class AlbumCategoryView(PermissionRequiredMixin,
                         GenericViewSet):
+    """ View to handle all category API """
     model = Album
     queryset = Album.objects
     serializer_class = AlbumSerializer
@@ -154,3 +155,22 @@ class AlbumCategoryView(PermissionRequiredMixin,
             categories = Category.objects.filter(name__in=category_names)
             instance.categories.add(*categories.all())
         return Response(status=status.HTTP_200_OK)
+
+    @action(methods=['delete'],
+            detail=True,
+            url_path='category/(?P<category_id>\w+)',
+            url_name='delete_category')
+    def delete_category(self, request, id, category_id):
+        instance = self.get_object()
+        if not request.user.has_perm('change_album', instance):
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        category = instance.categories.get(pk=category_id)
+        if category is not None:
+            instance.categories.remove(Category.objects.get(pk=category_id))
+            return Response(status=status.HTTP_200_OK,
+                            data={'category': category_id},
+                            content_type="application/json")
+        return Response(status=status.HTTP_404_NOT_FOUND,
+                        data={'reason': 'Category not found'},
+                        content_type='application/json')

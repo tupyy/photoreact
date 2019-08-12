@@ -87,3 +87,23 @@ class AlbumCategoryAPITest(TestCase):
                                format='json')
         self.assertEqual(response.status_code, 403)
 
+    def test_delete_category(self):
+        """ DELETE /album/{id}/category/{name category}/ """
+        client = APIClient()
+        client.login(username='user', password='pass')
+        response = client.delete('/album/{}/category/{}/'.format(self.album.id,
+                                                                 self.category_foo.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.album.categories.count(), 1)
+
+    def test_delete_category_fail(self):
+        """ DELETE /album/{id}/category/{name category}/
+            Fail no permission
+        """
+        assign_perm('view_album', self.batman, self.album)
+        client = APIClient()
+        client.login(username='batman', password='word')
+        response = client.delete('/album/{}/category/{}/'.format(self.album.id,
+                                                                 self.category_foo.id))
+        self.assertEqual(response.status_code, 403)
+
