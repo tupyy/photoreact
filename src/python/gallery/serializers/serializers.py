@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from gallery.models.album import Album
@@ -44,7 +45,8 @@ class AlbumSerializer(serializers.ModelSerializer):
                   'categories', 'tags', 'favorites']
 
     def create(self, validated_data):
-        owner = validated_data['current_user']
+        owner_data = validated_data.pop('owner')
+        owner = User.objects.filter(username__exact=owner_data['username']).first()
         album_instance = Album.objects.create(**validated_data, owner=owner)
         return album_instance
 
