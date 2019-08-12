@@ -1,2 +1,2 @@
-from .album import AlbumView
+from .album import AlbumView, AlbumListView
 from .photo import PhotoView
