@@ -82,8 +82,15 @@ Response:
 - status code: 201 (CREATED)
 - body: 
 ```json
-{ 
-  "id": "id-ul noului album" 
+{
+    "id": "id album",
+    "name": "name album",
+    "description": "descriere album",
+    "date": "data album",
+    "preview": "URL preview photo S3",
+    "categories" : [ "categorie_1", "categorie_2" ],
+    "tags" : ["tag 1", "tag 2"],
+    "favorites": "true"
 }
 ```
 
