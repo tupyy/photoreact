@@ -113,7 +113,8 @@ Request:
 {
     "name": "name album",
     "description": "descriere album",
-    "date": "data album"
+    "date": "data album",
+    "folder_path": "bucket/folder/"
 }
 ```
 Response:
