@@ -1,10 +1,9 @@
-from guardian.shortcuts import assign_perm
 from rest_framework import serializers
 
 from gallery.models.album import Album
-from gallery.models.photo import Photo
 from gallery.models.category import Category, Tag
-from gallery.utils.s3_manager import get_get_signed_url, get_put_signed_url
+from gallery.models.photo import Photo
+from gallery.utils import s3_manager
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -20,59 +19,39 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class AlbumSerializer(serializers.ModelSerializer):
-    dirpath = serializers.CharField()
-    date = serializers.DateField()
-    owner = serializers.HiddenField(
-        default=serializers.CurrentUserDefault()
-    )
-    preview = serializers.StringRelatedField()
+    owner = serializers.CharField(source='owner.username')
+    preview = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Album
-        fields = ['id', 'name', 'date', 'dirpath', 'owner', 'preview']
-
-    def validate(self, data):
-        return data
+        fields = ['id', 'name', 'date', 'folder_path', 'owner', 'preview']
 
     def create(self, validated_data):
-        owner = validated_data.pop('owner')
+        owner = validated_data['current_user']
         album_instance = Album.objects.create(**validated_data, owner=owner)
-
-        # Assign all permissions to user
-        assign_perm('add_photos', owner, album_instance)
-        assign_perm('change_album', owner, album_instance)
-        assign_perm('delete_album', owner, album_instance)
-        assign_perm('add_permissions', owner, album_instance)
-        assign_perm('change_permissions', owner, album_instance)
-        assign_perm('delete_permissions', owner, album_instance)
-
         return album_instance
-
-    def _get_objects(self, model, data):
-        """ Get categories or tags """
-        objects = [model.objects.get_or_create(name=entry.get('name'))[0]
-                   for entry in data]
-        return objects
 
 
 class PhotoSerializer(serializers.ModelSerializer):
-    get_photo_url = serializers.SerializerMethodField(source='get_photo_signed_url')
-    get_thumbnail_url = serializers.SerializerMethodField(source='get_thumbnail_signed_url')
-    put_photo_url = serializers.SerializerMethodField(source='put_photo_signed_url')
-    put_thumbnail_url = serializers.SerializerMethodField(source='put_thumbnail_signed_url')
+    album_id = serializers.IntegerField(source='album.id')
+    get_photo_url = serializers.SerializerMethodField()
+    get_thumbnail_url = serializers.SerializerMethodField()
+    put_photo_url = serializers.SerializerMethodField()
+    put_thumbnail_url = serializers.SerializerMethodField()
 
-    def get_photo_signed_url(self):
-        return get_get_signed_url(self.album.dirpath + '/' + self.filename)
+    def get_get_photo_url(self, obj):
+        return s3_manager.get_get_signed_url(obj.album.folder_path + '/' + obj.filename)
 
-    def put_photo_signed_url(self):
-        return get_put_signed_url(self.album.dirpath + '/' + self.filename)
+    def get_put_photo_url(self, obj):
+        return s3_manager.get_put_signed_url(obj.album.folder_path + '/' + obj.filename)
 
-    def get_thumbnail_signed_url(self):
-        return get_get_signed_url(self.thumbnail)
+    def get_get_thumbnail_url(self, obj):
+        return s3_manager.get_get_signed_url(obj.thumbnail_file)
 
-    def put_thumbnail_signed_url(self):
-        return get_put_signed_url(self.thumbnail)
+    def get_put_thumbnail_url(self, obj):
+        return s3_manager.get_put_signed_url(obj.thumbnail_file)
 
     class Meta:
         model = Photo
-        fields = ['__all__', 'get_photo_url', 'put_photo_url', 'get_thumbnail_url', 'put_thumbnail_url']
+        fields = ['album_id', 'filename', 'date', 'thumbnail_file', 'get_photo_url', 'put_photo_url',
+                  'get_thumbnail_url', 'put_thumbnail_url']
