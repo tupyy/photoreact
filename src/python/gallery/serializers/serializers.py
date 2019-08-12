@@ -8,9 +8,12 @@ from gallery.utils import s3_manager
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id', 'name']
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -30,16 +33,15 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     # read-only serializers
     preview = serializers.StringRelatedField(read_only=True)
-    categories = serializers.SerializerMethodField(read_only=True)
+    categories = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
+    tags = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
+    favorites = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
 
     class Meta:
         model = Album
-        fields = ['id', 'name', 'date', 'folder_path', 'owner', 'preview', 'categories']
-
-    def get_categories(self, obj):
-        album_categories = obj.albumcategory_set.select_related('category')
-        categories = list()
-        return album_categories
+        fields = ['id', 'name', 'date',
+                  'folder_path', 'owner', 'preview',
+                  'categories', 'tags', 'favorites']
 
     def create(self, validated_data):
         owner = validated_data['current_user']
@@ -68,5 +70,6 @@ class PhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Photo
-        fields = ['album_id', 'filename', 'date', 'thumbnail_file', 'get_photo_url', 'put_photo_url',
+        fields = ['album_id', 'filename', 'date',
+                  'thumbnail_file', 'get_photo_url', 'put_photo_url',
                   'get_thumbnail_url', 'put_thumbnail_url']

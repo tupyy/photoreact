@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group, User
 from django.test import TestCase
 
 from gallery.models.album import Album
-from gallery.models.category import Category, AlbumCategory
+from gallery.models.category import Category
 from gallery.models.photo import Photo
 from gallery.serializers.serializers import AlbumSerializer, PhotoSerializer
 
@@ -24,15 +24,11 @@ class TestAlbumSerializer(TestCase):
 
         self.category = Category.objects.create(name="foo")
         self.category.save()
-        self.albumCategory = AlbumCategory.objects.create(album_id=self.album.id, category_id=self.category.id)
-        self.albumCategory.save()
-
         self.category2 = Category.objects.create(name="bar")
         self.category2.save()
-        self.albumCategory2 = AlbumCategory.objects.create(album_id=self.album.id, category_id=self.category2.id)
-        self.albumCategory2.save()
 
         self.album.save()
+        self.album.categories.add(self.category, self.category2)
 
     def test_serialize_fields(self):
         s = AlbumSerializer(self.album)
@@ -44,6 +40,13 @@ class TestAlbumSerializer(TestCase):
         self.assertTrue(self.user.has_perm('add_permissions', self.album))
         self.assertTrue(self.user.has_perm('change_permissions', self.album))
         self.assertTrue(self.user.has_perm('delete_permissions', self.album))
+
+    def test_favorites(self):
+        self.album.favorites.add(self.batman)
+        self.assertTrue(self.album.is_favorites(self.batman))
+
+    def test_favorites2(self):
+        self.assertFalse(self.album.is_favorites(self.batman))
 
     def test_photo_serializer(self):
         p = PhotoSerializer(self.photo)

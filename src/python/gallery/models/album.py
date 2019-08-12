@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from guardian.shortcuts import assign_perm
 
+from gallery.models.category import Category, Tag
 from gallery.utils.s3_manager import get_get_signed_url
 
 
@@ -32,7 +33,14 @@ class Album(models.Model):
     name = models.CharField(max_length=100, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    categories = models.ManyToManyField(Category, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
+    favorites = models.ManyToManyField(User, blank=True, related_name="favorites")
+
     objects = AlbumManager()
+
+    def is_favorites(self, user):
+        return self.favorites.values_list('username').filter(username__exact=user.username).count() > 0
 
     class Meta:
         ordering = ('date', 'name', 'folder_path')
