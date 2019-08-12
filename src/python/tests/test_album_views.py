@@ -158,6 +158,7 @@ class AlbumViewTests(TestCase):
         data['name'] = 'foo'
         data['folder_path'] = 'folder_path'
         data['date'] = datetime.date.today()
+        data['description'] = "description"
         response = client.post(reverse('album-list'), data=data, format='json')
         self.assertEqual(response.status_code, 201)
         album = Album.objects.get(pk=response.data['id'])

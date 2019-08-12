@@ -34,6 +34,7 @@ class Album(models.Model):
     folder_path = models.CharField(max_length=200, verbose_name="directory path")
     date = models.DateField(verbose_name="creation_date")
     name = models.CharField(max_length=100, blank=True)
+    description = models.TextField(verbose_name="description", blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     categories = models.ManyToManyField(Category, blank=True)
