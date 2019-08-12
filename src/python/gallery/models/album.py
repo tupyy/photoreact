@@ -16,12 +16,15 @@ class AlbumManager(models.Manager):
         album = super().create(*args, **kwargs)
 
         # Assign all permissions to owner
-        assign_perm('add_photos', kwargs['owner'], album)
+        assign_perm('view_album', kwargs['owner'], album)
         assign_perm('change_album', kwargs['owner'], album)
         assign_perm('delete_album', kwargs['owner'], album)
         assign_perm('add_permissions', kwargs['owner'], album)
         assign_perm('change_permissions', kwargs['owner'], album)
         assign_perm('delete_permissions', kwargs['owner'], album)
+        assign_perm('add_photos', kwargs['owner'], album)
+        assign_perm('change_photos', kwargs['owner'], album)
+        assign_perm('delete_photos', kwargs['owner'], album)
 
         return album
 
@@ -49,10 +52,12 @@ class Album(models.Model):
         verbose_name_plural = "albums"
         default_permissions = ('add', 'change', 'delete', 'view')
         permissions = (
-            ('add_photos', 'Add photos'),
             ('add_permissions', 'Add permissions'),
             ('change_permissions', 'Change permissions'),
             ('delete_permissions', 'Delete permissions'),
+            ('add_photos', 'Add photos'),
+            ('change_photos', 'Change photos'),
+            ('delete_photos', 'Delete photos'),
         )
 
     @property
