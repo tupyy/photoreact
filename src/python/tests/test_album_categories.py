@@ -107,3 +107,15 @@ class AlbumCategoryAPITest(TestCase):
                                                                  self.category_foo.id))
         self.assertEqual(response.status_code, 403)
 
+    def test_put_category(self):
+        """ PUT /album/{id}/category/{name category}/ """
+        new_cat = Category.objects.create(name="hey")
+        client = APIClient()
+        client.login(username='user', password='pass')
+        response = client.put('/album/{}/category/{}/'.format(self.album.id,
+                                                              self.category_foo.id),
+                              data={'category_id': new_cat.id},
+                              format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.album.categories.count(), 2)
+        self.assertEqual(self.album.categories.last().name, 'hey')

@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from guardian.mixins import PermissionListMixin, PermissionRequiredMixin
 from rest_framework import status, mixins
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
@@ -156,7 +157,7 @@ class AlbumCategoryView(PermissionRequiredMixin,
             instance.categories.add(*categories.all())
         return Response(status=status.HTTP_200_OK)
 
-    @action(methods=['delete'],
+    @action(methods=['delete', 'put'],
             detail=True,
             url_path='category/(?P<category_id>\w+)',
             url_name='delete_category')
@@ -168,9 +169,16 @@ class AlbumCategoryView(PermissionRequiredMixin,
         category = instance.categories.get(pk=category_id)
         if category is not None:
             instance.categories.remove(Category.objects.get(pk=category_id))
-            return Response(status=status.HTTP_200_OK,
-                            data={'category': category_id},
-                            content_type="application/json")
+            if request.method == 'DELETE':
+                return Response(status=status.HTTP_200_OK,
+                                data={'category': category_id},
+                                content_type="application/json")
+            else:
+                new_category = get_object_or_404(Category, pk=request.data.get('category_id'))
+                instance.categories.add(new_category)
+                return Response(status=status.HTTP_200_OK,
+                                data={'category': new_category.id},
+                                content_type='application/json')
         return Response(status=status.HTTP_404_NOT_FOUND,
                         data={'reason': 'Category not found'},
                         content_type='application/json')
