@@ -39,7 +39,7 @@ Response:
 }
 ```
 
-#### **GET** */albums/user/{user_id}*
+#### **GET** */albums/owner/{user_id}*
 
 Get all albums for which the owner is *user_id* and the 
 current owner has the right to view them.
