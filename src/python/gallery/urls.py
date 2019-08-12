@@ -2,18 +2,14 @@
 
 from __future__ import unicode_literals
 
-from django.conf.urls import url
+from rest_framework import routers
 
 from gallery import views as gallery_views
-from rest_framework import routers
 
 app_name = 'gallery'
 
 router = routers.SimpleRouter()
 router.register(r'album', gallery_views.AlbumView, basename='album')
+router.register(r'albums', gallery_views.AlbumListView, basename='albums')
 
-urlpatterns = [
-    url(r'^albums/$', gallery_views.album.AlbumListView.as_view(), name='albums-list')
-]
-
-urlpatterns += router.urls
+urlpatterns = router.urls
