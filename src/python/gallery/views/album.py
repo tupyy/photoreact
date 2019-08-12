@@ -1,8 +1,9 @@
+from collections import Iterable
 from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db.models import Q
-from guardian.mixins import PermissionListMixin
+from guardian.mixins import PermissionListMixin, PermissionRequiredMixin
 from rest_framework import status, mixins
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.decorators import action
@@ -12,7 +13,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from gallery.models.album import Album
-from gallery.serializers.serializers import AlbumSerializer
+from gallery.models.category import Category
+from gallery.serializers.serializers import AlbumSerializer, CategorySerializer
 
 
 class AlbumFilterListMixin(object):
@@ -111,3 +113,44 @@ class AlbumView(mixins.CreateModelMixin,
             return Response(status=status.HTTP_403_FORBIDDEN)
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class AlbumCategoryView(PermissionRequiredMixin,
+                        GenericViewSet):
+    model = Album
+    queryset = Album.objects
+    serializer_class = AlbumSerializer
+    lookup_field = "id"
+
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    permission_required = 'view_album'
+    raise_exception = True
+
+    @action(methods=['get'],
+            detail=True,
+            url_path='categories',
+            url_name='get_categories')
+    def get_categories(self, request, id=None):
+        instance = self.get_object()
+        categories_qs = instance.categories.all()
+        categories = CategorySerializer(categories_qs, many=True)
+        return Response(status=status.HTTP_200_OK, data=categories.data)
+
+    @action(methods=['post'],
+            detail=True,
+            url_path='category',
+            url_name='add_category')
+    def add_category(self, request, id=None):
+        instance = self.get_object()
+        if not request.user.has_perm('change_album', instance):
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        category_names = request.data
+        if isinstance(category_names, str):
+            category = Category.objects.filter(name__exact=category_names)
+            instance.categories.add(category)
+        elif isinstance(category_names, Iterable):
+            categories = Category.objects.filter(name__in=category_names)
+            instance.categories.add(*categories.all())
+        return Response(status=status.HTTP_200_OK)

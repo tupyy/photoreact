@@ -182,7 +182,6 @@ class AlbumViewTests(TestCase):
         client.login(username='user', password='pass')
         data = dict()
         data['name'] = 'bar'
-        data['tags'] = ({'name': 'foo'},)
         data['date'] = datetime.date.today()
         response = client.patch(reverse('album-detail', args=[self.album.id]), data=data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -198,7 +197,7 @@ class AlbumViewTests(TestCase):
         self.assertEqual(len(Photo.objects.all()), 0)
 
     def test_delete_album2(self):
-        """ Only owner has the right to delete the album """
+        """ Fail no permission to delete album """
         client = APIClient()
         client.login(username='batman', password='word')
         response = client.delete(reverse('album-detail', args=[self.album.id]))
