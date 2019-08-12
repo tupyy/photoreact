@@ -1,9 +1,11 @@
 from datetime import datetime
 
+from django.contrib.auth.models import User
 from django.db.models import Q
 from guardian.mixins import PermissionListMixin
 from rest_framework import status, mixins
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -28,8 +30,8 @@ class AlbumFilterListMixin(object):
         return qs
 
     def filter_by_period(self, qs):
-        start_date_str = self.request.query_params.get('start_date', None)
-        end_date_str = self.request.query_params.get('end_date', None)
+        start_date_str = self.request.query_params.get('start', None)
+        end_date_str = self.request.query_params.get('end', None)
 
         if (start_date_str and end_date_str) is not None:
             start_date = datetime.strptime(start_date_str, "%d-%m-%Y")
@@ -42,8 +44,8 @@ class AlbumFilterListMixin(object):
 
 class AlbumListView(AlbumFilterListMixin,
                     PermissionListMixin,
-                    ListAPIView):
-
+                    ListAPIView,
+                    GenericViewSet):
     queryset = Album.objects
     serializer_class = AlbumSerializer
     lookup_field = 'id'
@@ -57,13 +59,25 @@ class AlbumListView(AlbumFilterListMixin,
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 
+    @action(methods=['get'],
+            detail=False,
+            url_path='owner/(?P<pk>\d+)',
+            url_name='get_by_user')
+    def get_albums_by_user(self, request, pk):
+        user = User.objects.get(pk=pk)
+        if user is None:
+            return Response(data={'reason': 'User not found'},
+                            status=status.HTTP_404_NOT_FOUND)
+        qs = self.get_queryset().filter(owner__username__exact=user.username)
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
+
 
 class AlbumView(mixins.CreateModelMixin,
                 mixins.RetrieveModelMixin,
                 mixins.UpdateModelMixin,
                 mixins.DestroyModelMixin,
                 GenericViewSet):
-
     model = Album
     queryset = Album.objects
     serializer_class = AlbumSerializer
@@ -71,6 +85,12 @@ class AlbumView(mixins.CreateModelMixin,
 
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        if request.user.has_perm('gallery.add_album'):
+            request.data['owner'] = request.user.username
+            return super().create(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
     def retrieve(self, *args, **kwargs):
         album = self.get_object()
