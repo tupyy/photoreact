@@ -1,45 +1,56 @@
 import os
 
 from django.db import models
-from django.db.models import Q
 from django.shortcuts import reverse
+
 from gallery.models.album import Album
 
 
-class Media(models.Model):
+class Photo(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     filename = models.CharField(max_length=100, verbose_name="file name")
     date = models.DateTimeField(auto_now_add=True, db_index=True)
+    thumbnail_file = models.CharField(max_length=100, verbose_name="thumbnail_name")
 
     class Meta:
         ordering = ('date', 'filename')
-        default_permissions = ('add', 'change', 'delete')
+        default_permissions = ('add', 'view', 'change', 'delete')
         unique_together = ('album', 'filename')
-        verbose_name = "media"
-        verbose_name_plural = "medias"
+        verbose_name = "photo"
+        verbose_name_plural = "photos"
 
     def __str__(self):
         return self.filename
 
     def get_absolute_url(self):
-        return reverse('gallery:media', args=[self.pk])
+        return reverse('gallery:photo', args=[self.pk])
 
     @property
     def display_name(self):
         return self.date or os.path.splitext(self.filename)[0]
 
 
-class Video(Media):
-    class Meta:
-        default_permissions = ('view', 'delete')
-
-
-class Photo(Media):
-    thumbnail_file = models.CharField(max_length=100, verbose_name="thumbnail_name")
+class Video(models.Model):
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    filename = models.CharField(max_length=100, verbose_name="file name")
+    date = models.DateTimeField(auto_now_add=True, db_index=True)
 
     class Meta:
-        default_permissions = ('view', 'delete')
+        ordering = ('date', 'filename')
+        default_permissions = ('add', 'view', 'change', 'delete')
+        unique_together = ('album', 'filename')
+        verbose_name = "video"
+        verbose_name_plural = "videos"
 
-    def image_name(self):
-        return os.path.join(self.album.folder_name, self.filename)
+    def __str__(self):
+        return self.filename
+
+    def get_absolute_url(self):
+        return reverse('gallery:video', args=[self.pk])
+
+    @property
+    def display_name(self):
+        return self.date or os.path.splitext(self.filename)[0]
+
+
 

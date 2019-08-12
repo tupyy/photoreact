@@ -4,8 +4,25 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
+from guardian.shortcuts import assign_perm
 
 from gallery.utils.s3_manager import get_get_signed_url
+
+
+class AlbumManager(models.Manager):
+
+    def create(self, *args, **kwargs):
+        album = super().create(*args, **kwargs)
+
+        # Assign all permissions to owner
+        assign_perm('add_photos', kwargs['owner'], album)
+        assign_perm('change_album', kwargs['owner'], album)
+        assign_perm('delete_album', kwargs['owner'], album)
+        assign_perm('add_permissions', kwargs['owner'], album)
+        assign_perm('change_permissions', kwargs['owner'], album)
+        assign_perm('delete_permissions', kwargs['owner'], album)
+
+        return album
 
 
 @python_2_unicode_compatible
@@ -14,6 +31,8 @@ class Album(models.Model):
     date = models.DateField(verbose_name="creation_date")
     name = models.CharField(max_length=100, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    objects = AlbumManager()
 
     class Meta:
         ordering = ('date', 'name', 'folder_path')
@@ -30,9 +49,9 @@ class Album(models.Model):
 
     @property
     def preview(self):
-        photo = self.photo_set.objects.filter(album_id__exact=self.id)
+        photo = self.photo_set.all()
         if photo.count() > 0:
-            return get_get_signed_url(photo[0].thumbnail)
+            return get_get_signed_url(photo[0].thumbnail_file)
         return ""
 
     def __str__(self):
