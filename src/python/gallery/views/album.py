@@ -40,22 +40,6 @@ class AlbumFilterListMixin(object):
         return qs
 
 
-class GalleryIndexView(PermissionListMixin, ListAPIView):
-    queryset = Album.objects
-    serializer_class = AlbumSerializer
-
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    permission_required = 'album.view'
-
-    def get_queryset(self):
-        qs = super(GalleryIndexView, self).get_queryset()
-        query = self.request.GET.get('q', '')
-        if query:
-            qs = qs.filter(name__contains=query)
-        return qs
-
-
 class AlbumListView(AlbumFilterListMixin,
                     PermissionListMixin,
                     ListAPIView):
@@ -107,12 +91,3 @@ class AlbumView(mixins.CreateModelMixin,
             return Response(status=status.HTTP_403_FORBIDDEN)
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-# class AlbumViewPermissions(mixins.RetrieveModelMixin):
-#
-#     authentication_classes = [SessionAuthentication, TokenAuthentication]
-#     permission_classes = [IsAuthenticated, IsOwner]
-#
-#     def retrieve(self, request, *args, **kwargs):
-#         album = self.get_object()

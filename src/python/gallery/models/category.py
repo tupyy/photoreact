@@ -11,8 +11,8 @@ class Category(models.Model):
 
 
 class AlbumCategory(models.Model):
-    album = models.OneToOneField(Album, on_delete=models.CASCADE)
-    category = models.OneToOneField(Category, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return "AlbumCategory" + self.album.name + "_" + self.category.name

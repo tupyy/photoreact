@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group, User
 from django.test import TestCase
 
 from gallery.models.album import Album
+from gallery.models.category import Category, AlbumCategory
 from gallery.models.photo import Photo
 from gallery.serializers.serializers import AlbumSerializer, PhotoSerializer
 
@@ -20,6 +21,16 @@ class TestAlbumSerializer(TestCase):
         today = datetime.today()
         self.album = Album.objects.create(folder_path='foo', date=today.date(), owner=self.user, name='foo')
         self.photo = Photo.objects.create(album=self.album, filename='bar.jpg', thumbnail_file='thumbnail')
+
+        self.category = Category.objects.create(name="foo")
+        self.category.save()
+        self.albumCategory = AlbumCategory.objects.create(album_id=self.album.id, category_id=self.category.id)
+        self.albumCategory.save()
+
+        self.category2 = Category.objects.create(name="bar")
+        self.category2.save()
+        self.albumCategory2 = AlbumCategory.objects.create(album_id=self.album.id, category_id=self.category2.id)
+        self.albumCategory2.save()
 
         self.album.save()
 

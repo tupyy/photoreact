@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from gallery.models import Album
+from gallery.models.album import Album
 
 
-class UserFavorites(models.Model):
+class AlbumUserFavorites(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     album = models.ManyToManyField(Album)
 
