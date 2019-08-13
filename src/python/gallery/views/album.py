@@ -293,19 +293,19 @@ class AlbumPermissionView(GenericViewSet):
                   {
                     "id": 1,
                     "username": "batman",
-                    "permissions": ["add_photo","view_photo"]
+                    "permissions": [("Add photos", "add_photo"),"("View photos, view_photo")]
                   },
                   {
                     "id": 2,
                     "username": "superman",
-                    "permissions": ["add_photo","view_photo"]
+                    "permissions": [("Add photos", "add_photo"),"("View photos, view_photo")]
                   }
                 ],
                 [
                     {
                         "id": 1,
                         "group_name": "batman_friends",
-                        "permissions": ["add_photo","view_photo"]
+                        "permissions": [("Add photos", "add_photo"),"("View photos, view_photo")]
                     },
                 ]
             ]
