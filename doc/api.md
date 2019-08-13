@@ -142,14 +142,25 @@ Response:
     - body
 ```json
 [
-  {
-    "user_id": 1,
-    "permissions": ["add_photo","view_photo"]
-  }, 
-  {
-    "user_id": 2,
-    "permissions": ["add_photo","view_photo"]
-  }
+    [
+      {
+        "id": 1,
+        "username": "batman",
+        "permissions": ["add_photo","view_photo"]
+      }, 
+      {
+        "id": 2,
+        "username": "superman",
+        "permissions": ["add_photo","view_photo"]
+      }
+    ],
+    [
+      {
+        "id": 1,
+        "group_name": "batman_friends",
+        "permissions": ["add_photo","view_photo"]
+      }
+    ]
 ]
 ```
 - status code: 403 if current user is not the owner
@@ -221,7 +232,7 @@ Permission required:
 
 Request:
 ```json
-["cateogry1", "category2"]
+["category1", "category2"]
 ```
 
 Response:
