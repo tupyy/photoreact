@@ -1,2 +1,8 @@
-from .album import AlbumView, AlbumListView, AlbumCategoryView, AlbumTagView
+from .album import (
+    AlbumView,
+    AlbumListView,
+    AlbumCategoryView,
+    AlbumTagView,
+    AlbumPermissionView
+)
 from .photo import PhotoView

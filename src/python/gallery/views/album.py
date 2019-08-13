@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from guardian.mixins import PermissionListMixin, PermissionRequiredMixin
+from guardian.models import UserObjectPermission, GroupObjectPermission
 from rest_framework import status, mixins
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.decorators import action
@@ -15,6 +16,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from gallery.models.album import Album
 from gallery.models.category import Category, Tag
+from gallery.permissions.owner_permission import IsOwner
 from gallery.serializers.serializers import AlbumSerializer, CategorySerializer, TagSerializer
 
 
@@ -253,3 +255,78 @@ class AlbumTagView(PermissionRequiredMixin,
         return Response(status=status.HTTP_404_NOT_FOUND,
                         data={'reason': 'Category not found'},
                         content_type='application/json')
+
+
+class AlbumPermissionView(GenericViewSet):
+    """ View to handle permissions APIs """
+    model = Album
+    queryset = Album.objects
+    serializer_class = AlbumSerializer
+    lookup_field = "id"
+
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsOwner]
+
+    @action(methods=['get'],
+            detail=True,
+            url_path='permissions',
+            url_name='get_permissions')
+    def get_object_permissions(self, request, id=None):
+        instance = self.get_object()
+        user_qs = UserObjectPermission.objects.filter(object_pk=instance.id) \
+            .select_related("permission") \
+            .select_related("user")
+        groups_qs = GroupObjectPermission.objects.filter(object_pk=instance.id) \
+            .select_related("permission") \
+            .select_related("group")
+
+        return Response(status=status.HTTP_200_OK,
+                        data=[self.queryset_to_list(user_qs),
+                              self.queryset_to_list(groups_qs, is_group=True)],
+                        content_type="application/json")
+
+    def queryset_to_list(self, qs, is_group=False):
+        """
+            Return a list of list of dictionaries as following
+            [
+                [
+                  {
+                    "id": 1,
+                    "username": "batman",
+                    "permissions": ["add_photo","view_photo"]
+                  },
+                  {
+                    "id": 2,
+                    "username": "superman",
+                    "permissions": ["add_photo","view_photo"]
+                  }
+                ],
+                [
+                    {
+                        "id": 1,
+                        "group_name": "batman_friends",
+                        "permissions": ["add_photo","view_photo"]
+                    },
+                ]
+            ]
+        """
+        if not is_group:
+            objects = [(p.user.id, p.user.username, p.permission.name, p.permission.codename) for p in qs.all()]
+        else:
+            objects = [(p.group.id, p.group.name, p.permission.name, p.permission.codename) for p in qs.all()]
+
+        # set the key value for name field
+        key_name_name = "username" if not is_group else "group_name"
+
+        d = dict()
+        for entry in objects:
+            key = entry[1]
+            if key in d:
+                d[key]["permissions"].append((entry[2], entry[3]))
+            else:
+                d[key] = {
+                    "id": entry[0],
+                    key_name_name: entry[1],
+                    "permissions": [(entry[2], entry[3])]
+                }
+        return [v for k, v in d.items()]
