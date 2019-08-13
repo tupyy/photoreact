@@ -5,7 +5,7 @@
 
 Get all albums which the current user can view them
 
-Permissions requested:
+Permissions required:
 - view_album
 
 Filters:
@@ -100,7 +100,7 @@ Response:
 
 Delete the album
 
-Permissions requested:
+Permissions required:
 - delete_album
 
 Response:
@@ -112,7 +112,7 @@ Response:
 
 Update album
 
-Permissions requested:
+Permissions required:
 - update_album
 
 Request:
@@ -228,7 +228,7 @@ Response:
 - status code: 200 OK
 - status code: 403 if no *change_album* permission
 
-#### **DELETE** */album/{id}/category/{name category}/*
+#### **DELETE** */album/{id}/category/{id category}/*
 
 Permission required:
 - change_album
@@ -238,13 +238,13 @@ Response:
 - status code: 403 if no *change_album* permission
 - status code: 404 album not found
 
-#### **PUT** */album/{id}/category/{name category}/*
+#### **PUT** */album/{id}/category/{id category}/*
 
-Update *name category*
+Update *id category*
 
 Request:
 ```json
-    {"category": "new category"}
+    {"category_id": 2}
 ```
 
 Response:
@@ -281,7 +281,7 @@ Response:
 - status code: 200 OK
 - status code: 403 if no *change_album* permission
 
-#### **DELETE** */album/{id}/tag/{name tag}/*
+#### **DELETE** */album/{id}/tag/{id tag}/*
 
 Permission required:
 - change_album
@@ -291,9 +291,9 @@ Response:
 - status code: 403 if no *change_album* permission
 - status code: 404 album not found
 
-#### **PUT** */album/{id}/tag/{name tag}/*
+#### **PUT** */album/{id}/tag/{id tag}/*
 
-Update *name category*
+Update *id tag*
 
 Request:
 ```json
@@ -335,7 +335,7 @@ Response:
  
 Get all photos from album *id*
 
-Permissions requested:
+Permissions required:
 - view_photo
 - view_album
 
@@ -344,18 +344,21 @@ Response:
 - body:
 
 ```json
-{
-  "photos" : [{ 
-                 "id": "id_poze",
-                 "url": "s3 url"
-              }],
-  "thumbnails" : [{ 
-                    "id": "id_poze",
-                    "url": "s3 url"
-                }]
-}
-```  
-- status code = 403 FORBIDDEN daca nu are acces la album
+  [{ 
+     "id": "1",
+     "url": "s3 url",
+     "thumbnail": "S3 GET url"
+  },
+  { 
+     "id": "2",
+     "url": "s3 url",
+     "thumbnail": "S3 GET url"
+  }
+  ]
+```
+> The photos inherits album permissions but the permission can be changed.
+> Therefore, the user can view only the photos for which he has *view_photo* permission.  
+- status code = 403 FORBIDDEN if user hs no *view_album* permission
 - status code = 404 Not found
 
 
@@ -363,7 +366,7 @@ Response:
  
 Sign S3 url for upload
 
-Permissions requested:
+Permissions required:
 - add_photo
 
 Request:
@@ -394,7 +397,7 @@ Response:
  
 Adauga poza in album (in prealabil poza a fost uploadata in S3)
 
-Permissions requested:
+Permissions required:
 - add_photo
 
 Request:
@@ -416,7 +419,7 @@ Response:
  
 Delete the photo
 
-Permissions requested:
+Permissions required:
 - delete_photo
 
 Response:
@@ -431,19 +434,19 @@ Response:
 |--------|---------------------------------------|--------------------------------------|:---------------------:|:-----:|---------|
 | GET    | /albums/                              | Get albums                           |       view_album      |       |         |
 | POST   | /album/                               | Create album                         |      create_album     |       |         |
-| DELETE | /album/{id}                           | Delete album                         |      delete_album     |       |         |
-| PUT    | /album/{id}                           | Update album *id*                    |      update_album     |       |         |
+| DELETE | /album/{id}/                          | Delete album                         |      delete_album     |       |         |
+| PUT    | /album/{id}/                          | Update album *id*                    |      update_album     |       |         |
 | GET    | /album/{id}/permissions/*             | Get users permissions for album *id* |          N/A          |  Yes  |         |
 | POST   | /album/{id}/permissions/              | Add permissions                      |          N/A          |  Yes  |         |
-| DELETE | /album/{id}/permissions               | Delete permissions                   |          N/A          |  Yes  |         |
-| GET    | /album/{id}/categories                | Get categories for album *id*        |       view_album      |       |         |
-| POST   | /album/{id}/category                  | Add category to album                | update_album          |       |         |
-| DELETE | album/{id}/category/{name category}/  | Delete category from album           | update_album          |       |         |
-| PUT    | /album/{id}/category/{name category}/ | Update *name category*               | update_album          |       |         |
-| GET    | /album/{id}/tags                      | Get tags for album *id*              | view_album            |       |         |
-| POST   | /album/{id}/tag                       | Add tag to album                     | update_album          |       |         |
-| DELETE | /album/{id}/tag/{name_tag}            | Delete tag                           | update_album          |       |         |
-| PUT    | /album/{id}/tag/{name tag}/           | Update *name tag*                    | update_album          |       |         |
+| DELETE | /album/{id}/permissions/              | Delete permissions                   |          N/A          |  Yes  |         |
+| GET    | /album/{id}/categories/               | Get categories for album *id*        |       view_album      |       |         |
+| POST   | /album/{id}/category/                 | Add category to album                | update_album          |       |         |
+| DELETE | album/{id}/category/{id category}/    | Delete category from album           | update_album          |       |         |
+| PUT    | /album/{id}/category/{id category}/   | Update *id category*                 | update_album          |       |         |
+| GET    | /album/{id}/tags/                     | Get tags for album *id*              | view_album            |       |         |
+| POST   | /album/{id}/tag/                      | Add tag to album                     | update_album          |       |         |
+| DELETE | /album/{id}/tag/{id tag}/             | Delete tag                           | update_album          |       |         |
+| PUT    | /album/{id}/tag/{id tag}/             | Update *id tag*                      | update_album          |       |         |
 | POST   | /album/{id}/favorites/                | Make album favorites for user        |                       |       |         |
 | DELETE | /album/{id}/favorites/                | Remove album from favorites          |                       |       |         |
 | GET    | /photo/album/{id}                     | Get photos for album *id*            | view_photo view_album |       |         |
