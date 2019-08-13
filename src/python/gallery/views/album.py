@@ -14,8 +14,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from gallery.models.album import Album
-from gallery.models.category import Category
-from gallery.serializers.serializers import AlbumSerializer, CategorySerializer
+from gallery.models.category import Category, Tag
+from gallery.serializers.serializers import AlbumSerializer, CategorySerializer, TagSerializer
 
 
 class AlbumFilterListMixin(object):
@@ -178,6 +178,77 @@ class AlbumCategoryView(PermissionRequiredMixin,
                 instance.categories.add(new_category)
                 return Response(status=status.HTTP_200_OK,
                                 data={'category': new_category.id},
+                                content_type='application/json')
+        return Response(status=status.HTTP_404_NOT_FOUND,
+                        data={'reason': 'Category not found'},
+                        content_type='application/json')
+
+
+class AlbumTagView(PermissionRequiredMixin,
+                   GenericViewSet):
+    """ View to handle all category API """
+    model = Album
+    queryset = Album.objects
+    serializer_class = AlbumSerializer
+    lookup_field = "id"
+
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    permission_required = 'view_album'
+    raise_exception = True
+
+    @action(methods=['get'],
+            detail=True,
+            url_path='tags',
+            url_name='get_tags')
+    def get_tags(self, request, id=None):
+        instance = self.get_object()
+        tags_qs = instance.tags.all()
+        tags = TagSerializer(tags_qs, many=True)
+        return Response(status=status.HTTP_200_OK, data=tags.data)
+
+    @action(methods=['post'],
+            detail=True,
+            url_path='tag',
+            url_name='add_tag')
+    def add_tag(self, request, id=None):
+        """ same as category but we create tags if they don't exist """
+        instance = self.get_object()
+        if not request.user.has_perm('change_album', instance):
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        tag_names = request.data
+        if isinstance(tag_names, str):
+            # get or create tag
+            tag, _ = Tag.objects.get_or_create(name=tag_names)
+            instance.tags.add(tag)
+        elif isinstance(tag_names, Iterable):
+            for tag_name in tag_names:
+                tag, _ = Tag.objects.get_or_create(name=tag_name)
+                instance.tags.add(tag)
+        return Response(status=status.HTTP_200_OK)
+
+    @action(methods=['delete', 'put'],
+            detail=True,
+            url_path='tag/(?P<tag_id>\w+)',
+            url_name='delete_tag')
+    def delete_tag(self, request, id, tag_id):
+        instance = self.get_object()
+        if not request.user.has_perm('change_album', instance):
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        tag = instance.tags.get(pk=tag_id)
+        if tag is not None:
+            instance.tags.remove(Tag.objects.get(pk=tag_id))
+            if request.method == 'DELETE':
+                return Response(status=status.HTTP_200_OK,
+                                data={'tag_id': tag_id},
+                                content_type="application/json")
+            else:
+                new_tag, _ = Tag.objects.get_or_create(name=request.data.get('tag_name'))
+                instance.tags.add(new_tag)
+                return Response(status=status.HTTP_200_OK,
+                                data={'category': new_tag.id},
                                 content_type='application/json')
         return Response(status=status.HTTP_404_NOT_FOUND,
                         data={'reason': 'Category not found'},

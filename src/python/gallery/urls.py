@@ -12,5 +12,6 @@ router = routers.SimpleRouter()
 router.register(r'album', gallery_views.AlbumCategoryView, basename='album')
 router.register(r'album', gallery_views.AlbumView, basename='album')
 router.register(r'albums', gallery_views.AlbumListView, basename='albums')
+router.register(r'album', gallery_views.AlbumTagView, basename='album')
 
 urlpatterns = router.urls
