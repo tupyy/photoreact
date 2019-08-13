@@ -297,8 +297,9 @@ Update *id tag*
 
 Request:
 ```json
-    {"tag": "new tag"}
+    {"tag_name": "new tag name"}
 ```
+> Tag will be created if it do not exists
 
 Response:
 - status code: 200 OK
