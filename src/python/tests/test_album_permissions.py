@@ -34,7 +34,7 @@ class AlbumPermissionAPITest(TestCase):
         assign_perm('add_photos', self.group, self.album)
         assign_perm('change_album', self.group, self.album)
 
-    def test_get_tags(self):
+    def test_get_permissions(self):
         """ GET /album/{id}/permissions """
         client = APIClient()
         client.login(username='user', password='pass')
@@ -43,6 +43,42 @@ class AlbumPermissionAPITest(TestCase):
         self.assertEqual(len(response.data[0]), 3)
         self.assertEqual(len(response.data[1]), 1)
         self.assertEqual(response.data[0][2]['username'], 'other')
+
+    def test_get_permissions_fail(self):
+        """ GET /album/{id}/permissions
+            Album not found
+        """
+        client = APIClient()
+        client.login(username='user', password='pass')
+        response = client.get('/album/{}/permissions/'.format(self.album.id + 1))
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_permissions_fail2(self):
+        """ GET /album/{id}/permissions
+            Not owner
+        """
+        client = APIClient()
+        client.login(username='batman', password='word')
+        response = client.get('/album/{}/permissions/'.format(self.album.id + 1))
+        self.assertEqual(response.status_code, 403)
+
+    def test_add_permissions(self):
+        """ POST /album/{id}/permissions """
+        client = APIClient()
+        client.login(username='user', password='pass')
+        response = client.post('/album/{}/permissions/'.format(self.album.id),
+                               data=[
+                                   {
+                                       "user_id": self.batman.id,
+                                       "permissions": ("delete_album",)
+                                   },
+                                   {
+                                       "group_id": self.group.id,
+                                       "permissions": ("delete_album",)
+                                   }
+                               ],
+                               format="json")
+        self.assertEqual(response.status_code, 200)
 
     # def test_get_tags_fail(self):
     #     """

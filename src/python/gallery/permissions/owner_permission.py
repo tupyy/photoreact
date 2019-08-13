@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.exceptions import PermissionDenied
 
 
 class IsOwner(permissions.BasePermission):
@@ -14,4 +15,7 @@ class IsOwner(permissions.BasePermission):
             return True
 
         # Instance must have an attribute named `owner`.
-        return obj.owner == request.user
+        if obj.owner == request.user:
+            return True
+
+        raise PermissionDenied({'reason': 'not owner'})
