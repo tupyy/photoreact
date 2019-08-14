@@ -15,7 +15,7 @@ class Photo(models.Model):
 
     class Meta:
         ordering = ('date', 'filename')
-        default_permissions = ('add', 'view', 'change', 'delete')
+        default_permissions = ('view',)
         unique_together = ('album', 'filename')
         verbose_name = "photo"
         verbose_name_plural = "photos"
