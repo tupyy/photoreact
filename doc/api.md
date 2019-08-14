@@ -356,16 +356,16 @@ Response:
 - body:
 
 ```json
-  [{ 
-     "id": "1",
-     "url": "s3 url",
-     "thumbnail": "S3 GET url"
-  },
-  { 
-     "id": "2",
-     "url": "s3 url",
-     "thumbnail": "S3 GET url"
-  }
+  [
+    { 
+     "id": 1,
+     "album_id": 2,
+     "filename": "bar.jpg",
+     "thumbnail_file": "thumbnail.jpg",
+     "data": "2019/01/01",
+     "get_photo_url": "s3 url",
+     "get_thumbnail_url": "S3 GET url"
+    }
   ]
 ```
 > The photos inherits album permissions but the permission can be changed.
