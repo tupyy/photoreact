@@ -374,20 +374,18 @@ Response:
 - status code = 404 Not found
 
 
-#### **POST** */photo/sign/*
+#### **POST** */photo/sign/album/{id}/*
  
-Sign S3 url for upload
+Sign S3 url for upload to album *id*
 
 Permissions required:
-- add_photo
+- add_photos
 
 Request:
 
 ```json
 {
-  "album_id": "id-ul albumului",
   "filename": "numele pozei",
-  "filetype": "tipul fisierului"
 }
 ```
 Response:
@@ -396,12 +394,11 @@ Response:
     - body:
 ```json
 {
-    "photo": "sign S3 url",
-    "thumbnail": "sign S3 url pentru thumbnail"
+    "photo_url": "sign S3 url for put method",
+    "thumbnail_filename": "123456.jpg",
+    "thumbnail_url": "sign S3 url for put method"
 }
-```
-            
-            
+```       
 - status code=403 daca utilizatorul nu are dreptul de a adauga poze
 - status code=404 daca album nu exista
 
