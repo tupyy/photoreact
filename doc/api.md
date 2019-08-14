@@ -349,6 +349,7 @@ Get all photos from album *id*
 
 Permissions required:
 - view_photo
+> This permission is on Photo model
 - view_album
 
 Response:
@@ -407,7 +408,7 @@ Response:
 Adauga poza in album (in prealabil poza a fost uploadata in S3)
 
 Permissions required:
-- add_photo
+- add_photos
 
 Request:
 
@@ -429,7 +430,7 @@ Response:
 Delete the photo
 
 Permissions required:
-- delete_photo
+- delete_photos
 
 Response:
 - status code = 200 OK
@@ -445,7 +446,7 @@ Response:
 | POST   | /album/                               | Create album                         |      create_album     |       |         |
 | DELETE | /album/{id}/                          | Delete album                         |      delete_album     |       |         |
 | PUT    | /album/{id}/                          | Update album *id*                    |      update_album     |       |         |
-| GET    | /album/{id}/permissions/*             | Get users permissions for album *id* |          N/A          |  Yes  |         |
+| GET    | /album/{id}/permissions/              | Get users permissions for album *id* |          N/A          |  Yes  |         |
 | POST   | /album/{id}/permissions/              | Add permissions                      |          N/A          |  Yes  |         |
 | DELETE | /album/{id}/permissions/              | Delete permissions                   |          N/A          |  Yes  |         |
 | GET    | /album/{id}/categories/               | Get categories for album *id*        |       view_album      |       |         |
@@ -458,7 +459,7 @@ Response:
 | PUT    | /album/{id}/tag/{id tag}/             | Update *id tag*                      | update_album          |       |         |
 | POST   | /album/{id}/favorites/                | Make album favorites for user        |                       |       |         |
 | DELETE | /album/{id}/favorites/                | Remove album from favorites          |                       |       |         |
-| GET    | /photo/album/{id}                     | Get photos for album *id*            | view_photo view_album |       |         |
-| POST   | /photo/sign/                          | Generate presign S3 URL              | add_photo             |       |         |
-| POST   | /photo/album/{id}                     | Add photo to album *id*              | add_photo             |       |         |
-| DELETE | /photo/{id}                           | Delete photo *id*                    | delete_photo          |       |         |
+| GET    | /photos/album/{id}/                   | Get photos for album *id*            | view_photo view_album |       |         |
+| POST   | /photo/sign/                          | Generate presign S3 URL              | add_photos            |       |         |
+| POST   | /photo/album/{id}/                    | Add photo to album *id*              | add_photos            |       |         |
+| DELETE | /photo/{id}/                          | Delete photo *id*                    | delete_photos         |       |         |
