@@ -43,7 +43,7 @@ class Album(models.Model):
 
     objects = AlbumManager()
 
-    def is_favorites(self, user):
+    def is_favorite(self, user):
         return self.favorites.values_list('username').filter(username__exact=user.username).count() > 0
 
     class Meta:
@@ -70,9 +70,6 @@ class Album(models.Model):
 
     def __str__(self):
         return self.folder_path
-
-    def get_absolute_url(self):
-        return reverse('gallery:album', args=[self.pk])
 
     @property
     def display_name(self):
