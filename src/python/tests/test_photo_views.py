@@ -28,8 +28,10 @@ class PhotoViewAPITest(TestCase):
         self.photo2 = Photo.objects.create(album=self.album, filename='foo.jpg', thumbnail_file='thumbnail_file')
 
         self.album2 = Album.objects.create(folder_path='bar', date=today, owner=self.user, name='bar')
-        self.photo_album2 = Photo.objects.create(album=self.album2, filename='bar2.jpg', thumbnail_file='thumbnail_file')
-        self.photo2_album_2 = Photo.objects.create(album=self.album2, filename='foo2.jpg', thumbnail_file='thumbnail_file')
+        self.photo_album2 = Photo.objects.create(album=self.album2, filename='bar2.jpg',
+                                                 thumbnail_file='thumbnail_file')
+        self.photo2_album_2 = Photo.objects.create(album=self.album2, filename='foo2.jpg',
+                                                   thumbnail_file='thumbnail_file')
 
         self.album.save()
         self.album2.save()
@@ -49,7 +51,7 @@ class PhotoViewAPITest(TestCase):
         """ GET /photo/album/{id}/ """
         client = APIClient()
         client.login(username='batman', password='word')
-        response = client.get('/photo/album/{}/'.format(self.album.id))
+        response = client.get('/photos/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
 
@@ -57,7 +59,7 @@ class PhotoViewAPITest(TestCase):
         """ GET /photo/album/{id}/ """
         client = APIClient()
         client.login(username='superman', password='word')
-        response = client.get('/photo/album/{}/'.format(self.album.id))
+        response = client.get('/photos/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
@@ -67,7 +69,7 @@ class PhotoViewAPITest(TestCase):
         """
         client = APIClient()
         client.login(username='other', password='word')
-        response = client.get('/photo/album/{}/'.format(self.album.id))
+        response = client.get('/photos/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
     def test_sign_photo(self):
@@ -81,15 +83,54 @@ class PhotoViewAPITest(TestCase):
                                format='json')
         self.assertEqual(response.status_code, 200)
 
+    def test_sign_photo_admin(self):
+        """
+        test sign url for post method
+        """
+        admin = User.objects.create_superuser('admin', 'user@gallery', 'pass')
+        client = APIClient()
+        client.login(username="admin", password="pass")
+        response = client.post('/photo/sign/album/{}/'.format(self.album.id),
+                               data={'filename': 'bar.jpg'},
+                               format='json')
+        self.assertEqual(response.status_code, 200)
+
     def test_sign_photo_fail(self):
         """
         no permission => 403
         """
         client = APIClient()
         client.login(username="batman", password="word")
-        response = client.post('/photo/sign/album/{}/'.format(self.album.id),
-                               data={})
+        response = client.post('/photo/sign/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
+    def test_add_photo(self):
+        """
+        test add post method
+        """
+        client = APIClient()
+        client.login(username="user", password="pass")
+        response = client.post('/photo/album/{}/'.format(self.album.id),
+                               data={'filename': 'bar.jpg',
+                                     'thumbnail': 'test.jpg'},
+                               format='json')
+        self.assertEqual(response.status_code, 200)
 
+    def test_delete_photo(self):
+        client = APIClient()
+        client.login(username='user', password='pass')
+        response = client.delete('/photo/{}/'.format(self.photo.id))
+        self.assertEqual(response.status_code, 204)
 
+    def test_delete_photo_no_permission(self):
+        client = APIClient()
+        client.login(username='batman', password='word')
+        response = client.delete('/photo/{}/'.format(self.photo.id))
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_photo_assign_permission(self):
+        assign_perm('delete_photos', self.batman, self.album)
+        client = APIClient()
+        client.login(username='batman', password='word')
+        response = client.delete('/photo/{}/'.format(self.photo.id))
+        self.assertEqual(response.status_code, 204)

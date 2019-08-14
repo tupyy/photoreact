@@ -15,5 +15,7 @@ router.register(r'albums', gallery_views.AlbumListView, basename='albums')
 router.register(r'album', gallery_views.AlbumTagView, basename='album')
 router.register(r'album', gallery_views.AlbumPermissionView, basename='album')
 
-router.register(r'photo', gallery_views.PhotoView, basename="photo")
+router.register(r'photos', gallery_views.PhotoView, basename='photos')
+router.register(r'photo', gallery_views.PhotoCreateView, basename='photo')
+router.register(r'photo', gallery_views.PhotoDeleteView, basename='photo')
 urlpatterns = router.urls

@@ -5,4 +5,8 @@ from .album import (
     AlbumTagView,
     AlbumPermissionView
 )
-from .photo import PhotoView
+from .photo import (
+    PhotoView,
+    PhotoCreateView,
+    PhotoDeleteView
+)
