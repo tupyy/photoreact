@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from guardian.mixins import PermissionListMixin, PermissionRequiredMixin
 from guardian.models import UserObjectPermission, GroupObjectPermission
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, remove_perm
 from rest_framework import status, mixins
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.decorators import action
@@ -268,11 +268,11 @@ class AlbumPermissionView(GenericViewSet):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated, IsOwner]
 
-    @action(methods=['get', 'post'],
+    @action(methods=['get', 'post', 'delete'],
             detail=True,
             url_path='permissions',
             url_name='get_permissions')
-    def get_object_permissions(self, request, id=None):
+    def handle_object_permissions(self, request, id=None):
         instance = self.get_object()
         if request.method == 'GET':
             user_qs = UserObjectPermission.objects.filter(object_pk=instance.id) \
@@ -287,13 +287,16 @@ class AlbumPermissionView(GenericViewSet):
                                   self.queryset_to_list(groups_qs, is_group=True)],
                             content_type="application/json")
         else:
-            for entry in request.data:
-                user_model = {'user_id': User, 'group_id': Group}['user_id' if entry.get('user_id') else 'group_id']
-                user = get_object_or_404(user_model, pk=entry['user_id' if entry.get('user_id') else 'group_id'])
+            data = self.remove_owner(instance.owner, request.data)
+            for entry in data:
+                user_or_group_model = {'user_id': User, 'group_id': Group}['user_id' if entry.get('user_id') else 'group_id']
+                user_or_group = get_object_or_404(user_or_group_model, pk=entry['user_id' if entry.get('user_id') else 'group_id'])
                 permissions = entry.get('permissions')
+                method = assign_perm if request.method == "POST" else remove_perm
                 if permissions:
                     for permission in permissions:
-                        assign_perm(permission, user, instance)
+                        method(permission, user_or_group, instance)
+
             return Response(status=status.HTTP_200_OK)
 
     def queryset_to_list(self, qs, is_group=False):
@@ -341,3 +344,14 @@ class AlbumPermissionView(GenericViewSet):
                     "permissions": [(entry[2], entry[3])]
                 }
         return [v for k, v in d.items()]
+
+    def remove_owner(self, owner, data):
+        """
+        Changing permissions for owner(by the owner) is not allowed. So we remove any entry of owner from request.data
+        before we proceed with any modification of permissions
+        """
+        for entry in data:
+            pk = entry.get('user_id', -1)
+            if pk == owner.id:
+                data.remove(entry)
+        return data

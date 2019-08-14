@@ -6,7 +6,6 @@ from guardian.shortcuts import assign_perm
 from rest_framework.test import APIClient
 
 from gallery.models.album import Album
-from gallery.models.category import Tag
 from gallery.models.photo import Photo
 
 
@@ -55,11 +54,11 @@ class AlbumPermissionAPITest(TestCase):
 
     def test_get_permissions_fail2(self):
         """ GET /album/{id}/permissions
-            Not owner
+            Not owner => should get 403
         """
         client = APIClient()
         client.login(username='batman', password='word')
-        response = client.get('/album/{}/permissions/'.format(self.album.id + 1))
+        response = client.get('/album/{}/permissions/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
     def test_add_permissions(self):
@@ -80,108 +79,59 @@ class AlbumPermissionAPITest(TestCase):
                                format="json")
         self.assertEqual(response.status_code, 200)
 
-    # def test_get_tags_fail(self):
-    #     """
-    #         GET /album/{id}/tags
-    #         Expected: 403 no permissions
-    #     """
-    #     client = APIClient()
-    #     client.login(username='batman', password='word')
-    #     response = client.get('/album/{}/tags/'.format(self.album.id))
-    #     self.assertEqual(response.status_code, 403)
-    #
-    # def test_get_tags_404(self):
-    #     """
-    #         GET /album/{id}/tags
-    #         Expected: 403 no permissions
-    #     """
-    #     client = APIClient()
-    #     client.login(username='batman', password='word')
-    #     response = client.get('/album/{}/tags/'.format(100))
-    #     self.assertEqual(response.status_code, 404)
-    #
-    # def test_add_tags(self):
-    #     """ POST /album/{id}/tag """
-    #     client = APIClient()
-    #     client.login(username='user', password='pass')
-    #     data = list()
-    #     tag1 = Tag.objects.create(name="hey")
-    #     data.append(tag1.name)
-    #     response = client.post('/album/{}/tag/'.format(self.album.id),
-    #                            data=data,
-    #                            format='json')
-    #     self.assertEqual(response.status_code, 200)
-    #
-    # def test_add_tags2(self):
-    #     """ POST /album/{id}/tag
-    #         Tag do not exits. create it..
-    #     """
-    #     client = APIClient()
-    #     client.login(username='user', password='pass')
-    #     data = list()
-    #     data.append("hey")
-    #     response = client.post('/album/{}/tag/'.format(self.album.id),
-    #                            data=data,
-    #                            format='json')
-    #     self.assertEqual(response.status_code, 200)
-    #
-    # def test_add_tags3(self):
-    #     """
-    #         POST /album/{id}/tag
-    #         Fail no permission
-    #
-    #      """
-    #     assign_perm('view_album', self.batman, self.album)
-    #     client = APIClient()
-    #     client.login(username='batman', password='word')
-    #     data = list()
-    #     data.append("test")
-    #     response = client.post('/album/{}/tag/'.format(self.album.id),
-    #                            data=data,
-    #                            format='json')
-    #     self.assertEqual(response.status_code, 403)
-    #
-    # def test_delete_tag(self):
-    #     """ DELETE /album/{id}/tag/{id tag}/ """
-    #     client = APIClient()
-    #     client.login(username='user', password='pass')
-    #     response = client.delete('/album/{}/tag/{}/'.format(self.album.id,
-    #                                                              self.tag_foo.id))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(self.album.tags.count(), 1)
-    #
-    # def test_delete_tag_fail(self):
-    #     """ DELETE /album/{id}/tag/{id tag}/
-    #         Fail no permission
-    #     """
-    #     assign_perm('view_album', self.batman, self.album)
-    #     client = APIClient()
-    #     client.login(username='batman', password='word')
-    #     response = client.delete('/album/{}/tag/{}/'.format(self.album.id,
-    #                                                              self.tag_foo.id))
-    #     self.assertEqual(response.status_code, 403)
-    #
-    # def test_put_tag(self):
-    #     """ PUT /album/{id}/tag/{id tag}/ """
-    #     new_tag = Tag.objects.create(name="hey")
-    #     client = APIClient()
-    #     client.login(username='user', password='pass')
-    #     response = client.put('/album/{}/tag/{}/'.format(self.album.id,
-    #                                                           self.tag_foo.id),
-    #                           data={'tag_name': new_tag.name},
-    #                           format='json')
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(self.album.tags.count(), 2)
-    #     self.assertEqual(self.album.tags.last().name, 'hey')
-    #
-    # def test_put_tag2(self):
-    #     """ PUT /album/{id}/tag/{id tag}/ """
-    #     client = APIClient()
-    #     client.login(username='user', password='pass')
-    #     response = client.put('/album/{}/tag/{}/'.format(self.album.id,
-    #                                                           self.tag_foo.id),
-    #                           data={'tag_name': "hey"},
-    #                           format='json')
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(self.album.tags.count(), 2)
-    #     self.assertEqual(self.album.tags.last().name, 'hey')
+    def test_delete_permissions(self):
+        """ DELETE /album/{id}/permissions """
+        client = APIClient()
+        client.login(username='user', password='pass')
+        response = client.delete('/album/{}/permissions/'.format(self.album.id),
+                               data=[
+                                   {
+                                       "user_id": self.batman.id,
+                                       "permissions": ("add_photos",)
+                                   },
+                                   {
+                                       "group_id": self.group.id,
+                                       "permissions": ("add_photos",)
+                                   }
+                               ],
+                               format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(self.batman.has_perm("add_photos", self.album))
+        self.assertTrue(self.batman.has_perm("change_album", self.album))
+
+        # check permissions for superman which is in group
+        self.assertFalse(self.superman.has_perm("add_photos", self.album))
+        self.assertTrue(self.superman.has_perm("change_album", self.album))
+
+        # check permissions for superman which is in group
+        self.assertTrue(self.user.has_perm("add_photos", self.album))
+        self.assertTrue(self.user.has_perm("change_album", self.album))
+
+    def test_delete_permissions2(self):
+        """
+            DELETE /album/{id}/permissions
+            Try to delete a permission from the owner's permissions.
+            Expect: no changing. Changing permissions by owner for owner is not allowed
+        """
+        client = APIClient()
+        client.login(username='user', password='pass')
+        response = client.delete('/album/{}/permissions/'.format(self.album.id),
+                               data=[
+                                   {
+                                       "user_id": self.user.id,
+                                       "permissions": ("add_photos",)
+                                   },
+                                   {
+                                       "group_id": self.group.id,
+                                       "permissions": ("add_photos",)
+                                   }
+                               ],
+                               format="json")
+        self.assertEqual(response.status_code, 200)
+
+        # check permissions for superman which is in group
+        self.assertFalse(self.superman.has_perm("add_photos", self.album))
+        self.assertTrue(self.superman.has_perm("change_album", self.album))
+
+        self.assertTrue(self.user.has_perm("add_photos", self.album))
+        self.assertTrue(self.user.has_perm("change_album", self.album))
