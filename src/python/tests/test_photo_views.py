@@ -70,3 +70,26 @@ class PhotoViewAPITest(TestCase):
         response = client.get('/photo/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
+    def test_sign_photo(self):
+        """
+        test sign url for post method
+        """
+        client = APIClient()
+        client.login(username="user", password="pass")
+        response = client.post('/photo/sign/album/{}/'.format(self.album.id),
+                               data={'filename': 'bar.jpg'},
+                               format='json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_sign_photo_fail(self):
+        """
+        no permission => 403
+        """
+        client = APIClient()
+        client.login(username="batman", password="word")
+        response = client.post('/photo/sign/album/{}/'.format(self.album.id),
+                               data={})
+        self.assertEqual(response.status_code, 403)
+
+
+
