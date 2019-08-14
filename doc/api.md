@@ -343,7 +343,7 @@ Response:
 
 ## Photo
  
-#### **GET** */photo/album/{id}*
+#### **GET** */photos/album/{id}/*
  
 Get all photos from album *id*
 
@@ -402,7 +402,7 @@ Response:
 - status code=403 daca utilizatorul nu are dreptul de a adauga poze
 - status code=404 daca album nu exista
 
-#### **POST** */photo/album/{id}*
+#### **POST** */photo/album/{id}/*
  
 Adauga poza in album (in prealabil poza a fost uploadata in S3)
 
@@ -424,7 +424,7 @@ Response:
 - status code = 403 if user has no *add_photo* permission
 - status code=404 
 
-#### **DELETE** */photo/{id}*
+#### **DELETE** */photo/{id}/*
  
 Delete the photo
 
