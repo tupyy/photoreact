@@ -2,6 +2,7 @@ import os
 
 from django.db import models
 from django.shortcuts import reverse
+from guardian.shortcuts import assign_perm
 
 from gallery.models.album import Album
 

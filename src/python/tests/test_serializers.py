@@ -51,6 +51,4 @@ class TestAlbumSerializer(TestCase):
     def test_photo_serializer(self):
         p = PhotoSerializer(self.photo)
         self.assertFalse(p.data['get_photo_url'] is None)
-        self.assertFalse(p.data['put_photo_url'] is None)
         self.assertFalse(p.data['get_thumbnail_url'] is None)
-        self.assertFalse(p.data['put_thumbnail_url'] is None)
