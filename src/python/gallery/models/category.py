@@ -20,6 +20,6 @@ class Tag(models.Model):
         ordering = ('name',)
         verbose_name = 'tag'
         verbose_name_plural = 'tags'
-        
+
     def __str__(self):
         return self.name

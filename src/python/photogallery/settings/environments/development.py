@@ -38,6 +38,15 @@ LOGGING = {
     },
 }
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:7000',
+]
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:7000',
+]
+
 """
 Load AWS variables
 """
