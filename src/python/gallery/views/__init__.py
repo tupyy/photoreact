@@ -3,7 +3,8 @@ from .album import (
     AlbumListView,
     AlbumCategoryView,
     AlbumTagView,
-    AlbumPermissionView
+    AlbumPermissionView,
+    AlbumFavoriteView
 )
 from .photo import (
     PhotoView,

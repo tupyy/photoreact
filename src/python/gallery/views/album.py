@@ -289,8 +289,10 @@ class AlbumPermissionView(GenericViewSet):
         else:
             data = self.remove_owner(instance.owner, request.data)
             for entry in data:
-                user_or_group_model = {'user_id': User, 'group_id': Group}['user_id' if entry.get('user_id') else 'group_id']
-                user_or_group = get_object_or_404(user_or_group_model, pk=entry['user_id' if entry.get('user_id') else 'group_id'])
+                user_or_group_model = {'user_id': User, 'group_id': Group}[
+                    'user_id' if entry.get('user_id') else 'group_id']
+                user_or_group = get_object_or_404(user_or_group_model,
+                                                  pk=entry['user_id' if entry.get('user_id') else 'group_id'])
                 permissions = entry.get('permissions')
                 method = assign_perm if request.method == "POST" else remove_perm
                 if permissions:
@@ -355,3 +357,29 @@ class AlbumPermissionView(GenericViewSet):
             if pk == owner.id:
                 data.remove(entry)
         return data
+
+
+class AlbumFavoriteView(PermissionRequiredMixin,
+                        GenericViewSet):
+
+    model = Album
+    queryset = Album.objects
+    serializer_class = AlbumSerializer
+    lookup_field = "id"
+
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    permission_required = 'view_album'
+    return_403 = True
+
+    @action(methods=['post', 'delete'],
+            detail=True,
+            url_path="favorites",
+            url_name='change-favorites')
+    def change_favorites(self, request, id):
+        album = self.get_object()
+        if request.method == 'POST':
+            album.favorites.add(request.user)
+        else:
+            album.favorites.remove(request.user)
+        return Response(status=status.HTTP_200_OK)

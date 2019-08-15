@@ -119,3 +119,15 @@ class AlbumCategoryAPITest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.album.categories.count(), 2)
         self.assertEqual(self.album.categories.last().name, 'hey')
+
+    def test_favorites_post(self):
+        client = APIClient()
+        client.login(username='user', password='pass')
+        response = client.post('/album/{}/favorites/'.format(self.album.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user in self.album.favorites.all())
+
+        # test delete favorites
+        response = client.delete('/album/{}/favorites/'.format(self.album.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(self.user in self.album.favorites.all())
