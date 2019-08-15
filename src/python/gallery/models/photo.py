@@ -1,8 +1,6 @@
 import os
 
 from django.db import models
-from django.shortcuts import reverse
-from guardian.shortcuts import assign_perm
 
 from gallery.models.album import Album
 
@@ -23,9 +21,6 @@ class Photo(models.Model):
     def __str__(self):
         return self.filename
 
-    def get_absolute_url(self):
-        return reverse('gallery:photo', args=[self.pk])
-
     @property
     def display_name(self):
         return self.date or os.path.splitext(self.filename)[0]
@@ -45,9 +40,6 @@ class Video(models.Model):
 
     def __str__(self):
         return self.filename
-
-    def get_absolute_url(self):
-        return reverse('gallery:video', args=[self.pk])
 
     @property
     def display_name(self):

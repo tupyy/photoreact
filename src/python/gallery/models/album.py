@@ -2,7 +2,6 @@
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from guardian.shortcuts import assign_perm
 
@@ -42,9 +41,6 @@ class Album(models.Model):
     favorites = models.ManyToManyField(User, blank=True, related_name="favorites")
 
     objects = AlbumManager()
-
-    def is_favorite(self, user):
-        return self.favorites.values_list('username').filter(username__exact=user.username).count() > 0
 
     class Meta:
         ordering = ('date', 'name', 'folder_path')
