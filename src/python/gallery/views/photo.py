@@ -66,10 +66,10 @@ class PhotoCreateView(PermissionRequiredMixin,
 
         photo_file_path = "photos/{}/{}".format(album.folder_path, photo_filename)
 
-        hsh = hashlib.md5()
+        hsh = hashlib.sha256()
         hsh.update(str(settings.SECRET_KEY).encode())
         hsh.update(str(album.id).encode())
-        hsh.update(str(request.data.get('filename')).encode())
+        hsh.update(str(photo_filename).encode())
 
         thumbnail_filename = "{}{}".format(hsh.hexdigest()[:8], photo_filename[photo_filename.index('.'):])
         thumbnail_file_path = "cache/{}/{}".format(album.date.strftime('%d%m'), thumbnail_filename)
