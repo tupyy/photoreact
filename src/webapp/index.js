@@ -1,13 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Provider} from 'react-redux';
 import './index.css';
-import App from './react/App';
 import * as serviceWorker from './serviceWorker';
+import store from "./redux/store";
+import App from "./react/App";
+import './i18n';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const rootElement = document.getElementById('root');
 
-// If you want your photogallery to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+const render = () => ReactDOM.render(
+    <Provider store={store}>
+        <App/>
+    </Provider>,rootElement
+);
+
+render();
+store.subscribe(render);
 serviceWorker.unregister();
 module.hot.accept();

@@ -1,11 +1,21 @@
 import React from 'react';
 import './App.css';
+import {connect} from "react-redux";
+import {AllRoutes} from './routes/AllRoutes';
 
-function App() {
-    return (
-        <div className="App">
-        </div>
-    );
+class App extends React.Component {
+
+    render() {
+        return (
+            <AllRoutes />
+        );
+    }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        authentication: state.authentication
+    }
+};
+
+export default connect(mapStateToProps)(App);
