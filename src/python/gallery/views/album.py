@@ -63,7 +63,10 @@ class AlbumListView(AlbumFilterListMixin,
     def list(self, request, *args, **kwargs):
         qs = self.get_queryset()
         serializer = self.get_serializer(qs, many=True)
-        return Response(serializer.data)
+        data = dict()
+        data['size'] = qs.count()
+        data['albums'] = serializer.data
+        return Response(data)
 
     @action(methods=['get'],
             detail=False,
@@ -76,7 +79,10 @@ class AlbumListView(AlbumFilterListMixin,
                             status=status.HTTP_404_NOT_FOUND)
         qs = self.get_queryset().filter(owner__username__exact=user.username)
         serializer = self.get_serializer(qs, many=True)
-        return Response(serializer.data)
+        data = dict()
+        data['size'] = qs.count()
+        data['albums'] = serializer.data
+        return Response(data)
 
 
 class AlbumView(mixins.CreateModelMixin,

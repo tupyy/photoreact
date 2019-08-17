@@ -52,7 +52,7 @@ class AlbumViewTests(TestCase):
         client.login(username='user', password='pass')
         request = client.get(reverse('albums-list'))
         self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 2)
+        self.assertEqual(len(request.data['albums']), 2)
 
     def test_list_albums6(self):
         album2 = Album.objects.create(folder_path='bar', date=datetime.date.today(), owner=self.user, name='bar')

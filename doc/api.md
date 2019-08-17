@@ -158,10 +158,17 @@ Request:
 Response:
 ```json
 {
-  "link": "/album/1/"
+  "id": "1",
+  "name": "name album",
+  "description": "descriere album",
+  "date": "data album",
+  "preview": "URL preview photo S3",
+  "categories" : [ "categorie_1", "categorie_2" ],
+  "tags" : ["tag 1", "tag 2"],
+  "favorites": "true"
 }
 ```
-- status code: 303 SEE OTHER 
+- status code: 200 OK 
 - status code: 403 FORBIDDEN 
   if user has no "delete" permission
 - status code: 404 album not found
