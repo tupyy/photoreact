@@ -161,7 +161,7 @@ Response:
   "link": "/album/1/"
 }
 ```
-- status code: 200 OK
+- status code: 303 SEE OTHER 
 - status code: 403 FORBIDDEN 
   if user has no "delete" permission
 - status code: 404 album not found
