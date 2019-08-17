@@ -1,4 +1,28 @@
 
+### Summary
+| Method | API                                   | Action                               |       Permission      | Owner | Comment |
+|--------|---------------------------------------|--------------------------------------|:---------------------:|:-----:|---------|
+| GET    | /albums/                              | Get albums                           |       view_album      |       |         |
+| POST   | /album/                               | Create album                         |      create_album     |       |         |
+| DELETE | /album/{id}/                          | Delete album                         |      delete_album     |       |         |
+| PUT    | /album/{id}/                          | Update album *id*                    |      update_album     |       |         |
+| GET    | /album/{id}/permissions/              | Get users permissions for album *id* |          N/A          |  Yes  |         |
+| POST   | /album/{id}/permissions/              | Add permissions                      |          N/A          |  Yes  |         |
+| DELETE | /album/{id}/permissions/              | Delete permissions                   |          N/A          |  Yes  |         |
+| GET    | /album/{id}/categories/               | Get categories for album *id*        |       view_album      |       |         |
+| POST   | /album/{id}/category/                 | Add category to album                | update_album          |       |         |
+| DELETE | album/{id}/category/{id category}/    | Delete category from album           | update_album          |       |         |
+| PUT    | /album/{id}/category/{id category}/   | Update *id category*                 | update_album          |       |         |
+| GET    | /album/{id}/tags/                     | Get tags for album *id*              | view_album            |       |         |
+| POST   | /album/{id}/tag/                      | Add tag to album                     | update_album          |       |         |
+| DELETE | /album/{id}/tag/{id tag}/             | Delete tag                           | update_album          |       |         |
+| PUT    | /album/{id}/tag/{id tag}/             | Update *id tag*                      | update_album          |       |         |
+| POST   | /album/{id}/favorites/                | Make album favorites for user        |                       |       |         |
+| DELETE | /album/{id}/favorites/                | Remove album from favorites          |                       |       |         |
+| GET    | /photos/album/{id}/                   | Get photos for album *id*            | view_photo view_album |       |         |
+| POST   | /photo/sign/                          | Generate presign S2 URL              | add_photos            |       |         |
+| POST   | /photo/album/{id}/                    | Add photo to album *id*              | add_photos            |       |         |
+| DELETE | /photo/{id}/                          | Delete photo *id*                    | delete_photos         |       |         |
 ## Album 
 
 #### **GET** */albums/*
@@ -28,14 +52,19 @@ Response:
 - status code : 200 OK
 ```json
 {
-    "id": "id album",
-    "name": "name album",
-    "description": "descriere album",
-    "date": "data album",
-    "preview": "URL preview photo S3",
-    "categories" : [ "categorie_1", "categorie_2" ],
-    "tags" : ["tag 1", "tag 2"],
-    "favorites": "true"
+    "size": 1,
+    "albums": [
+      {
+        "id": "1",
+        "name": "name album",
+        "description": "descriere album",
+        "date": "data album",
+        "preview": "URL preview photo S3",
+        "categories" : [ "categorie_1", "categorie_2" ],
+        "tags" : ["tag 1", "tag 2"],
+        "favorites": "true"
+      }
+    ]
 }
 ```
 
@@ -49,14 +78,19 @@ Response:
 - status code : 200 OK
 ```json
 {
-    "id": "id album",
-    "name": "name album",
-    "description": "descriere album",
-    "date": "data album",
-    "preview": "URL preview photo S3",
-    "categories" : [ "categorie_1", "categorie_2" ],
-    "tags" : ["tag 1", "tag 2"],
-    "favorites": "true"
+    "size": 1,
+    "albums": [
+      {
+        "id": "1",
+        "name": "name album",
+        "description": "descriere album",
+        "date": "data album",
+        "preview": "URL preview photo S3",
+        "categories" : [ "categorie_1", "categorie_2" ],
+        "tags" : ["tag 1", "tag 2"],
+        "favorites": "true"
+      }
+    ]
 }
 ```
 
@@ -86,11 +120,7 @@ Response:
     "id": "id album",
     "name": "name album",
     "description": "descriere album",
-    "date": "data album",
-    "preview": "URL preview photo S3",
-    "categories" : [ "categorie_1", "categorie_2" ],
-    "tags" : ["tag 1", "tag 2"],
-    "favorites": "true"
+    "date": "data album"
 }
 ```
 
@@ -104,7 +134,7 @@ Permissions required:
 - delete_album
 
 Response:
-- status code: 200 OK
+- status code: 204 NO CONTENT 
 - status code: 403 FORBIDDEN if the user has no delete permission
 - status code: 404 album not found
 
@@ -126,7 +156,12 @@ Request:
 }
 ```
 Response:
-- status code: 200 (CREATED)
+```json
+{
+  "link": "/album/1/"
+}
+```
+- status code: 200 OK
 - status code: 403 FORBIDDEN 
   if user has no "delete" permission
 - status code: 404 album not found
@@ -437,29 +472,5 @@ Response:
 - status code = 403 FORBIDDEN
 - status code = 404 Not found
 
-### Summary
 
 
-| Method | API                                   | Action                               |       Permission      | Owner | Comment |
-|--------|---------------------------------------|--------------------------------------|:---------------------:|:-----:|---------|
-| GET    | /albums/                              | Get albums                           |       view_album      |       |         |
-| POST   | /album/                               | Create album                         |      create_album     |       |         |
-| DELETE | /album/{id}/                          | Delete album                         |      delete_album     |       |         |
-| PUT    | /album/{id}/                          | Update album *id*                    |      update_album     |       |         |
-| GET    | /album/{id}/permissions/              | Get users permissions for album *id* |          N/A          |  Yes  |         |
-| POST   | /album/{id}/permissions/              | Add permissions                      |          N/A          |  Yes  |         |
-| DELETE | /album/{id}/permissions/              | Delete permissions                   |          N/A          |  Yes  |         |
-| GET    | /album/{id}/categories/               | Get categories for album *id*        |       view_album      |       |         |
-| POST   | /album/{id}/category/                 | Add category to album                | update_album          |       |         |
-| DELETE | album/{id}/category/{id category}/    | Delete category from album           | update_album          |       |         |
-| PUT    | /album/{id}/category/{id category}/   | Update *id category*                 | update_album          |       |         |
-| GET    | /album/{id}/tags/                     | Get tags for album *id*              | view_album            |       |         |
-| POST   | /album/{id}/tag/                      | Add tag to album                     | update_album          |       |         |
-| DELETE | /album/{id}/tag/{id tag}/             | Delete tag                           | update_album          |       |         |
-| PUT    | /album/{id}/tag/{id tag}/             | Update *id tag*                      | update_album          |       |         |
-| POST   | /album/{id}/favorites/                | Make album favorites for user        |                       |       |         |
-| DELETE | /album/{id}/favorites/                | Remove album from favorites          |                       |       |         |
-| GET    | /photos/album/{id}/                   | Get photos for album *id*            | view_photo view_album |       |         |
-| POST   | /photo/sign/                          | Generate presign S3 URL              | add_photos            |       |         |
-| POST   | /photo/album/{id}/                    | Add photo to album *id*              | add_photos            |       |         |
-| DELETE | /photo/{id}/                          | Delete photo *id*                    | delete_photos         |       |         |
