@@ -12,13 +12,10 @@ class ObjectRelatedField(serializers.RelatedField):
     """
 
     def to_representation(self, value):
-        if isinstance(value, Album):
-            serializer = AlbumSerializer(value)
-        elif isinstance(value, Photo):
-            serializer = PhotoSerializer(value)
+        if isinstance(value, Album) or isinstance(value, Photo):
+            return value.id
         else:
             raise Exception("Unexpected type of object")
-        return serializer
 
 
 class ActivityLogSerializer(serializers.ModelSerializer):
@@ -28,3 +25,4 @@ class ActivityLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = ActivityLog
         fields = ['user', 'content_object', 'date', 'activity']
+        read_only_fields = ['user', 'content_object', 'date', 'activity']
