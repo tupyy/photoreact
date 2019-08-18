@@ -11,3 +11,7 @@ from .photo import (
     PhotoCreateView,
     PhotoDeleteView
 )
+
+from .activity_log import (
+    ActivityLogView,
+)

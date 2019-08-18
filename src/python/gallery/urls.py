@@ -19,4 +19,6 @@ router.register(r'album', gallery_views.AlbumFavoriteView, basename='album')
 router.register(r'photos', gallery_views.PhotoView, basename='photos')
 router.register(r'photo', gallery_views.PhotoCreateView, basename='photo')
 router.register(r'photo', gallery_views.PhotoDeleteView, basename='photo')
+
+router.register(r'activities', gallery_views.ActivityLogView, basename='activities')
 urlpatterns = router.urls
