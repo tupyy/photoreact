@@ -30,12 +30,10 @@ class TestAlbumSerializer(TestCase):
 
         activity_serializer = ActivityLogSerializer(activity_log)
         self.assertTrue(activity_serializer.data is not None)
-        self.assertTrue(isinstance(activity_serializer.data['content_object'], AlbumSerializer))
         self.assertEqual(activity_serializer.data['activity'], 'C')
 
     def test_serializer_fields_2(self):
         activity_log = ActivityLog(content_object=self.photo, activity='C', user=self.user)
         activity_serializer = ActivityLogSerializer(activity_log)
         self.assertTrue(activity_serializer.data is not None)
-        self.assertTrue(isinstance(activity_serializer.data['content_object'], PhotoSerializer))
         self.assertEqual(activity_serializer.data['activity'], 'C')
