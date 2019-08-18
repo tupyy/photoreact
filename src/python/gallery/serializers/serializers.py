@@ -4,7 +4,6 @@ from rest_framework import serializers
 from gallery.models.album import Album
 from gallery.models.category import Category, Tag
 from gallery.models.photo import Photo
-from gallery.models.user_favorites import AlbumUserFavorites
 from gallery.utils import s3_manager
 
 
@@ -20,12 +19,6 @@ class CategorySerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
-
-
-class AlbumUserFavoritesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AlbumUserFavorites
         fields = '__all__'
 
 
