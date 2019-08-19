@@ -27,6 +27,15 @@ class AlbumViewTests(TestCase):
         self.album.save()
 
     def test_get_album(self):
+        """
+        Description: Get album
+        API: /album/{id}/
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code:200
+        Expected values:
+        """
         assign_perm('view_album', self.user, self.album)
         client = APIClient()
         client.login(username='user', password='pass')
@@ -35,14 +44,30 @@ class AlbumViewTests(TestCase):
         self.assertEqual(request.data['id'], self.album.id)
 
     def test_get_album2(self):
-        """ test the other user. no album found 404"""
+        """
+        Description: Get album without permission
+        API: /album/{id}
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
+        """
         client = APIClient()
         client.login(username='other', password='word')
         request = client.get(reverse('album-detail', args=[self.album.id]))
         self.assertEqual(request.status_code, 403)
 
     def test_list_albums(self):
-        """ test get all albums by owner"""
+        """
+        Description: Get albums
+        API: /albums/
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2 albums
+        """
         assign_perm('view_album', self.user, self.album)
 
         album2 = Album.objects.create(folder_path='bar', date=datetime.date.today(), owner=self.user, name='bar')
@@ -54,17 +79,16 @@ class AlbumViewTests(TestCase):
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data['albums']), 2)
 
-    def test_list_albums6(self):
-        album2 = Album.objects.create(folder_path='bar', date=datetime.date.today(), owner=self.user, name='bar')
-
-        client = APIClient()
-        client.login(username='user', password='pass')
-        request = client.get(reverse('albums-list'))
-        self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 2)
-
     def test_list_albums4(self):
-        """ filter by period """
+        """
+        Description: get albums with period filter
+        API: albums?start=start_date&end=end_date
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 1
+        """
         assign_perm('view_album', self.user, self.album)
 
         album_date = datetime.date.today() + datetime.timedelta(days=10)
@@ -84,7 +108,16 @@ class AlbumViewTests(TestCase):
         self.assertEqual(len(request.data), 1)
 
     def test_list_albums5(self):
-        """ filter by period """
+        """
+        Description: Get albums filtered by period
+                      The request is made by a user different than owner which have "view_album" permissions
+        API: /albums?start=start_date&end=end_date
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2 album
+        """
         assign_perm('view_album', self.user, self.album)
 
         album_date = datetime.date.today() + datetime.timedelta(days=10)
@@ -105,7 +138,15 @@ class AlbumViewTests(TestCase):
         self.assertEqual(len(request.data), 2)
 
     def test_list_albums_404(self):
-        """ test get all albums by other"""
+        """
+        Description: Get albums by user with no view permission
+        API: /albums/
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 0 albums
+        """
         client = APIClient()
         client.login(username='other', password='word')
         request = client.get(reverse('albums-list'))
@@ -113,7 +154,15 @@ class AlbumViewTests(TestCase):
         self.assertEqual(len(request.data), 0)
 
     def test_list_albums_by_user(self):
-        """ test API albums/user/{user_id}"""
+        """
+        Description: Get albums owned by user_id
+        API: albums/user/{user_id}
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 1
+        """
         assign_perm('view_album', self.batman, self.album)
         client = APIClient()
         client.login(username='batman', password='word')
@@ -122,9 +171,14 @@ class AlbumViewTests(TestCase):
         self.assertEqual(len(request.data), 1)
 
     def test_list_albums_by_user2(self):
-        """ test API albums/user/{user_id}
-            Log as batman with no with permission.
-            Should get 200 but 0 albums
+        """
+        Description: Get albums by user with no view permission
+        API: test API albums/user/{user_id}
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 0
         """
         client = APIClient()
         client.login(username='batman', password='word')
@@ -133,9 +187,14 @@ class AlbumViewTests(TestCase):
         self.assertEqual(len(request.data), 0)
 
     def test_list_albums_by_user3(self):
-        """ test API albums/user/{user_id}
-            Log as user.
-            Should get 200 but 1 albums ( I'm getting my own albums)
+        """
+        Description: Getting my own albums
+        API: albums/user/{user_id}
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 0
         """
         client = APIClient()
         client.login(username='user', password='pass')
@@ -144,6 +203,15 @@ class AlbumViewTests(TestCase):
         self.assertEqual(len(request.data), 1)
 
     def test_create_album(self):
+        """
+        Description: Create album
+        API: /album/
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
         client = APIClient()
         client.login(username='user', password='pass')
 
@@ -165,7 +233,15 @@ class AlbumViewTests(TestCase):
         self.assertTrue(self.user.has_perm('add_permissions', album))
 
     def test_create_album_fail(self):
-        """ Test create album when user has no permissions"""
+        """
+        Description: Test create album when user has no permissions
+        API: /album/
+        Method:POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         data = dict()
@@ -176,6 +252,15 @@ class AlbumViewTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_update_album(self):
+        """
+        Description: Update album
+        API: /albums/{id}
+        Method: PUT
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
         assign_perm('change_album', self.user, self.album)
 
         client = APIClient()
@@ -187,6 +272,15 @@ class AlbumViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_album(self):
+        """
+        Description: Delete album
+        API: /album/{id}/
+        Method: PUT
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 204 NO CONTENT
+        Expected values:
+        """
         assign_perm('delete_album', self.user, self.album)
 
         client = APIClient()
@@ -197,7 +291,15 @@ class AlbumViewTests(TestCase):
         self.assertEqual(len(Photo.objects.all()), 0)
 
     def test_delete_album2(self):
-        """ Fail no permission to delete album """
+        """
+        Description: Delete album but no delete permission
+        API: /album/{id}
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
+        """
         client = APIClient()
         client.login(username='batman', password='word')
         response = client.delete(reverse('album-detail', args=[self.album.id]))
