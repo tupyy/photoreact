@@ -30,7 +30,15 @@ class AlbumTagAPITest(TestCase):
         self.album.tags.add(self.tag_bar, self.tag_foo)
 
     def test_get_tags(self):
-        """ GET /album/{id}/tags """
+        """
+        Description: Get tag of album id
+        API: /album/{id}/tags
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2 tags
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.get('/album/{}/tags/'.format(self.album.id))
@@ -39,8 +47,13 @@ class AlbumTagAPITest(TestCase):
 
     def test_get_tags_fail(self):
         """
-            GET /album/{id}/tags
-            Expected: 403 no permissions
+        Description: Get albums tags no view permission
+        API: /album/{id}/tags
+        Method:
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
         """
         client = APIClient()
         client.login(username='batman', password='word')
@@ -49,8 +62,13 @@ class AlbumTagAPITest(TestCase):
 
     def test_get_tags_404(self):
         """
-            GET /album/{id}/tags
-            Expected: 403 no permissions
+        Description: Get a missing album
+        API: /album/{id}/tags
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 404
+        Expected values:
         """
         client = APIClient()
         client.login(username='batman', password='word')
@@ -58,7 +76,15 @@ class AlbumTagAPITest(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_add_tags(self):
-        """ POST /album/{id}/tag """
+        """
+        Description: Add tags
+        API: /album/{id}/tags
+        Method:POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         data = list()
@@ -70,8 +96,14 @@ class AlbumTagAPITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_add_tags2(self):
-        """ POST /album/{id}/tag
-            Tag do not exits. create it..
+        """
+        Description: Add tag . Create tag because it doesn't exist
+        API: /album/{id}/tags
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
         """
         client = APIClient()
         client.login(username='user', password='pass')
@@ -84,10 +116,14 @@ class AlbumTagAPITest(TestCase):
 
     def test_add_tags3(self):
         """
-            POST /album/{id}/tag
-            Fail no permission
-
-         """
+        Description: Try to add tag when user hasn't "change" permission
+        API: /album/{id}/tags
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
+        """
         assign_perm('view_album', self.batman, self.album)
         client = APIClient()
         client.login(username='batman', password='word')
@@ -99,7 +135,15 @@ class AlbumTagAPITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_delete_tag(self):
-        """ DELETE /album/{id}/tag/{id tag}/ """
+        """
+        Description: Delete tag
+        API: /album/{id}/tag/{id tag}/
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 1 tag left
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.delete('/album/{}/tag/{}/'.format(self.album.id,
@@ -108,8 +152,14 @@ class AlbumTagAPITest(TestCase):
         self.assertEqual(self.album.tags.count(), 1)
 
     def test_delete_tag_fail(self):
-        """ DELETE /album/{id}/tag/{id tag}/
-            Fail no permission
+        """
+        Description: Delete tag when user hasn't no permission
+        API: /album/{id}/tag/{id tag}/
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
         """
         assign_perm('view_album', self.batman, self.album)
         client = APIClient()
@@ -119,7 +169,15 @@ class AlbumTagAPITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_put_tag(self):
-        """ PUT /album/{id}/tag/{id tag}/ """
+        """
+        Description: Change tag
+        API: /album/{id}/tag/{id tag}/
+        Method: PUT
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
         new_tag = Tag.objects.create(name="hey")
         client = APIClient()
         client.login(username='user', password='pass')
@@ -132,7 +190,15 @@ class AlbumTagAPITest(TestCase):
         self.assertEqual(self.album.tags.last().name, 'hey')
 
     def test_put_tag2(self):
-        """ PUT /album/{id}/tag/{id tag}/ """
+        """
+        Description: Change tag
+        API: /album/{id}/tag/{id tag}/
+        Method: PUT
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2 tags
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.put('/album/{}/tag/{}/'.format(self.album.id,

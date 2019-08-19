@@ -34,7 +34,15 @@ class AlbumPermissionAPITest(TestCase):
         assign_perm('change_album', self.group, self.album)
 
     def test_get_permissions(self):
-        """ GET /album/{id}/permissions """
+        """
+        Description: Get permission for album id
+        API:/album/{id}/permissions
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.get('/album/{}/permissions/'.format(self.album.id))
@@ -44,8 +52,14 @@ class AlbumPermissionAPITest(TestCase):
         self.assertEqual(response.data[0][2]['username'], 'other')
 
     def test_get_permissions_fail(self):
-        """ GET /album/{id}/permissions
-            Album not found
+        """
+        Description:  Get permission for a missing album
+        API: /album/{id}/permissions
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 404
+        Expected values:
         """
         client = APIClient()
         client.login(username='user', password='pass')
@@ -53,8 +67,14 @@ class AlbumPermissionAPITest(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_get_permissions_fail2(self):
-        """ GET /album/{id}/permissions
-            Not owner => should get 403
+        """
+        Description: Try to get permission by another user than the owner
+        API: /album/{}/permissions
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
         """
         client = APIClient()
         client.login(username='batman', password='word')
@@ -62,7 +82,15 @@ class AlbumPermissionAPITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_add_permissions(self):
-        """ POST /album/{id}/permissions """
+        """
+        Description: Add permission
+        API: /album/{id}/permissions
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.post('/album/{}/permissions/'.format(self.album.id),
@@ -80,7 +108,15 @@ class AlbumPermissionAPITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_permissions(self):
-        """ DELETE /album/{id}/permissions """
+        """
+        Description: Delete permissions
+        API: /album/{id}/permissions
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.delete('/album/{}/permissions/'.format(self.album.id),
@@ -109,9 +145,13 @@ class AlbumPermissionAPITest(TestCase):
 
     def test_delete_permissions2(self):
         """
-            DELETE /album/{id}/permissions
-            Try to delete a permission from the owner's permissions.
-            Expect: no changing. Changing permissions by owner for owner is not allowed
+        Description: Delete permission by another user than owner
+        API: /album/{id}/permissions
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
         """
         client = APIClient()
         client.login(username='user', password='pass')

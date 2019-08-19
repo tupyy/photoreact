@@ -48,7 +48,15 @@ class PhotoViewAPITest(TestCase):
         assign_perm('gallery.view_photo', self.group, self.photo)
 
     def test_get_photos(self):
-        """ GET /photo/album/{id}/ """
+        """
+        Description: Get photos of album id
+        API: /photo/album/{id}/
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2
+        """
         client = APIClient()
         client.login(username='batman', password='word')
         response = client.get('/photos/album/{}/'.format(self.album.id))
@@ -56,7 +64,16 @@ class PhotoViewAPITest(TestCase):
         self.assertEqual(len(response.data), 2)
 
     def test_get_photos2(self):
-        """ GET /photo/album/{id}/ """
+        """
+        Description: Get photo of album. Superman has the right to view only one photo
+                     through group "group"
+        API: /photo/album/{id}/
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 1
+        """
         client = APIClient()
         client.login(username='superman', password='word')
         response = client.get('/photos/album/{}/'.format(self.album.id))
@@ -64,8 +81,14 @@ class PhotoViewAPITest(TestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_get_photos_fail(self):
-        """ GET /photo/album/{id}/
-            No view_album permission
+        """
+        Description: Trying to get photo without view permission
+        API: /photo/album/{id}/
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
         """
         client = APIClient()
         client.login(username='other', password='word')
@@ -74,7 +97,13 @@ class PhotoViewAPITest(TestCase):
 
     def test_sign_photo(self):
         """
-        test sign url for post method
+        Description: Test photo signing
+        API: /photo/sign/album/{}/
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
         """
         client = APIClient()
         client.login(username="user", password="pass")
@@ -85,7 +114,13 @@ class PhotoViewAPITest(TestCase):
 
     def test_sign_photo_admin(self):
         """
-        test sign url for post method
+        Description: Test sign photo by a superuser
+        API: /photo/sign/album/{}/
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
         """
         admin = User.objects.create_superuser('admin', 'user@gallery', 'pass')
         client = APIClient()
@@ -97,7 +132,13 @@ class PhotoViewAPITest(TestCase):
 
     def test_sign_photo_fail(self):
         """
-        no permission => 403
+        Description: Try to sign a photo for an album for which the current user has no "add_photos" permission
+        API: /photo/sign/album/{}
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
         """
         client = APIClient()
         client.login(username="batman", password="word")
@@ -106,7 +147,13 @@ class PhotoViewAPITest(TestCase):
 
     def test_add_photo(self):
         """
-        test add post method
+        Description: Test add photo api
+        API: /photo/album/{}/
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
         """
         client = APIClient()
         client.login(username="user", password="pass")
@@ -117,18 +164,45 @@ class PhotoViewAPITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_photo(self):
+        """
+        Description: Delete photo
+        API:/photo/{id}/
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 204
+        Expected values:
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.delete('/photo/{}/'.format(self.photo.id))
         self.assertEqual(response.status_code, 204)
 
     def test_delete_photo_no_permission(self):
+        """
+        Description: Delete photo but no "delete_photo" permission
+        API: /photo/{id}
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
+        """
         client = APIClient()
         client.login(username='batman', password='word')
         response = client.delete('/photo/{}/'.format(self.photo.id))
         self.assertEqual(response.status_code, 403)
 
     def test_delete_photo_assign_permission(self):
+        """
+        Description: Delete photo but assign permission
+        API: /photo/{id}
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 204
+        Expected values:
+        """
         assign_perm('delete_photos', self.batman, self.album)
         client = APIClient()
         client.login(username='batman', password='word')
