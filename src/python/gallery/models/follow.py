@@ -6,7 +6,7 @@ from gallery.models.album import Album
 
 class FollowUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    followed_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    followed_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed_user")
 
     class Meta:
         verbose_name = "followed user"
