@@ -20,7 +20,7 @@
 | POST   | /album/{id}/favorites/                | Make album favorites for user        |                       |       |         |
 | DELETE | /album/{id}/favorites/                | Remove album from favorites          |                       |       |         |
 | GET    | /photos/album/{id}/                   | Get photos for album *id*            | view_photo view_album |       |         |
-| POST   | /photo/sign/                          | Generate presign S2 URL              | add_photos            |       |         |
+| POST   | /photo/sign/album/{id}                | Generate presign S2 URL              | add_photos            |       |         |
 | POST   | /photo/album/{id}/                    | Add photo to album *id*              | add_photos            |       |         |
 | DELETE | /photo/{id}/                          | Delete photo *id*                    | delete_photos         |       |         |
 ## Album 
