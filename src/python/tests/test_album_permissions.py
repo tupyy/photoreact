@@ -49,7 +49,6 @@ class AlbumPermissionAPITest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data[0]), 3)
         self.assertEqual(len(response.data[1]), 1)
-        self.assertEqual(response.data[0][2]['username'], 'other')
 
     def test_get_permissions_fail(self):
         """

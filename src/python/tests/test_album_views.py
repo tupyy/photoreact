@@ -105,7 +105,7 @@ class AlbumViewTests(TestCase):
 
         request = client.get(url)
         self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 1)
+        self.assertEqual(request.data.get('size'), 1)
 
     def test_list_albums5(self):
         """
@@ -151,7 +151,7 @@ class AlbumViewTests(TestCase):
         client.login(username='other', password='word')
         request = client.get(reverse('albums-list'))
         self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 0)
+        self.assertEqual(request.data.get('size'), 0)
 
     def test_list_albums_by_user(self):
         """
@@ -168,7 +168,7 @@ class AlbumViewTests(TestCase):
         client.login(username='batman', password='word')
         request = client.get(reverse('albums-get_by_user', args=(self.user.id,)))
         self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 1)
+        self.assertEqual(request.data.get('size'), 1)
 
     def test_list_albums_by_user2(self):
         """
@@ -184,7 +184,7 @@ class AlbumViewTests(TestCase):
         client.login(username='batman', password='word')
         request = client.get(reverse('albums-get_by_user', args=(self.user.id,)))
         self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 0)
+        self.assertEqual(request.data.get('size'), 0)
 
     def test_list_albums_by_user3(self):
         """
@@ -200,7 +200,7 @@ class AlbumViewTests(TestCase):
         client.login(username='user', password='pass')
         request = client.get(reverse('albums-get_by_user', args=(self.user.id,)))
         self.assertEqual(request.status_code, 200)
-        self.assertEqual(len(request.data), 1)
+        self.assertEqual(request.data.get('size'), 1)
 
     def test_create_album(self):
         """
