@@ -43,10 +43,10 @@ class TestAlbumSerializer(TestCase):
 
     def test_favorites(self):
         self.album.favorites.add(self.batman)
-        self.assertTrue(self.album.is_favorites(self.batman))
+        self.assertTrue(self.batman in self.album.favorites.all())
 
     def test_favorites2(self):
-        self.assertFalse(self.album.is_favorites(self.batman))
+        self.assertFalse(self.batman in self.album.favorites.all())
 
     def test_photo_serializer(self):
         p = PhotoSerializer(self.photo)
