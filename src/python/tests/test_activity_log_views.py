@@ -36,6 +36,13 @@ class TestAlbumSerializer(TestCase):
                 activity_log.save()
 
     def test_get_activities(self):
+        """
+        Description: Test basic GET API
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200 OK
+        Expected values: 200 activities logs on 2 pages
+        """
         client = APIClient()
         client.login(username='batman', password='pass')
         response = client.get('/activities/')
@@ -48,8 +55,11 @@ class TestAlbumSerializer(TestCase):
 
     def test_get_activities_2(self):
         """
-        Test filter end_date.
-        Expect 0
+        Description: Test GET API with end date before the first date of the queryset
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 0 activity log entries
         """
         client = APIClient()
         client.login(username='batman', password='pass')
@@ -59,8 +69,11 @@ class TestAlbumSerializer(TestCase):
 
     def test_get_activities_3(self):
         """
-        Test filter end_date.
-        Expect 0
+        Description: Test GET API. The logged user is not superuser so we expect the queryset to be filtered
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200 OK
+        Expected values: 100 entries. Only the superman entries
         """
         client = APIClient()
         client.login(username='superman', password='pass')

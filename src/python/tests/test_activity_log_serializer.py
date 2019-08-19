@@ -1,12 +1,12 @@
 from datetime import datetime
+
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
 
-from gallery.models.album import Album
 from gallery.models.album import ActivityLog
+from gallery.models.album import Album
 from gallery.models.photo import Photo
 from gallery.serializers.log_serializer import ActivityLogSerializer
-from gallery.serializers.serializers import AlbumSerializer, PhotoSerializer
 
 
 class TestAlbumSerializer(TestCase):
@@ -25,6 +25,12 @@ class TestAlbumSerializer(TestCase):
         self.album.save()
 
     def test_serializer_fields(self):
+        """
+        Description: test some of the serializer fields
+        Date: 19/08/2019
+        User: cosmin
+        Expect:
+        """
         activity_log = ActivityLog(content_object=self.album, activity='C', user=self.user)
         activity_log.save()
 

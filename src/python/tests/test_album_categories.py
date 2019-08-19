@@ -1,9 +1,7 @@
 import datetime
 
-from django.contrib.auth.models import Group, User, Permission
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Group, User
 from django.test import TestCase
-from django.urls import reverse
 from guardian.shortcuts import assign_perm
 from rest_framework.test import APIClient
 
@@ -32,7 +30,15 @@ class AlbumCategoryAPITest(TestCase):
         self.album.categories.add(self.category_bar, self.category_foo)
 
     def test_get_categories(self):
-        """ GET /album/{id}/categories """
+        """
+        Description: Get basic categories
+        API: /album/{]/categories/
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2 categories
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.get('/album/{}/categories/'.format(self.album.id))
@@ -41,8 +47,13 @@ class AlbumCategoryAPITest(TestCase):
 
     def test_get_categories_fail(self):
         """
-            GET /album/{id}/categories
-            Expected: 403 no permissions
+        Description: Test get categories when user has no view permission on the album
+        API: /album/{}/categories/
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
         """
         client = APIClient()
         client.login(username='batman', password='word')
@@ -51,8 +62,13 @@ class AlbumCategoryAPITest(TestCase):
 
     def test_get_categories_404(self):
         """
-            GET /album/{id}/categories
-            Expected: 403 no permissions
+        Description: Test get categories when album do not exists
+        API: /album/{}/categories/
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 404
+        Expected values:
         """
         client = APIClient()
         client.login(username='batman', password='word')
@@ -60,7 +76,15 @@ class AlbumCategoryAPITest(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_add_categories(self):
-        """ POST /album/{id}/category """
+        """
+        Description: Add new category to album
+        API: /album/{}/category
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         data = list()
@@ -73,10 +97,14 @@ class AlbumCategoryAPITest(TestCase):
 
     def test_add_categories2(self):
         """
-            POST /album/{id}/category
-            Fail no permission
-
-         """
+        Description: Test add new categories without permission
+        API: /album/{}/category
+        Method: POST
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
+        """
         assign_perm('view_album', self.batman, self.album)
         client = APIClient()
         client.login(username='batman', password='word')
@@ -88,7 +116,15 @@ class AlbumCategoryAPITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_delete_category(self):
-        """ DELETE /album/{id}/category/{name category}/ """
+        """
+        Description: Remove category from album
+        API: /album/{id}/category/{name category}/
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200 OK
+        Expected values: 1 category left
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.delete('/album/{}/category/{}/'.format(self.album.id,
@@ -97,8 +133,14 @@ class AlbumCategoryAPITest(TestCase):
         self.assertEqual(self.album.categories.count(), 1)
 
     def test_delete_category_fail(self):
-        """ DELETE /album/{id}/category/{name category}/
-            Fail no permission
+        """
+        Description: Test delete category with no permission
+        API: /album/{id}/category/{name category}/
+        Method: DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 403
+        Expected values:
         """
         assign_perm('view_album', self.batman, self.album)
         client = APIClient()
@@ -108,7 +150,15 @@ class AlbumCategoryAPITest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_put_category(self):
-        """ PUT /album/{id}/category/{name category}/ """
+        """
+        Description: Change category
+        API: /album/{id}/category/{name category}/
+        Method: PUT
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2 categories. the last one is replaced by the new one
+        """
         new_cat = Category.objects.create(name="hey")
         client = APIClient()
         client.login(username='user', password='pass')
@@ -121,6 +171,15 @@ class AlbumCategoryAPITest(TestCase):
         self.assertEqual(self.album.categories.last().name, 'hey')
 
     def test_favorites_post(self):
+        """
+        Description: Test both POST and DELETE favorite API
+        API: /album/{}/favorites
+        Method: POST / DELETE
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
         client = APIClient()
         client.login(username='user', password='pass')
         response = client.post('/album/{}/favorites/'.format(self.album.id))
