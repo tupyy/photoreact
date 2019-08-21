@@ -1,9 +1,8 @@
 ## Activity log API
 
-#### **GET** */activities/?start_date={date}&end_date={date}&page={number_of_page}&activity_type='C'*
+#### **GET** */activities/?start_date={date}&end_date={date}&page={number_of_page}*
 
-Get activities log for current user filtered by period and ordered by date for 
-activity type *activity_type*.
+Get activities log for current user filtered by period and ordered by date  
 > Page size is set to 100 entries.
 
 Response:
