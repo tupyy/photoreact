@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from gallery.models.album import Album
-from gallery.models.album import ActivityLog
+from gallery.models.activity_log import ActivityLog
 from gallery.models.photo import Photo
 from gallery.serializers.serializers import AlbumSerializer, PhotoSerializer
 

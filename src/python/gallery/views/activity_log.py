@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from gallery.filters.activity_log_filter import ActivityLogFilter
-from gallery.models.album import ActivityLog
+from gallery.models.activity_log import ActivityLog
 from gallery.serializers.log_serializer import ActivityLogSerializer
 
 
