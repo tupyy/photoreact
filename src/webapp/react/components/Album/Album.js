@@ -7,11 +7,11 @@ import PlayIcon from '@material-ui/icons/PlayArrow';
 import CardMedia from "@material-ui/core/CardMedia";
 import {CardContent, withStyles} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import styles from "./AlbumCard.module.css";
+import styles from "./Album.module.css";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 
-class AlbumCard extends React.Component {
+class Album extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -51,4 +51,4 @@ class AlbumCard extends React.Component {
     }
 }
 
-export default withStyles(styles)(AlbumCard)
+export default withStyles(styles)(Album)

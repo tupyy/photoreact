@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from './components/Navbar/Navbar';
 import {connect} from "react-redux";
-import AlbumCard from "./components/AlbumCard/AlbumCard";
+import AlbumContainer from "./components/AlbumContainer/AlbumContainer";
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -11,8 +11,12 @@ export default class Home extends React.Component {
     render() {
         return (
             <div>
-                <Navbar />
-                <AlbumCard title="Casa" albumDate="20 Iulie 2019" albumDescription="Lucrari in casa"/>
+                <Navbar/>
+                <AlbumContainer
+                    columns = {3}
+                    rows = {1}
+                    source = this.props.favoritesAlbums
+                />
             </div>
         )
     }
@@ -20,7 +24,8 @@ export default class Home extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        authentication: state.authentication
+        authentication: state.authentication,
+        favoritesAlbums: state.albums.favorites
     };
 };
 
