@@ -64,7 +64,7 @@ class TestAlbumSerializer(TestCase):
         """
         client = APIClient()
         client.login(username='batman', password='pass')
-        response = client.get('/activities/?end_date=01/01/2019')
+        response = client.get('/activities/?end=01/01/2019')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['count'], 0)
 
@@ -81,6 +81,24 @@ class TestAlbumSerializer(TestCase):
         response = client.get('/activities/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['count'], 100)
+
+    def test_get_activityes_filter(self):
+        """
+        Description: Test activity type filter
+        API: /activities/?activity_type=C
+        Method: GET
+        Date: 25/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
+        client = APIClient()
+        client.login(username='superman', password='pass')
+        response = client.get('/activities/?activity=C')
+        self.assertEqual(response.status_code, 200)
+        results = response.data['results']
+        for result in results:
+            self.assertEqual(result.get('activity'), 'C')
 
     def random_date(self, start_date, end_date):
         timestamp_start = start_date.timestamp()

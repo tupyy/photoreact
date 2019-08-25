@@ -4,9 +4,10 @@ from gallery.models.activity_log import ActivityLog
 
 
 class ActivityLogFilter(filters.FilterSet):
-    start_date = filters.DateFilter(field_name="date", lookup_expr='gte')
-    end_date = filters.DateFilter(field_name="date", lookup_expr='lte')
+    start = filters.DateFilter(field_name="date", lookup_expr='gte')
+    end = filters.DateFilter(field_name="date", lookup_expr='lte')
+    activity = filters.ChoiceFilter(choices=ActivityLog.ACTIVITY_TYPE)
 
     class Meta:
         model = ActivityLog
-        fields = ['start_date', 'end_date']
+        fields = ['start', 'end', 'activity']
