@@ -1,67 +1,62 @@
 from collections import Iterable
-from datetime import datetime
 
 from django.contrib.auth.models import User, Group
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django_filters import rest_framework as filters
 from guardian.mixins import PermissionListMixin, PermissionRequiredMixin
 from guardian.models import UserObjectPermission, GroupObjectPermission
 from guardian.shortcuts import assign_perm, remove_perm
 from rest_framework import status, mixins
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.decorators import action
+from rest_framework.filters import OrderingFilter
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from gallery.filters.album_filter import AlbumFilter
 from gallery.models.album import Album
 from gallery.models.category import Category, Tag
 from gallery.permissions.owner_permission import IsOwner
 from gallery.serializers.serializers import AlbumSerializer, CategorySerializer, TagSerializer
 
 
-class AlbumFilterListMixin(object):
+class AlbumOrderingMixin(object):
 
-    def get_queryset(self):
-        qs = super().get_queryset()
-        qs = self.filter_by_name(qs)
-        qs = self.filter_by_period(qs)
-        return qs
-
-    def filter_by_name(self, qs):
-        owner = self.request.query_params.get('owner', None)
-        if owner is not None:
-            qs = qs.filter(owner__id=owner)
-        return qs
-
-    def filter_by_period(self, qs):
-        start_date_str = self.request.query_params.get('start', None)
-        end_date_str = self.request.query_params.get('end', None)
-
-        if (start_date_str and end_date_str) is not None:
-            start_date = datetime.strptime(start_date_str, "%d-%m-%Y")
-            end_date = datetime.strptime(end_date_str, "%d-%m-%Y")
-            date_cond = Q(date__gte=start_date)
-            date_cond &= Q(date__lte=end_date)
-            qs = qs.filter(date_cond)
-        return qs
+    def get_ordering(self, qs):
+        order_fields = self.request.query_params.get('ordering')
+        if order_fields is None:
+            return qs
+        return qs.order_by(order_fields)
 
 
-class AlbumListView(AlbumFilterListMixin,
-                    PermissionListMixin,
+class AlbumListView(PermissionListMixin,
+                    AlbumOrderingMixin,
                     ListAPIView,
                     GenericViewSet):
+
     queryset = Album.objects
     serializer_class = AlbumSerializer
     lookup_field = 'id'
+
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = AlbumFilter
 
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     permission_required = 'view_album'
 
     def list(self, request, *args, **kwargs):
-        qs = self.get_queryset()
+        qs = self.get_ordering(self.filter_queryset(self.get_queryset()))
+
+        limit = self.request.query_params.get('limit', None)
+        try:
+            if limit is not None:
+                qs = qs.all()[:int(limit)]
+        except ValueError:
+            pass
+
         serializer = self.get_serializer(qs, many=True)
         data = dict()
         data['size'] = qs.count()
@@ -367,7 +362,6 @@ class AlbumPermissionView(GenericViewSet):
 
 class AlbumFavoriteView(PermissionRequiredMixin,
                         GenericViewSet):
-
     model = Album
     queryset = Album.objects
     serializer_class = AlbumSerializer
