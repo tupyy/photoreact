@@ -100,8 +100,35 @@ class AlbumViewTests(TestCase):
         client.login(username='user', password='pass')
 
         url = "{}?{}&{}".format(reverse('albums-list'),
-                                "start=" + datetime.date.today().strftime("%d-%m-%Y"),
-                                "end=" + datetime.date.today().strftime("%d-%m-%Y"))
+                                "start=" + datetime.date.today().strftime("%Y-%m-%d"),
+                                "end=" + datetime.date.today().strftime("%Y-%m-%d"))
+
+        request = client.get(url)
+        self.assertEqual(request.status_code, 200)
+        self.assertEqual(request.data.get('size'), 1)
+
+    def test_album_list_limit(self):
+        """
+        Description: Test limit the queryset
+        API: albums/?limit=1
+        Method: GET
+        Date: 25/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 1
+        """
+        assign_perm('view_album', self.user, self.album)
+
+        album_date = datetime.date.today() + datetime.timedelta(days=10)
+        album2 = Album.objects.create(folder_path='bar', date=album_date, owner=self.user, name='bar')
+        assign_perm('view_album', self.user, album2)
+
+        album2.save()
+        client = APIClient()
+        client.login(username='user', password='pass')
+
+        url = "{}?{}".format(reverse('albums-list'),
+                                "limit=1")
 
         request = client.get(url)
         self.assertEqual(request.status_code, 200)
@@ -130,12 +157,68 @@ class AlbumViewTests(TestCase):
 
         end_date = datetime.date.today() + datetime.timedelta(days=30)
         url = "{}?{}&{}".format(reverse('albums-list'),
-                                "start=" + datetime.date.today().strftime("%d-%m-%Y"),
-                                "end=" + end_date.strftime("%d-%m-%Y"))
+                                "start=" + datetime.date.today().strftime("%Y-%m-%d"),
+                                "end=" + end_date.strftime("%Y-%m-%d"))
 
         request = client.get(url)
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data), 2)
+
+    def test_list_albums_order_1(self):
+        """
+        Description: Test ordering by date
+        API: /albums?ordering=name
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2 album bar album is the first
+        """
+        assign_perm('view_album', self.user, self.album)
+
+        album_date = datetime.date.today() + datetime.timedelta(days=10)
+        album2 = Album.objects.create(folder_path='bar', date=album_date, owner=self.user, name='bar')
+        assign_perm('view_album', self.user, album2)
+
+        album2.save()
+        client = APIClient()
+        client.login(username='user', password='pass')
+
+        url = "{}?{}".format(reverse('albums-list'),
+                                "ordering=name")
+
+        request = client.get(url)
+        self.assertEqual(request.status_code, 200)
+        self.assertEqual(request.data['size'], 2)
+        self.assertEqual(request.data['albums'][0]['id'], album2.id)
+
+    def test_list_albums_order_2(self):
+        """
+        Description: Test ordering by date
+        API: /albums?ordering=-date
+        Method: GET
+        Date: 19/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2 album bar album is the first
+        """
+        assign_perm('view_album', self.user, self.album)
+
+        album_date = datetime.date.today() + datetime.timedelta(days=10)
+        album2 = Album.objects.create(folder_path='bar', date=album_date, owner=self.user, name='bar')
+        assign_perm('view_album', self.user, album2)
+
+        album2.save()
+        client = APIClient()
+        client.login(username='user', password='pass')
+
+        url = "{}?{}".format(reverse('albums-list'),
+                             "ordering=name")
+
+        request = client.get(url)
+        self.assertEqual(request.status_code, 200)
+        self.assertEqual(request.data['size'], 2)
+        self.assertEqual(request.data['albums'][0]['id'], album2.id)
 
     def test_list_albums_404(self):
         """
