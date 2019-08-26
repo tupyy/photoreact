@@ -7,7 +7,7 @@
 
 # back
 /back/venv
-
+back/.idea
 # misc
 #
 .DS_Store
