@@ -41,7 +41,6 @@ class AlbumListView(PermissionListMixin,
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = AlbumFilter
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     permission_required = 'view_album'
 
@@ -88,7 +87,6 @@ class AlbumView(mixins.CreateModelMixin,
     serializer_class = AlbumSerializer
     lookup_field = "id"
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
@@ -126,7 +124,6 @@ class AlbumCategoryView(PermissionRequiredMixin,
     serializer_class = AlbumSerializer
     lookup_field = "id"
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     permission_required = 'view_album'
     raise_exception = True
@@ -194,7 +191,6 @@ class AlbumTagView(PermissionRequiredMixin,
     serializer_class = AlbumSerializer
     lookup_field = "id"
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     permission_required = 'view_album'
     raise_exception = True
@@ -264,7 +260,6 @@ class AlbumPermissionView(GenericViewSet):
     serializer_class = AlbumSerializer
     lookup_field = "id"
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated, IsOwner]
 
     @action(methods=['get', 'post', 'delete'],
@@ -365,7 +360,6 @@ class AlbumFavoriteView(PermissionRequiredMixin,
     serializer_class = AlbumSerializer
     lookup_field = "id"
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     permission_required = 'view_album'
     return_403 = True

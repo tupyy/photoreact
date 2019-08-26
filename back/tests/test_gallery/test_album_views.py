@@ -2,16 +2,16 @@ import datetime
 
 from django.contrib.auth.models import Group, User, Permission
 from django.contrib.contenttypes.models import ContentType
-from django.test import TestCase
 from django.urls import reverse
 from guardian.shortcuts import assign_perm
 from rest_framework.test import APIClient
 
 from gallery.models.album import Album
 from gallery.models.photo import Photo
+from tests.base_testcase import BaseViewTestCase
 
 
-class AlbumViewTests(TestCase):
+class AlbumViewTests(BaseViewTestCase):
 
     def setUp(self) -> None:
         self.group = Group.objects.create(name='group')
@@ -37,8 +37,9 @@ class AlbumViewTests(TestCase):
         Expected values:
         """
         assign_perm('view_album', self.user, self.album)
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
+
         request = client.get(reverse('album-detail', args=[self.album.id]))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(request.data['id'], self.album.id)
@@ -53,8 +54,8 @@ class AlbumViewTests(TestCase):
         Expected return code: 403
         Expected values:
         """
-        client = APIClient()
-        client.login(username='other', password='word')
+        self.login(username="other", password="word")
+        client = self.get_client()
         request = client.get(reverse('album-detail', args=[self.album.id]))
         self.assertEqual(request.status_code, 403)
 
@@ -73,8 +74,8 @@ class AlbumViewTests(TestCase):
         album2 = Album.objects.create(folder_path='bar', date=datetime.date.today(), owner=self.user, name='bar')
         assign_perm('view_album', self.user, album2)
 
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
         request = client.get(reverse('albums-list'))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(len(request.data['albums']), 2)
@@ -96,8 +97,8 @@ class AlbumViewTests(TestCase):
         assign_perm('view_album', self.user, album2)
 
         album2.save()
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
 
         url = "{}?{}&{}".format(reverse('albums-list'),
                                 "start=" + datetime.date.today().strftime("%Y-%m-%d"),
@@ -124,11 +125,10 @@ class AlbumViewTests(TestCase):
         assign_perm('view_album', self.user, album2)
 
         album2.save()
-        client = APIClient()
-        client.login(username='user', password='pass')
-
+        self.login(username="user", password="pass")
+        client = self.get_client()
         url = "{}?{}".format(reverse('albums-list'),
-                                "limit=1")
+                             "limit=1")
 
         request = client.get(url)
         self.assertEqual(request.status_code, 200)
@@ -152,8 +152,8 @@ class AlbumViewTests(TestCase):
         assign_perm('view_album', self.user, album2)
 
         album2.save()
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
 
         end_date = datetime.date.today() + datetime.timedelta(days=30)
         url = "{}?{}&{}".format(reverse('albums-list'),
@@ -181,11 +181,11 @@ class AlbumViewTests(TestCase):
         assign_perm('view_album', self.user, album2)
 
         album2.save()
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
 
         url = "{}?{}".format(reverse('albums-list'),
-                                "ordering=name")
+                             "ordering=name")
 
         request = client.get(url)
         self.assertEqual(request.status_code, 200)
@@ -209,8 +209,8 @@ class AlbumViewTests(TestCase):
         assign_perm('view_album', self.user, album2)
 
         album2.save()
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
 
         url = "{}?{}".format(reverse('albums-list'),
                              "ordering=name")
@@ -230,8 +230,8 @@ class AlbumViewTests(TestCase):
         Expected return code: 200
         Expected values: 0 albums
         """
-        client = APIClient()
-        client.login(username='other', password='word')
+        self.login(username="other", password="word")
+        client = self.get_client()
         request = client.get(reverse('albums-list'))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(request.data.get('size'), 0)
@@ -247,8 +247,8 @@ class AlbumViewTests(TestCase):
         Expected values: 1
         """
         assign_perm('view_album', self.batman, self.album)
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username="batman", password="word")
+        client = self.get_client()
         request = client.get(reverse('albums-get_by_user', args=(self.user.id,)))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(request.data.get('size'), 1)
@@ -263,8 +263,8 @@ class AlbumViewTests(TestCase):
         Expected return code: 200
         Expected values: 0
         """
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username="batman", password="word")
+        client = self.get_client()
         request = client.get(reverse('albums-get_by_user', args=(self.user.id,)))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(request.data.get('size'), 0)
@@ -279,8 +279,8 @@ class AlbumViewTests(TestCase):
         Expected return code: 200
         Expected values: 0
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
         request = client.get(reverse('albums-get_by_user', args=(self.user.id,)))
         self.assertEqual(request.status_code, 200)
         self.assertEqual(request.data.get('size'), 1)
@@ -295,8 +295,8 @@ class AlbumViewTests(TestCase):
         Expected return code: 200
         Expected values:
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
 
         content_type = ContentType.objects.get_for_model(Album)
         permission = Permission.objects.get(
@@ -325,8 +325,8 @@ class AlbumViewTests(TestCase):
         Expected return code: 403
         Expected values:
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
         data = dict()
         data['name'] = 'foo'
         data['folder_path'] = 'folder_path'
@@ -346,8 +346,8 @@ class AlbumViewTests(TestCase):
         """
         assign_perm('change_album', self.user, self.album)
 
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
         data = dict()
         data['name'] = 'bar'
         data['date'] = datetime.date.today()
@@ -366,8 +366,8 @@ class AlbumViewTests(TestCase):
         """
         assign_perm('delete_album', self.user, self.album)
 
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
         response = client.delete(reverse('album-detail', args=[self.album.id]))
         self.assertEqual(response.status_code, 204)
         self.assertEqual(len(Album.objects.all()), 0)
@@ -383,7 +383,7 @@ class AlbumViewTests(TestCase):
         Expected return code: 403
         Expected values:
         """
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username="batman", password="word")
+        client = self.get_client()
         response = client.delete(reverse('album-detail', args=[self.album.id]))
         self.assertEqual(response.status_code, 403)

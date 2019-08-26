@@ -2,46 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce4f4156-0dd9-4e37-86bd-31d6524253c7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/activity_log/filters/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/activity_log/serializers/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/activity_log/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_activity_log/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/base_testcase.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_gallery/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/filters/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/filters/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/filters/activity_log_filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/activity_log/filters/activity_log_filter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/migrations/0002_albumuserfavorites.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/migrations/0002_albumuserfavorites.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/migrations/0003_auto_20190812_1208.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/migrations/0003_auto_20190812_1208.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/migrations/0004_auto_20190812_1240.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/migrations/0004_auto_20190812_1240.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/migrations/0005_auto_20190812_1301.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/migrations/0005_auto_20190812_1301.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/migrations/0014_followalbum_followuser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/migrations/0014_followalbum_followuser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/models/activity_log.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/models/follow.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/serializers/log_serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/activity_log/serializers/log_serializer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/utils/s3_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/utils/s3_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/views/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/views/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/views/activity_log.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gallery/views/photo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/views/photo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/photogallery/settings/components/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/photogallery/settings/components/common.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/photogallery/settings/components/jwt.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/photogallery/settings/components/jwt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/photogallery/settings/environments/dev_work.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/photogallery/settings/environments/dev_work.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/photogallery/settings/environments/development.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/photogallery/settings/environments/development.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/photogallery/settings/environments/production.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/photogallery/settings/environments/production.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/photogallery/settings/utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/photogallery/settings/utils/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/photogallery/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/photogallery/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_activity_log_serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_activity_log/test_activity_log_serializer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_activity_log_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_activity_log/test_activity_log_views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_album_categories.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_gallery/test_album_categories.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_album_permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_gallery/test_album_permissions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_album_tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_gallery/test_album_tags.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_album_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_gallery/test_album_views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_photo_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_gallery/test_photo_views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_gallery/test_serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gallery/views/album.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/gallery/views/album.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_gallery/test_album_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_gallery/test_album_views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,13 +19,46 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/photogallery/settings/__init__.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/gallery/views/album.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="12" column="36" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
+            <state relative-caret-position="316">
+              <caret line="362" selection-start-line="362" selection-end-line="362" />
               <folding>
-                <element signature="e#127#149#0" expanded="true" />
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tests/test_gallery/test_album_views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="707">
+              <caret line="385" column="51" selection-start-line="385" selection-start-column="51" selection-end-line="385" selection-end-column="51" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/venv/lib/python3.6/site-packages/rest_framework/test.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1382">
+              <caret line="258" column="8" selection-start-line="258" selection-start-column="8" selection-end-line="258" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/photogallery/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="460">
+              <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
+              <folding>
+                <element signature="e#30#62#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -101,7 +99,6 @@
         <option value="$PROJECT_DIR$/src/gallery/serializers/log_serializer.py" />
         <option value="$PROJECT_DIR$/src/gallery/serializers/serializers.py" />
         <option value="$PROJECT_DIR$/src/gallery/filters/__init__.py" />
-        <option value="$PROJECT_DIR$/src/gallery/views/album.py" />
         <option value="$PROJECT_DIR$/src/gallery/views/photo.py" />
         <option value="$PROJECT_DIR$/src/gallery/admin.py" />
         <option value="$PROJECT_DIR$/src/gallery/models/activity_log.py" />
@@ -126,6 +123,10 @@
         <option value="$PROJECT_DIR$/src/gallery/apps.py" />
         <option value="$PROJECT_DIR$/src/photogallery/settings/environments/development.py" />
         <option value="$PROJECT_DIR$/src/photogallery/settings/environments/production.py" />
+        <option value="$PROJECT_DIR$/src/gallery/views/album.py" />
+        <option value="$PROJECT_DIR$/tests/test_gallery/__init__.py" />
+        <option value="$PROJECT_DIR$/tests/base_testcase.py" />
+        <option value="$PROJECT_DIR$/tests/test_gallery/test_album_views.py" />
       </list>
     </option>
   </component>
@@ -150,7 +151,25 @@
             <path>
               <item name="back" type="b2602c69:ProjectViewProjectNode" />
               <item name="back" type="462c0819:PsiDirectoryNode" />
+              <item name="doc" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="back" type="b2602c69:ProjectViewProjectNode" />
+              <item name="back" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="back" type="b2602c69:ProjectViewProjectNode" />
+              <item name="back" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="gallery" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="back" type="b2602c69:ProjectViewProjectNode" />
+              <item name="back" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="gallery" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="back" type="b2602c69:ProjectViewProjectNode" />
@@ -161,25 +180,7 @@
             <path>
               <item name="back" type="b2602c69:ProjectViewProjectNode" />
               <item name="back" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="photogallery" type="462c0819:PsiDirectoryNode" />
-              <item name="settings" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="back" type="b2602c69:ProjectViewProjectNode" />
-              <item name="back" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="photogallery" type="462c0819:PsiDirectoryNode" />
-              <item name="settings" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="back" type="b2602c69:ProjectViewProjectNode" />
-              <item name="back" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="photogallery" type="462c0819:PsiDirectoryNode" />
-              <item name="settings" type="462c0819:PsiDirectoryNode" />
-              <item name="environments" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -218,7 +219,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.test_gallery_album_views">
     <configuration name="manage" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="back" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -241,6 +242,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test_gallery_album_views" type="PythonConfigurationType" factoryName="Python">
+      <module name="back" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/manage.py" />
+      <option name="PARAMETERS" value="test tests.test_gallery.test_album_views.AlbumViewTests" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.manage" />
+      <item itemvalue="Python.test_gallery_album_views" />
+    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -254,22 +281,24 @@
       <updated>1566804836365</updated>
       <workItem from="1566804838518" duration="827000" />
       <workItem from="1566805689461" duration="3669000" />
+      <workItem from="1566809859036" duration="2441000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4496000" />
+    <option name="totallyTimeSpent" value="6937000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1680" y="0" width="1680" height="1014" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25274727" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25579977" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32908458" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.40556198" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39976826" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -278,7 +307,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32908458" />
-      <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.64310545" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -290,21 +319,24 @@
     <option name="version" value="1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/back$test_gallery_album_views.coverage" NAME="test_gallery_album_views Coverage Results" MODIFIED="1566815574844" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/back$manage.coverage" NAME="manage Coverage Results" MODIFIED="1566808107811" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>response.data</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>reponse.data</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/gallery/permissions/owner_permission.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="10" column="55" selection-start-line="10" selection-start-column="55" selection-end-line="10" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/photogallery/gallery/utils/imgutil.py" />
-    <entry file="file://$PROJECT_DIR$/src/photogallery/settings/components/gallery.py" />
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/photogallery/settings/components/logging.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
@@ -360,19 +392,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/activitylog/apps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gallery/models/activity_log.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gallery/views/activity_log.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/activitylog/apps.py" />
+    <entry file="file://$PROJECT_DIR$/src/gallery/models/activity_log.py" />
+    <entry file="file://$PROJECT_DIR$/src/gallery/views/activity_log.py" />
     <entry file="file://$PROJECT_DIR$/src/activity_log/filters/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -413,9 +435,7 @@
     <entry file="file://$PROJECT_DIR$/src/activity_log/models.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/gallery.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/gallery.py" />
     <entry file="file://$PROJECT_DIR$/src/gallery/models/category.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -470,30 +490,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gallery/models/follow.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gallery/views/album.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-230">
-          <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gallery/models/follow.py" />
     <entry file="file://$PROJECT_DIR$/src/gallery/serializers/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-167">
           <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/photogallery/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
-          <folding>
-            <element signature="e#30#62#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -584,6 +585,95 @@
           <caret line="12" column="36" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
           <folding>
             <element signature="e#127#149#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/gallery_apis.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/activity_log_apis.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_gallery/test_photo_views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gallery/views/album.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="362" selection-start-line="362" selection-end-line="362" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/photogallery/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
+          <folding>
+            <element signature="e#30#62#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/lib/python3.6/site-packages/rest_framework/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1382">
+          <caret line="258" column="8" selection-start-line="258" selection-start-column="8" selection-end-line="258" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_gallery/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/lib/python3.6/site-packages/django/test/testcases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1037">
+          <caret line="1085" column="6" selection-start-line="1085" selection-start-column="6" selection-end-line="1085" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.6/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="604" selection-start-line="604" selection-end-line="604" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/base_testcase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="13" column="70" lean-forward="true" selection-start-line="13" selection-start-column="70" selection-end-line="13" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_gallery/test_album_views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="707">
+          <caret line="385" column="51" selection-start-line="385" selection-start-column="51" selection-end-line="385" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
