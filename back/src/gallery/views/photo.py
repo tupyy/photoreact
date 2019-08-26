@@ -3,7 +3,6 @@ import hashlib
 from guardian.mixins import PermissionRequiredMixin
 from guardian.shortcuts import get_objects_for_user, assign_perm
 from rest_framework import status, mixins
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -23,7 +22,6 @@ class PhotoView(PermissionRequiredMixin,
     serializer_class = PhotoSerializer
     lookup_field = "id"
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     permission_required = "view_album"
     return_403 = True
@@ -46,7 +44,6 @@ class PhotoCreateView(PermissionRequiredMixin,
     queryset = Album.objects
     lookup_field = "id"
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     permission_required = "add_photos"
     return_403 = 403
@@ -109,7 +106,6 @@ class PhotoDeleteView(mixins.DestroyModelMixin,
     model = Photo
     queryset = Photo.objects
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):

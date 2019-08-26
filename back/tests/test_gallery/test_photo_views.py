@@ -1,15 +1,15 @@
 import datetime
 
 from django.contrib.auth.models import Group, User
-from django.test import TestCase
 from guardian.shortcuts import assign_perm
 from rest_framework.test import APIClient
 
 from gallery.models.album import Album
 from gallery.models.photo import Photo
+from tests.base_testcase import BaseViewTestCase
 
 
-class PhotoViewAPITest(TestCase):
+class PhotoViewAPITest(BaseViewTestCase):
 
     def setUp(self) -> None:
         self.group = Group.objects.create(name='allowed_users')
@@ -57,8 +57,8 @@ class PhotoViewAPITest(TestCase):
         Expected return code: 200
         Expected values: 2
         """
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username="batman", password="word")
+        client = self.get_client()
         response = client.get('/photos/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
@@ -74,8 +74,8 @@ class PhotoViewAPITest(TestCase):
         Expected return code: 200
         Expected values: 1
         """
-        client = APIClient()
-        client.login(username='superman', password='word')
+        self.login(username="superman", password="word")
+        client = self.get_client()
         response = client.get('/photos/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
@@ -90,8 +90,8 @@ class PhotoViewAPITest(TestCase):
         Expected return code: 403
         Expected values:
         """
-        client = APIClient()
-        client.login(username='other', password='word')
+        self.login(username="other", password="word")
+        client = self.get_client()
         response = client.get('/photos/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
@@ -105,8 +105,8 @@ class PhotoViewAPITest(TestCase):
         Expected return code: 200
         Expected values:
         """
-        client = APIClient()
-        client.login(username="user", password="pass")
+        self.login(username="user", password="pass")
+        client = self.get_client()
         response = client.post('/photo/sign/album/{}/'.format(self.album.id),
                                data={'filename': 'bar.jpg'},
                                format='json')
@@ -122,9 +122,9 @@ class PhotoViewAPITest(TestCase):
         Expected return code: 200
         Expected values:
         """
-        admin = User.objects.create_superuser('admin', 'user@gallery', 'pass')
-        client = APIClient()
-        client.login(username="admin", password="pass")
+        _ = User.objects.create_superuser('admin', 'user@gallery', 'pass')
+        self.login(username="admin", password="pass")
+        client = self.get_client()
         response = client.post('/photo/sign/album/{}/'.format(self.album.id),
                                data={'filename': 'bar.jpg'},
                                format='json')
@@ -140,8 +140,8 @@ class PhotoViewAPITest(TestCase):
         Expected return code: 403
         Expected values:
         """
-        client = APIClient()
-        client.login(username="batman", password="word")
+        self.login(username="batman", password="word")
+        client = self.get_client()
         response = client.post('/photo/sign/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
@@ -155,8 +155,8 @@ class PhotoViewAPITest(TestCase):
         Expected return code: 200
         Expected values:
         """
-        client = APIClient()
-        client.login(username="user", password="pass")
+        self.login(username="user", password="pass")
+        client = self.get_client()
         response = client.post('/photo/album/{}/'.format(self.album.id),
                                data={'filename': 'bar.jpg',
                                      'thumbnail': 'test.jpg'},
@@ -173,8 +173,8 @@ class PhotoViewAPITest(TestCase):
         Expected return code: 204
         Expected values:
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username="user", password="pass")
+        client = self.get_client()
         response = client.delete('/photo/{}/'.format(self.photo.id))
         self.assertEqual(response.status_code, 204)
 
@@ -204,7 +204,7 @@ class PhotoViewAPITest(TestCase):
         Expected values:
         """
         assign_perm('delete_photos', self.batman, self.album)
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username="batman", password="word")
+        client = self.get_client()
         response = client.delete('/photo/{}/'.format(self.photo.id))
         self.assertEqual(response.status_code, 204)
