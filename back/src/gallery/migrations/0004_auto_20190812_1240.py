@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='album',
             name='categories',
-            field=models.ManyToManyField(blank=True, to='src.gallery.Category'),
+            field=models.ManyToManyField(blank=True, to='gallery.Category'),
         ),
         migrations.DeleteModel(
             name='AlbumCategory',

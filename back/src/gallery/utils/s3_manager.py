@@ -1,6 +1,6 @@
 import boto3
 from botocore.config import Config
-from src.photogallery import settings
+from photogallery import settings
 
 
 def sign_url(http_method, filename):

@@ -8,9 +8,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from gallery.filters import ActivityLogFilter
-from gallery.models import ActivityLog
-from gallery.serializers.log_serializer import ActivityLogSerializer
+from activity_log.filters import ActivityLogFilter
+from activity_log.models import ActivityLog
+from activity_log.serializers.log_serializer import ActivityLogSerializer
 
 
 class StandardActivityLogPagination(PageNumberPagination):
@@ -52,3 +52,4 @@ class ActivityLogView(mixins.ListModelMixin,
             self.queryset = self.queryset.filter(user__id=self.request.user.id)
         self.queryset = self.queryset.order_by('-date')
         return super().list(request, *args, **kwargs)
+# Create your views here.

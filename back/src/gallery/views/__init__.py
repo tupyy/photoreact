@@ -12,6 +12,3 @@ from .photo import (
     PhotoDeleteView
 )
 
-from .activity_log import (
-    ActivityLogView,
-)

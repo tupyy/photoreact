@@ -50,16 +50,16 @@ class Migration(migrations.Migration):
             name='AlbumTag',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('album', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='src.gallery.Album')),
-                ('tag', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='src.gallery.Tag')),
+                ('album', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='gallery.Album')),
+                ('tag', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='gallery.Tag')),
             ],
         ),
         migrations.CreateModel(
             name='AlbumCategory',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('album', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='src.gallery.Album')),
-                ('category', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='src.gallery.Category')),
+                ('album', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='gallery.Album')),
+                ('category', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='gallery.Category')),
             ],
         ),
         migrations.CreateModel(
@@ -68,7 +68,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('filename', models.CharField(max_length=100, verbose_name='file name')),
                 ('date', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('album', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='src.gallery.Album')),
+                ('album', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gallery.Album')),
             ],
             options={
                 'verbose_name': 'video',
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                 ('filename', models.CharField(max_length=100, verbose_name='file name')),
                 ('date', models.DateTimeField(auto_now_add=True, db_index=True)),
                 ('thumbnail_file', models.CharField(max_length=100, verbose_name='thumbnail_name')),
-                ('album', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='src.gallery.Album')),
+                ('album', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gallery.Album')),
             ],
             options={
                 'verbose_name': 'photo',

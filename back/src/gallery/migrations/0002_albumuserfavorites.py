@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             name='AlbumUserFavorites',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('album', models.ManyToManyField(to='src.gallery.Album')),
+                ('album', models.ManyToManyField(to='gallery.Album')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

@@ -1,7 +1,7 @@
 import logging
 
 # Get an instance of a logger
-from src.photogallery import settings
+from photogallery import settings
 
 logger = logging.getLogger("django")
 

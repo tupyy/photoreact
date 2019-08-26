@@ -13,7 +13,7 @@ from gallery.models.album import Album
 from gallery.models.photo import Photo
 from gallery.serializers.serializers import PhotoSerializer
 from gallery.utils import s3_manager
-from src.photogallery import settings
+from photogallery import settings
 
 
 class PhotoView(PermissionRequiredMixin,

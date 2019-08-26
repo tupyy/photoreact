@@ -20,6 +20,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='album',
             name='tag',
-            field=models.ManyToManyField(blank=True, to='src.gallery.Tag'),
+            field=models.ManyToManyField(blank=True, to='gallery.Tag'),
         ),
     ]

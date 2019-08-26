@@ -8,7 +8,7 @@ values are overridden.
 """
 import os
 
-from src.photogallery.settings import parse_db_variable
+from photogallery.settings import parse_db_variable
 
 DEBUG = False
 

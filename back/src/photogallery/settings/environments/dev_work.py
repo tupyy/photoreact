@@ -1,7 +1,7 @@
 import os
 
-from src.photogallery.settings.components.database import DATABASES_DEV_WORK
-from src.photogallery.settings import utils
+from photogallery.settings.components.database import DATABASES_DEV_WORK
+from photogallery.settings import utils
 
 DEBUG = True
 

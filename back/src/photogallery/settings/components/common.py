@@ -10,7 +10,9 @@ INSTALLED_APPS = [
     'django_filters',
     'guardian',
     'corsheaders',
-    'gallery'
+    'gallery',
+    'activity_log',
+    'social'
 ]
 
 MIDDLEWARE = [
@@ -30,7 +32,7 @@ AUTHENTICATION_BACKENDS = (
 )
 ANONYMOUS_USER_NAME = None
 
-ROOT_URLCONF = 'src.photogallery.urls'
+ROOT_URLCONF = 'photogallery.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

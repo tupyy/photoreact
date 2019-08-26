@@ -1,5 +1,5 @@
 from datetime import timedelta
-from src.photogallery import settings
+from photogallery import settings
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),

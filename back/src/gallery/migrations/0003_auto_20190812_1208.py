@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='albumcategory',
             name='album',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='src.gallery.Album'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gallery.Album'),
         ),
         migrations.AlterField(
             model_name='albumcategory',
             name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='src.gallery.Category'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gallery.Category'),
         ),
     ]

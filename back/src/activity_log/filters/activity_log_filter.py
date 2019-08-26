@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from gallery.models import ActivityLog
+from activity_log.models import ActivityLog
 
 
 class ActivityLogFilter(filters.FilterSet):

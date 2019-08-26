@@ -28,3 +28,4 @@ class FollowAlbum(models.Model):
     def __str__(self):
         return "{}_follows_album_{}".format(self.user.username,
                                             self.album.id)
+
