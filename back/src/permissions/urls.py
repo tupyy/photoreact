@@ -1,8 +1,10 @@
 from __future__ import unicode_literals
 
 from rest_framework import routers
-from activity_log.views import ActivityLogView
+
+import permissions.views
 
 router = routers.SimpleRouter()
-router.register(r'activities', ActivityLogView, basename='activities')
+router.register(r'permissions', permissions.views.AlbumPermissionView, basename='permissions')
+
 urlpatterns = router.urls

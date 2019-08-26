@@ -3,9 +3,9 @@ from .album import (
     AlbumListView,
     AlbumCategoryView,
     AlbumTagView,
-    AlbumPermissionView,
     AlbumFavoriteView
 )
+from permissions.views import AlbumPermissionView
 from .photo import (
     PhotoView,
     PhotoCreateView,
