@@ -1,6 +1,7 @@
 import hashlib
 
-from guardian.mixins import PermissionRequiredMixin
+from django.views import View
+from permissions.mixins import PermissionRequiredMixin
 from guardian.shortcuts import get_objects_for_user, assign_perm
 from rest_framework import status, mixins
 from rest_framework.decorators import action
@@ -16,7 +17,8 @@ from photogallery import settings
 
 
 class PhotoView(PermissionRequiredMixin,
-                GenericViewSet):
+                GenericViewSet,
+                View):
     model = Album
     queryset = Album.objects
     serializer_class = PhotoSerializer
@@ -25,12 +27,14 @@ class PhotoView(PermissionRequiredMixin,
     permission_classes = [IsAuthenticated]
     permission_required = "view_album"
     return_403 = True
+    raise_exception = True
 
     @action(methods=['get'],
             detail=False,
             url_path='album/(?P<id>\d+)',
             url_name="get_photos_by_album")
     def get_photos(self, request, id):
+        self.check_permissions(request)
         album = self.get_object()
         photo_qs = get_objects_for_user(request.user, 'gallery.view_photo')
         photo_qs = photo_qs.filter(album__id=album.id)
@@ -46,13 +50,14 @@ class PhotoCreateView(PermissionRequiredMixin,
 
     permission_classes = [IsAuthenticated]
     permission_required = "add_photos"
-    return_403 = 403
+    raise_exception = True
 
     @action(methods=['post'],
             detail=False,
             url_path='sign/album/(?P<id>\d+)',
             url_name='photo-sign')
     def sign(self, request, id):
+        self.check_permissions(request)
         album = self.get_object()
         photo_filename = request.data.get('filename')
         if photo_filename is None:
@@ -83,6 +88,7 @@ class PhotoCreateView(PermissionRequiredMixin,
             url_path='album/(?P<id>\d+)',
             url_name="add_photo")
     def add_photo(self, request, id):
+        self.check_permissions(request)
         album = self.get_object()
         photo_filename = request.data.get('filename')
         thumbnail_filename = request.data.get('thumbnail')

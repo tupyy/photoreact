@@ -3,21 +3,21 @@ from collections import Iterable
 from django.contrib.auth.models import User, Group
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
-from gallery.filters import AlbumFilter
-from gallery.models.album import Album
-from gallery.models.category import Category, Tag
-from gallery.permissions.owner_permission import IsOwner
-from gallery.serializers.serializers import AlbumSerializer, CategorySerializer, TagSerializer
 from guardian.mixins import PermissionListMixin, PermissionRequiredMixin
 from guardian.models import UserObjectPermission, GroupObjectPermission
 from guardian.shortcuts import assign_perm, remove_perm
 from rest_framework import status, mixins
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+
+from gallery.filters import AlbumFilter
+from gallery.models.album import Album
+from gallery.models.category import Category, Tag
+from permissions.mixins import IsOwner
+from gallery.serializers.serializers import AlbumSerializer, CategorySerializer, TagSerializer
 
 
 class AlbumOrderingMixin(object):

@@ -2,7 +2,6 @@ import datetime
 
 from django.contrib.auth.models import Group, User
 from guardian.shortcuts import assign_perm
-from rest_framework.test import APIClient
 
 from gallery.models.album import Album
 from gallery.models.photo import Photo
@@ -188,8 +187,8 @@ class PhotoViewAPITest(BaseViewTestCase):
         Expected return code: 403
         Expected values:
         """
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username="other", password="word")
+        client = self.get_client()
         response = client.delete('/photo/{}/'.format(self.photo.id))
         self.assertEqual(response.status_code, 403)
 
