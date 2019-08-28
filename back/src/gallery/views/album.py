@@ -31,7 +31,6 @@ class AlbumListView(PermissionListMixin,
                     AlbumOrderingMixin,
                     ListAPIView,
                     GenericViewSet):
-
     queryset = Album.objects
     serializer_class = AlbumSerializer
     lookup_field = 'id'
@@ -134,8 +133,10 @@ class AlbumCategoryView(PermissionRequiredMixin,
         self.check_permissions(request)
         instance = self.get_object()
         categories_qs = instance.categories.all()
-        categories = CategorySerializer(categories_qs, many=True)
-        return Response(status=status.HTTP_200_OK, data=categories.data)
+        categories_serializer = CategorySerializer(categories_qs, many=True)
+        data = {"id": id,
+                "categories": categories_serializer.data}
+        return Response(status=status.HTTP_200_OK, data=data)
 
     @action(methods=['post'],
             detail=True,
@@ -203,8 +204,10 @@ class AlbumTagView(PermissionRequiredMixin,
         self.check_permissions(request)
         instance = self.get_object()
         tags_qs = instance.tags.all()
-        tags = TagSerializer(tags_qs, many=True)
-        return Response(status=status.HTTP_200_OK, data=tags.data)
+        tags_serializer = TagSerializer(tags_qs, many=True)
+        data = {"id": id,
+                "tags": tags_serializer.data}
+        return Response(status=status.HTTP_200_OK, data=data)
 
     @action(methods=['post'],
             detail=True,
@@ -252,5 +255,3 @@ class AlbumTagView(PermissionRequiredMixin,
         return Response(status=status.HTTP_404_NOT_FOUND,
                         data={'reason': 'Category not found'},
                         content_type='application/json')
-
-
