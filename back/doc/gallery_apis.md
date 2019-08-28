@@ -3,12 +3,10 @@
 | Method | API                                   | Action                               |       Permission      | Owner | Comment |
 |--------|---------------------------------------|--------------------------------------|:---------------------:|:-----:|---------|
 | GET    | /albums/                              | Get albums                           |       view_album      |       |         |
+| GET    | /album/{id}/                          | Get album                            |       view_album      |       |         |
 | POST   | /album/                               | Create album                         |      create_album     |       |         |
 | DELETE | /album/{id}/                          | Delete album                         |      delete_album     |       |         |
 | PUT    | /album/{id}/                          | Update album *id*                    |      update_album     |       |         |
-| GET    | /album/{id}/permissions/              | Get users permissions for album *id* |          N/A          |  Yes  |         |
-| POST   | /album/{id}/permissions/              | Add permissions                      |          N/A          |  Yes  |         |
-| DELETE | /album/{id}/permissions/              | Delete permissions                   |          N/A          |  Yes  |         |
 | GET    | /album/{id}/categories/               | Get categories for album *id*        |       view_album      |       |         |
 | POST   | /album/{id}/category/                 | Add category to album                | update_album          |       |         |
 | DELETE | album/{id}/category/{id category}/    | Delete category from album           | update_album          |       |         |
@@ -17,8 +15,6 @@
 | POST   | /album/{id}/tag/                      | Add tag to album                     | update_album          |       |         |
 | DELETE | /album/{id}/tag/{id tag}/             | Delete tag                           | update_album          |       |         |
 | PUT    | /album/{id}/tag/{id tag}/             | Update *id tag*                      | update_album          |       |         |
-| POST   | /album/{id}/favorites/                | Make album favorites for user        |                       |       |         |
-| DELETE | /album/{id}/favorites/                | Remove album from favorites          |                       |       |         |
 | GET    | /photos/album/{id}/                   | Get photos for album *id*            | view_photo view_album |       |         |
 | POST   | /photo/sign/album/{id}                | Generate presign S2 URL              | add_photos            |       |         |
 | POST   | /photo/album/{id}/                    | Add photo to album *id*              | add_photos            |       |         |
@@ -173,84 +169,6 @@ Response:
   if user has no "delete" permission
 - status code: 404 album not found
 
-#### **GET** */album/{id}/permissions/*
-
-Get the permissions of all users for album *id*.
-
-> **The current user has to be the owner of the album.**
-
-Response:
-- status code: 200 OK
-    - body
-```json
-[
-    [
-      {
-        "id": 1,
-        "username": "batman",
-        "permissions": [["Add photos", "add_photo"],["View photos, view_photo"]]
-      }, 
-      {
-        "id": 2,
-        "username": "superman",
-        "permissions": [["Add photos", "add_photo"],["View photos, view_photo"]]
-      }
-    ],
-    [
-      {
-        "id": 1,
-        "group_name": "batman_friends",
-        "permissions": [["Add photos", "add_photo"],["View photos, view_photo"]]
-      }
-    ]
-]
-```
-- status code: 403 if current user is not the owner
-- status code: 404 album not found
-
-#### **POST** */album/{id}/permissions/*
-
-Add new permissions to album *id* by the owner 
-
-Response:
-- status code: 200 OK
-    - body
-```json
-[
-  {
-    "user_id": 1,
-    "permissions": ["add_photo","view_photo"]
-  }, 
-  {
-    "user_id": 2,
-    "permissions": ["add_photo","view_photo"]
-  }
-]
-```
-- status code: 403 if current user is not the owner
-- status code: 404 album not found
-
-#### **DELETE** */album/{id}/permissions*
-
-Remove permissions for album *id* 
-
-Response:
-- status code: 200 OK
-    - body
-```json
-[
-  {
-    "user_id": 1,
-    "permissions": ["add_photo","view_photo"]
-  }, 
-  {
-    "user_id": 2,
-    "permissions": ["add_photo","view_photo"]
-  }
-]
-```
-- status code: 403 if current user is not the owner
-- status code: 404 album not found
 
 #### **GET** */album/{id}/categories*
 
@@ -359,29 +277,6 @@ Response:
 - status code: 403 if no *change_album* permission
 - status code: 404 album not found
 
-#### **POST** */album/{id}/favorites/*
-
-Set album as favorites for current user
-
-Permission required:
-- view_album
-
-Response:
-- status code: 200 OK
-- status code: 403 if no *view_album* permission
-- status code: 404 album not found
-
-#### **DELETE** */album/{id}/favorites/*
-
-Unset album as favorites for current user
-
-Permission required:
-- view_album
-
-Response:
-- status code: 200 OK
-- status code: 403 if no *view_album* permission
-- status code: 404 album not found
 
 ## Photo
  

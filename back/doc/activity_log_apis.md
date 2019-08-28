@@ -1,9 +1,22 @@
 ## Activity log API
 
-#### **GET** */activities/?start_date={date}&end_date={date}&page={number_of_page}*
+#### **GET** */activities/*
 
 Get activities log for current user filtered by period and ordered by date  
 > Page size is set to 100 entries.
+
+Query parameters:
+- activity_from
+- activity_to
+- limit
+- user
+- activity
+- sortByAsc
+- sortByDesc
+
+Example:
+*/activities?activity_from=2019-01-01&activity_to=2019-30-01&user=batman&activity=c&sortByDesc=date*
+
 
 Response:
 - 200 OK
@@ -14,7 +27,7 @@ Response:
   "previous": "previous page url",
   "results": [
      {
-       "content_object": "serialized data of the content object (Album or Photo)",
+       "object_id": "id of the content object (Album or Photo)",
        "user": "user id",
        "date": "log date",
        "activity": "create"
