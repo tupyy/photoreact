@@ -35,3 +35,9 @@ Response:
 }
 ```
 - 403 User not logged 
+
+#### **GET** */activities/user/{user_id}/*
+
+Same API as before but allowed only for superuser. This API return the 
+activity for user `user_id`
+
