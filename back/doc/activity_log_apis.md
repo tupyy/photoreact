@@ -9,13 +9,12 @@ Query parameters:
 - activity_from
 - activity_to
 - limit
-- user
 - activity
 - sortByAsc
 - sortByDesc
 
 Example:
-*/activities?activity_from=2019-01-01&activity_to=2019-30-01&user=batman&activity=c&sortByDesc=date*
+* /activities?activity_from=2019-01-01&activity_to=2019-30-01&activity=c&sortByDesc=date*
 
 
 Response:
