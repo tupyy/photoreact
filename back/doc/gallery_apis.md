@@ -140,7 +140,7 @@ Response:
 
 - status code: 403 FORBIDDEN if user has no right to create album 
 	
-#### **DELETE** */album/{id}*
+#### **DELETE** */album/{id}/*
 
 Delete the album
 
@@ -172,14 +172,13 @@ Request:
 Response:
 ```json
 {
-  "id": "1",
+  "id": 1,
   "name": "name album",
   "description": "descriere album",
   "date": "data album",
   "preview": "URL preview photo S3",
   "categories" : [ "categorie_1", "categorie_2" ],
-  "tags" : ["tag 1", "tag 2"],
-  "favorites": "true"
+  "tags" : ["tag 1", "tag 2"]
 }
 ```
 - status code: 200 OK 
@@ -198,7 +197,10 @@ Permissions required:
 Response:
 - status code: 200 OK
 ```json
-    ["category1", "category2"]
+  {
+    "id": 1,
+    "categories": ["category1", "category2"]
+  }
 ```
 - status code: 403 if no *view_album* permission
 - status code: 404 album not found
@@ -251,12 +253,15 @@ Permissions required:
 Response:
 - status code: 200 OK
 ```json
-    ["tag 1", "tag 2"]
+{
+  "id": 1,
+  "tags": ["tag1","tag2"]
+}
 ```
 - status code: 403 if no *view_album* permission
 - status code: 404 album not found
 
-#### **POST** */album/{id}/tag*
+#### **POST** */album/{id}/tag/*
 
 Permission required:
 - change_album
@@ -341,7 +346,7 @@ Request:
 
 ```json
 {
-  "filename": "numele pozei",
+  "filename": "numele pozei"
 }
 ```
 Response:
