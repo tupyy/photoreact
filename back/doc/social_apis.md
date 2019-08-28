@@ -17,7 +17,12 @@ Response:
 ```json
   {
     "album_id": 1,
-    "users": ["user1", "user2"]
+    "users": [{
+                "id": 1,
+                "username": "batman",
+                "link": "get api url"
+              }
+             ]
   }
 ```
 - status code: 200 OK
@@ -33,7 +38,11 @@ Permission_required
 Response
 ```json
   {
-    "albums": ["album1_id", "album2_id"]
+    "albums": [{
+                "id": 1,
+                "name": "album_name",
+                "link": "get api url"
+              }]
   }
 ```
 - status code: 200 OK
