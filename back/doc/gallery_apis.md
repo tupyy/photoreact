@@ -29,19 +29,15 @@ Permissions required:
 - view_album
 
 Filters:
- - period: start, end
+ - period: album_from, album_to 
+ - limit
  
- > /albums/?start=01/01/2019&end=02/02/2019
- - category: category
+ Ordering:
+ - classic Django ordering query parameter
  
- > /albums/?category=cat1&category=cat2
- - tag: tag
+ Example:
  
- >/albums/?tag=tag1&tag=tag2
-
- - favorites
-
-> /albums/?favorites
+*/albums/?album_from=01/01/2019&album_to=02/02/2019&limit=2*
 
 Response:
 
@@ -57,8 +53,7 @@ Response:
         "date": "data album",
         "preview": "URL preview photo S3",
         "categories" : [ "categorie_1", "categorie_2" ],
-        "tags" : ["tag 1", "tag 2"],
-        "favorites": "true"
+        "tags" : ["tag 1", "tag 2"]
       }
     ]
 }

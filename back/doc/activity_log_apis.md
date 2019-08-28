@@ -10,11 +10,10 @@ Query parameters:
 - activity_to
 - limit
 - activity
-- sortByAsc
-- sortByDesc
+- ordering
 
 Example:
-* /activities?activity_from=2019-01-01&activity_to=2019-30-01&activity=c&sortByDesc=date*
+* /activities?activity_from=2019-01-01&activity_to=2019-30-01&activity=c&ordering=-date*
 
 
 Response:

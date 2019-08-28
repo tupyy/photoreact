@@ -1,7 +1,7 @@
 ### Summary
 | Method | API                                    | Action                                        |       Permission      | Owner | Comment |
 |--------|----------------------------------------|-----------------------------------------------|:---------------------:|:-----:|---------|
-| GET    | /favorites/album/{id}                  | Get users for which the album is favorites    |                       |  Only |         |
+| GET    | /favorites/album/{id}/                 | Get users for which the album is favorites    |                       |  Only |         |
 | GET    | /favorites/                            | Get all the favorites albums for current user |                       |       |         |
 | POST   | /favorites/album/{id}/                 | Make album favorites for current user         |      view_permission  |       |         |
 | DELETE | /favorites/album/{id}/                 | Remove album from favorites                   |                       |       |         |
@@ -33,7 +33,7 @@ Permission_required
 Response
 ```json
   {
-    "albums": ["album1", "album2"]
+    "albums": ["album1_id", "album2_id"]
   }
 ```
 - status code: 200 OK
