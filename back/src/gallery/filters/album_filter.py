@@ -4,10 +4,10 @@ from gallery.models.album import Album
 
 
 class AlbumFilter(filters.FilterSet):
-    start = filters.DateFilter(field_name="date", lookup_expr='gte')
-    end = filters.DateFilter(field_name="date", lookup_expr='lte')
+    album_from = filters.DateFilter(field_name="date", lookup_expr='gte')
+    album_to = filters.DateFilter(field_name="date", lookup_expr='lte')
     name = filters.CharFilter(lookup_expr='iexact')
 
     class Meta:
         model = Album
-        fields = ['start', 'end', 'name']
+        fields = ['album_from', 'album_to', 'name']
