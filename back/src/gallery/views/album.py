@@ -3,7 +3,8 @@ from collections import Iterable
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
-from guardian.mixins import PermissionListMixin, PermissionRequiredMixin
+from guardian.mixins import PermissionListMixin
+from permissions.mixins import PermissionRequiredMixin
 from rest_framework import status, mixins
 from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView
