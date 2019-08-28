@@ -25,7 +25,12 @@ Response:
   "previous": "previous page url",
   "results": [
      {
-       "object_id": "id of the content object (Album or Photo)",
+       "object": {
+                   "id": 1,
+                   "name": "foo",
+                   "type": "Album || Photo",
+                   "link": "get url"
+                 },
        "user": "user id",
        "date": "log date",
        "activity": "create"
