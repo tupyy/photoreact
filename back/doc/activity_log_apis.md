@@ -13,7 +13,7 @@ Query parameters:
 - ordering
 
 Example:
-* /activities?activity_from=2019-01-01&activity_to=2019-30-01&activity=c&ordering=-date*
+*/activities?activity_from=2019-01-01&activity_to=2019-30-01&activity=c&ordering=-date*
 
 
 Response:
@@ -25,12 +25,12 @@ Response:
   "previous": "previous page url",
   "results": [
      {
-       "object": {
-                   "id": 1,
-                   "name": "foo",
-                   "type": "Album || Photo",
-                   "link": "get url"
-                 },
+       "content_object": {
+                          "id": 1,
+                          "name": "foo",
+                          "type": "Album || Photo",
+                         "link": "get url"
+                         },
        "user": "user id",
        "date": "log date",
        "activity": "create"
