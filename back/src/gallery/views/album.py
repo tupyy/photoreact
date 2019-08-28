@@ -253,26 +253,3 @@ class AlbumTagView(PermissionRequiredMixin,
                         content_type='application/json')
 
 
-class AlbumFavoriteView(PermissionRequiredMixin,
-                        GenericViewSet):
-    model = Album
-    queryset = Album.objects
-    serializer_class = AlbumSerializer
-    lookup_field = "id"
-
-    permission_classes = [IsAuthenticated]
-    permission_required = 'view_album'
-    return_403 = True
-
-    @action(methods=['post', 'delete'],
-            detail=True,
-            url_path="favorites",
-            url_name='change-favorites')
-    def change_favorites(self, request, id):
-        self.check_permissions(request)
-        album = self.get_object()
-        if request.method == 'POST':
-            album.favorites.add(request.user)
-        else:
-            album.favorites.remove(request.user)
-        return Response(status=status.HTTP_200_OK)

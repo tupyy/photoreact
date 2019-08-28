@@ -38,7 +38,6 @@ class Album(models.Model):
 
     categories = models.ManyToManyField(Category, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
-    favorites = models.ManyToManyField(User, blank=True, related_name="favorites")
 
     objects = AlbumManager()
 
