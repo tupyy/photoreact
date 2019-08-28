@@ -4,6 +4,11 @@ from django.db import models
 from gallery.models.album import Album
 
 
+class FavoriteAlbum(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+
 class FollowUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     followed_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed_user")
