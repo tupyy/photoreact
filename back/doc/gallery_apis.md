@@ -78,7 +78,7 @@ Response:
         "date": "data album",
         "preview": "URL preview photo S3",
         "categories" : [ "categorie_1", "categorie_2" ],
-        "tags" : ["tag 1", "tag 2"],
+        "tags" : ["tag 1", "tag 2"]
       }
     ]
 }
