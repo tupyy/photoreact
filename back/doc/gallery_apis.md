@@ -79,11 +79,34 @@ Response:
         "preview": "URL preview photo S3",
         "categories" : [ "categorie_1", "categorie_2" ],
         "tags" : ["tag 1", "tag 2"],
-        "favorites": "true"
       }
     ]
 }
 ```
+
+#### **GET** */album/{id}*
+Get album
+
+Permission required:
+- view_album
+
+Response:
+
+```json
+{
+    "id": 1,
+    "name": "name album",
+    "description": "descriere album",
+    "date": "data album",
+    "preview": "URL preview photo S3",
+    "categories" : [ "categorie_1", "categorie_2" ],
+    "tags" : ["tag 1", "tag 2"]
+}
+```
+
+- status code : 200 OK
+- status code: 403 No `view_permission`
+- status code: 404 Album not found
 
 #### **POST** */album/*
  
