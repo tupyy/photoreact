@@ -1,16 +1,15 @@
 import datetime
 
 from django.contrib.auth.models import Group, User
-from django.test import TestCase
 from guardian.shortcuts import assign_perm
-from rest_framework.test import APIClient
 
 from gallery.models.album import Album
 from gallery.models.category import Category
 from gallery.models.photo import Photo
+from tests.base_testcase import BaseViewTestCase
 
 
-class AlbumCategoryAPITest(TestCase):
+class AlbumCategoryAPITest(BaseViewTestCase):
 
     def setUp(self) -> None:
         self.group = Group.objects.create(name='group')
@@ -39,8 +38,8 @@ class AlbumCategoryAPITest(TestCase):
         Expected return code: 200
         Expected values: 2 categories
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
         response = client.get('/album/{}/categories/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
@@ -55,8 +54,8 @@ class AlbumCategoryAPITest(TestCase):
         Expected return code: 403
         Expected values:
         """
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username='batman', password='word')
+        client = self.get_client()
         response = client.get('/album/{}/categories/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
@@ -70,8 +69,8 @@ class AlbumCategoryAPITest(TestCase):
         Expected return code: 404
         Expected values:
         """
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username='batman', password='word')
+        client = self.get_client()
         response = client.get('/album/{}/categories/'.format(100))
         self.assertEqual(response.status_code, 404)
 
@@ -85,8 +84,8 @@ class AlbumCategoryAPITest(TestCase):
         Expected return code: 200
         Expected values:
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
         data = list()
         cat1 = Category.objects.create(name="hey")
         data.append(cat1.name)
@@ -106,8 +105,8 @@ class AlbumCategoryAPITest(TestCase):
         Expected values:
         """
         assign_perm('view_album', self.batman, self.album)
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username='batman', password='word')
+        client = self.get_client()
         data = list()
         data.append("test")
         response = client.post('/album/{}/category/'.format(self.album.id),
@@ -125,8 +124,8 @@ class AlbumCategoryAPITest(TestCase):
         Expected return code: 200 OK
         Expected values: 1 category left
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
         response = client.delete('/album/{}/category/{}/'.format(self.album.id,
                                                                  self.category_foo.id))
         self.assertEqual(response.status_code, 200)
@@ -143,8 +142,8 @@ class AlbumCategoryAPITest(TestCase):
         Expected values:
         """
         assign_perm('view_album', self.batman, self.album)
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username='batman', password='word')
+        client = self.get_client()
         response = client.delete('/album/{}/category/{}/'.format(self.album.id,
                                                                  self.category_foo.id))
         self.assertEqual(response.status_code, 403)
@@ -160,8 +159,8 @@ class AlbumCategoryAPITest(TestCase):
         Expected values: 2 categories. the last one is replaced by the new one
         """
         new_cat = Category.objects.create(name="hey")
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
         response = client.put('/album/{}/category/{}/'.format(self.album.id,
                                                               self.category_foo.id),
                               data={'category_id': new_cat.id},
@@ -170,23 +169,3 @@ class AlbumCategoryAPITest(TestCase):
         self.assertEqual(self.album.categories.count(), 2)
         self.assertEqual(self.album.categories.last().name, 'hey')
 
-    def test_favorites_post(self):
-        """
-        Description: Test both POST and DELETE favorite API
-        API: /album/{}/favorites
-        Method: POST / DELETE
-        Date: 19/08/2019
-        User: cosmin
-        Expected return code: 200
-        Expected values:
-        """
-        client = APIClient()
-        client.login(username='user', password='pass')
-        response = client.post('/album/{}/favorites/'.format(self.album.id))
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(self.user in self.album.favorites.all())
-
-        # test delete favorites
-        response = client.delete('/album/{}/favorites/'.format(self.album.id))
-        self.assertEqual(response.status_code, 200)
-        self.assertFalse(self.user in self.album.favorites.all())

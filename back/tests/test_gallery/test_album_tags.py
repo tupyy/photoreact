@@ -8,9 +8,10 @@ from rest_framework.test import APIClient
 from gallery.models.album import Album
 from gallery.models.category import Tag
 from gallery.models.photo import Photo
+from tests.base_testcase import BaseViewTestCase
 
 
-class AlbumTagAPITest(TestCase):
+class AlbumTagAPITest(BaseViewTestCase):
 
     def setUp(self) -> None:
         self.group = Group.objects.create(name='group')
@@ -39,8 +40,9 @@ class AlbumTagAPITest(TestCase):
         Expected return code: 200
         Expected values: 2 tags
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
+
         response = client.get('/album/{}/tags/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
@@ -55,8 +57,8 @@ class AlbumTagAPITest(TestCase):
         Expected return code: 403
         Expected values:
         """
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username='batman', password='word')
+        client = self.get_client()
         response = client.get('/album/{}/tags/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
@@ -70,8 +72,8 @@ class AlbumTagAPITest(TestCase):
         Expected return code: 404
         Expected values:
         """
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username='batman', password='word')
+        client = self.get_client()
         response = client.get('/album/{}/tags/'.format(100))
         self.assertEqual(response.status_code, 404)
 
@@ -85,8 +87,8 @@ class AlbumTagAPITest(TestCase):
         Expected return code: 200
         Expected values:
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
         data = list()
         tag1 = Tag.objects.create(name="hey")
         data.append(tag1.name)
@@ -105,8 +107,8 @@ class AlbumTagAPITest(TestCase):
         Expected return code: 200
         Expected values:
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
         data = list()
         data.append("hey")
         response = client.post('/album/{}/tag/'.format(self.album.id),
@@ -125,8 +127,8 @@ class AlbumTagAPITest(TestCase):
         Expected values:
         """
         assign_perm('view_album', self.batman, self.album)
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username='batman', password='word')
+        client = self.get_client()
         data = list()
         data.append("test")
         response = client.post('/album/{}/tag/'.format(self.album.id),
@@ -144,8 +146,8 @@ class AlbumTagAPITest(TestCase):
         Expected return code: 200
         Expected values: 1 tag left
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
         response = client.delete('/album/{}/tag/{}/'.format(self.album.id,
                                                                  self.tag_foo.id))
         self.assertEqual(response.status_code, 200)
@@ -162,8 +164,8 @@ class AlbumTagAPITest(TestCase):
         Expected values:
         """
         assign_perm('view_album', self.batman, self.album)
-        client = APIClient()
-        client.login(username='batman', password='word')
+        self.login(username='batman', password='word')
+        client = self.get_client()
         response = client.delete('/album/{}/tag/{}/'.format(self.album.id,
                                                                  self.tag_foo.id))
         self.assertEqual(response.status_code, 403)
@@ -179,8 +181,8 @@ class AlbumTagAPITest(TestCase):
         Expected values:
         """
         new_tag = Tag.objects.create(name="hey")
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
         response = client.put('/album/{}/tag/{}/'.format(self.album.id,
                                                               self.tag_foo.id),
                               data={'tag_name': new_tag.name},
@@ -199,8 +201,8 @@ class AlbumTagAPITest(TestCase):
         Expected return code: 200
         Expected values: 2 tags
         """
-        client = APIClient()
-        client.login(username='user', password='pass')
+        self.login(username='user', password='pass')
+        client = self.get_client()
         response = client.put('/album/{}/tag/{}/'.format(self.album.id,
                                                               self.tag_foo.id),
                               data={'tag_name': "hey"},
