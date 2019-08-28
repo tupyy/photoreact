@@ -18,17 +18,24 @@ from gallery.models.category import Category, Tag
 from gallery.serializers.serializers import AlbumSerializer, CategorySerializer, TagSerializer
 
 
-class AlbumOrderingMixin(object):
+class OrderingMixin(object):
 
     def get_ordering(self, qs):
-        order_fields = self.request.query_params.get('ordering')
-        if order_fields is None:
+        order_fields = self.request.GET.getlist('ordering')
+        if len(order_fields) == 0:
             return qs
-        return qs.order_by(order_fields)
+        for order_field in order_fields:
+            if self.is_field(order_field):
+                qs = qs.order_by(order_field)
+        return qs
+
+    def is_field(self, field_name):
+        all_fields = Album._meta.get_fields()
+        return field_name in [field.name for field in all_fields]
 
 
 class AlbumListView(PermissionListMixin,
-                    AlbumOrderingMixin,
+                    OrderingMixin,
                     ListAPIView,
                     GenericViewSet):
     queryset = Album.objects

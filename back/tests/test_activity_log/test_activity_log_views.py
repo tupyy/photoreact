@@ -7,11 +7,12 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 
 from gallery.models.album import Album
-from gallery.models import ActivityLog
+from activity_log.models import ActivityLog
 from gallery.models.photo import Photo
+from tests.base_testcase import BaseViewTestCase
 
 
-class TestAlbumSerializer(TestCase):
+class TestAlbumSerializer(BaseViewTestCase):
 
     def setUp(self) -> None:
         self.batman = User.objects.create_superuser('batman', 'batman@gothamcity.org', 'pass')
@@ -44,8 +45,8 @@ class TestAlbumSerializer(TestCase):
         Expected return code: 200 OK
         Expected values: 200 activities logs on 2 pages
         """
-        client = APIClient()
-        client.login(username='batman', password='pass')
+        self.login(username='batman', password='pass')
+        client = self.get_client()
         response = client.get('/activities/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['count'], 200)
@@ -62,9 +63,9 @@ class TestAlbumSerializer(TestCase):
         Expected return code: 200
         Expected values: 0 activity log entries
         """
-        client = APIClient()
-        client.login(username='batman', password='pass')
-        response = client.get('/activities/?end=01/01/2019')
+        self.login(username='batman', password='pass')
+        client = self.get_client()
+        response = client.get('/activities/?activity_to=01/01/2019')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['count'], 0)
 
@@ -76,13 +77,13 @@ class TestAlbumSerializer(TestCase):
         Expected return code: 200 OK
         Expected values: 100 entries. Only the superman entries
         """
-        client = APIClient()
-        client.login(username='superman', password='pass')
+        self.login(username='superman', password='pass')
+        client = self.get_client()
         response = client.get('/activities/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['count'], 100)
 
-    def test_get_activityes_filter(self):
+    def test_get_activitves_filter(self):
         """
         Description: Test activity type filter
         API: /activities/?activity_type=C
@@ -92,13 +93,30 @@ class TestAlbumSerializer(TestCase):
         Expected return code: 200
         Expected values:
         """
-        client = APIClient()
-        client.login(username='superman', password='pass')
+        self.login(username='batman', password='pass')
+        client = self.get_client()
         response = client.get('/activities/?activity=C')
         self.assertEqual(response.status_code, 200)
         results = response.data['results']
         for result in results:
             self.assertEqual(result.get('activity'), 'C')
+
+    def test_ordering(self):
+        """
+        Description: Test activity type filter
+        API: /activities/?ordering=activity
+        Method: GET
+        Date: 25/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
+        self.login(username='batman', password='pass')
+        client = self.get_client()
+        response = client.get('/activities/?ordering=activity')
+        self.assertEqual(response.status_code, 200)
+        results = response.data['results']
+        self.assertEqual(results[0].get('activity'), 'C')
 
     def random_date(self, start_date, end_date):
         timestamp_start = start_date.timestamp()

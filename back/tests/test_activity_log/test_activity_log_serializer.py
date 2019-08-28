@@ -3,7 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import Group, User
 from django.test import TestCase
 
-from gallery.models import ActivityLog
+from activity_log.models import ActivityLog
 from gallery.models.album import Album
 from gallery.models.photo import Photo
 from activity_log.serializers.log_serializer import ActivityLogSerializer
