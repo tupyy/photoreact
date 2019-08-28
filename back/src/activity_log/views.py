@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from collections import OrderedDict, Iterable
 
 from django_filters import rest_framework as filters
 from rest_framework import mixins
@@ -29,7 +29,24 @@ class StandardActivityLogPagination(PageNumberPagination):
         ]))
 
 
-class ActivityLogView(mixins.ListModelMixin,
+class OrderingMixin(object):
+
+    def get_ordering(self, qs):
+        order_fields = self.request.GET.getlist('ordering')
+        if len(order_fields) == 0:
+            return qs
+        for order_field in order_fields:
+            if self.is_field(order_field):
+                qs = qs.order_by(order_field)
+        return qs
+
+    def is_field(self, field_name):
+        all_fields = ActivityLog._meta.get_fields()
+        return field_name in [field.name for field in all_fields]
+
+
+class ActivityLogView(OrderingMixin,
+                      mixins.ListModelMixin,
                       GenericViewSet):
     model = ActivityLog
     queryset = ActivityLog.objects
@@ -40,7 +57,6 @@ class ActivityLogView(mixins.ListModelMixin,
     filter_backends = (filters.DjangoFilterBackend, )
     filter_class = ActivityLogFilter
 
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
@@ -50,6 +66,6 @@ class ActivityLogView(mixins.ListModelMixin,
         """
         if not request.user.is_superuser:
             self.queryset = self.queryset.filter(user__id=self.request.user.id)
-        self.queryset = self.queryset.order_by('-date')
+        self.queryset = self.get_ordering(self.queryset)
         return super().list(request, *args, **kwargs)
 # Create your views here.
