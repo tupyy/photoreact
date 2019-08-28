@@ -12,9 +12,21 @@ class ObjectRelatedField(serializers.RelatedField):
 
     def to_representation(self, value):
         if isinstance(value, Album) or isinstance(value, Photo):
-            return value.id
+            return self.get_object_data(value)
         else:
             raise Exception("Unexpected type of object")
+
+    def get_object_data(self, obj):
+        data = dict()
+        data["id"] = obj.id
+        data["name"] = obj.name if isinstance(obj, Album) else obj.filename
+        data['type'] = "album" if isinstance(obj, Album) else "photo"
+        data['link'] = self.get_object_link(obj)
+        return data
+
+    def get_object_link(self, obj):
+        API_BASE = "/album/" if isinstance(obj, Album) else "/photo/"
+        return "{}{}/".format(API_BASE, obj.id)
 
 
 class ActivityLogSerializer(serializers.ModelSerializer):
