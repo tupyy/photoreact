@@ -29,13 +29,12 @@ class AlbumSerializer(serializers.ModelSerializer):
     preview = serializers.StringRelatedField(read_only=True)
     categories = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
     tags = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
-    favorites = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
 
     class Meta:
         model = Album
         fields = ['id', 'name', 'date', 'description',
                   'folder_path', 'owner', 'preview',
-                  'categories', 'tags', 'favorites']
+                  'categories', 'tags']
 
     def create(self, validated_data):
         owner_data = validated_data.pop('owner')

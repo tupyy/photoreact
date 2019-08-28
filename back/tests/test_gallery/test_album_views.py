@@ -83,7 +83,7 @@ class AlbumViewTests(BaseViewTestCase):
     def test_list_albums4(self):
         """
         Description: get albums with period filter
-        API: albums?start=start_date&end=end_date
+        API: albums?album_from=album_from_date&album_to=album_to_date
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -101,8 +101,8 @@ class AlbumViewTests(BaseViewTestCase):
         client = self.get_client()
 
         url = "{}?{}&{}".format(reverse('albums-list'),
-                                "start=" + datetime.date.today().strftime("%Y-%m-%d"),
-                                "end=" + datetime.date.today().strftime("%Y-%m-%d"))
+                                "album_from=" + datetime.date.today().strftime("%Y-%m-%d"),
+                                "album_to=" + datetime.date.today().strftime("%Y-%m-%d"))
 
         request = client.get(url)
         self.assertEqual(request.status_code, 200)
@@ -138,7 +138,7 @@ class AlbumViewTests(BaseViewTestCase):
         """
         Description: Get albums filtered by period
                       The request is made by a user different than owner which have "view_album" permissions
-        API: /albums?start=start_date&end=end_date
+        API: /albums?album_from=album_from_date&album_to=album_to_date
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -155,10 +155,10 @@ class AlbumViewTests(BaseViewTestCase):
         self.login(username="user", password="pass")
         client = self.get_client()
 
-        end_date = datetime.date.today() + datetime.timedelta(days=30)
+        album_to_date = datetime.date.today() + datetime.timedelta(days=30)
         url = "{}?{}&{}".format(reverse('albums-list'),
-                                "start=" + datetime.date.today().strftime("%Y-%m-%d"),
-                                "end=" + end_date.strftime("%Y-%m-%d"))
+                                "album_from=" + datetime.date.today().strftime("%Y-%m-%d"),
+                                "album_to=" + album_to_date.strftime("%Y-%m-%d"))
 
         request = client.get(url)
         self.assertEqual(request.status_code, 200)

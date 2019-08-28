@@ -41,13 +41,6 @@ class TestAlbumSerializer(TestCase):
         self.assertTrue(self.user.has_perm('change_permissions', self.album))
         self.assertTrue(self.user.has_perm('delete_permissions', self.album))
 
-    def test_favorites(self):
-        self.album.favorites.add(self.batman)
-        self.assertTrue(self.batman in self.album.favorites.all())
-
-    def test_favorites2(self):
-        self.assertFalse(self.batman in self.album.favorites.all())
-
     def test_photo_serializer(self):
         p = PhotoSerializer(self.photo)
         self.assertFalse(p.data['get_photo_url'] is None)
