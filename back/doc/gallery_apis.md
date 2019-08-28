@@ -47,7 +47,7 @@ Response:
     "size": 1,
     "albums": [
       {
-        "id": "1",
+        "id": 1,
         "name": "name album",
         "description": "descriere album",
         "date": "data album",
@@ -72,7 +72,7 @@ Response:
     "size": 1,
     "albums": [
       {
-        "id": "1",
+        "id": 1,
         "name": "name album",
         "description": "descriere album",
         "date": "data album",
