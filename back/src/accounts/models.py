@@ -16,10 +16,10 @@ class Role(models.Model):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    profile_photo_filepath = models.CharField(max_length=100, verbose_name="profile_photo")
+    photo_filename = models.CharField(max_length=100, verbose_name="profile_photo")
 
     # True if the user has to reset its password upon next login
-    reset_password = models.BooleanField(verbose_name="reset_password")
+    reset_password = models.BooleanField(verbose_name="reset_password", default=False, auto_created=True)
     roles = models.ManyToManyField(Role)
 
     class Meta:
