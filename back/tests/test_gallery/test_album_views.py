@@ -4,14 +4,13 @@ from django.contrib.auth.models import Group, User, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from guardian.shortcuts import assign_perm
-from rest_framework.test import APIClient
 
 from gallery.models.album import Album
 from gallery.models.photo import Photo
-from tests.base_testcase import BaseViewTestCase
+from tests.base_testcase import BaseTestCase
 
 
-class AlbumViewTests(BaseViewTestCase):
+class AlbumViewTests(BaseTestCase):
 
     def setUp(self) -> None:
         self.group = Group.objects.create(name='group')

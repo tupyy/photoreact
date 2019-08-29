@@ -8,10 +8,10 @@ from rest_framework.test import APIClient
 from gallery.models.album import Album
 from gallery.models.category import Tag
 from gallery.models.photo import Photo
-from tests.base_testcase import BaseViewTestCase
+from tests.base_testcase import BaseTestCase
 
 
-class AlbumTagAPITest(BaseViewTestCase):
+class AlbumTagAPITest(BaseTestCase):
 
     def setUp(self) -> None:
         self.group = Group.objects.create(name='group')

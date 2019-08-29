@@ -5,10 +5,10 @@ from guardian.shortcuts import assign_perm
 
 from gallery.models.album import Album
 from gallery.models.photo import Photo
-from tests.base_testcase import BaseViewTestCase
+from tests.base_testcase import BaseTestCase
 
 
-class PhotoViewAPITest(BaseViewTestCase):
+class PhotoViewAPITest(BaseTestCase):
 
     def setUp(self) -> None:
         self.group = Group.objects.create(name='allowed_users')

@@ -6,10 +6,10 @@ from guardian.shortcuts import assign_perm
 from gallery.models.album import Album
 from gallery.models.category import Category
 from gallery.models.photo import Photo
-from tests.base_testcase import BaseViewTestCase
+from tests.base_testcase import BaseTestCase
 
 
-class AlbumCategoryAPITest(BaseViewTestCase):
+class AlbumCategoryAPITest(BaseTestCase):
 
     def setUp(self) -> None:
         self.group = Group.objects.create(name='group')
