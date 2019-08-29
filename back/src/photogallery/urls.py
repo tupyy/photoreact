@@ -8,6 +8,7 @@ from gallery.urls import urlpatterns as gallery_url
 from activity_log.urls import urlpatterns as activity_log_urls
 from permissions.urls import urlpatterns as permissions_urls
 from social.urls import urlpatterns as social_urls
+from accounts.urls import urlpatterns as accounts_urls
 
 # Authentication
 authentication_urls = [
@@ -24,4 +25,5 @@ urlpatterns += activity_log_urls
 urlpatterns += permissions_urls
 urlpatterns += social_urls
 urlpatterns += authentication_urls
+urlpatterns += accounts_urls
 
