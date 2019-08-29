@@ -100,3 +100,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_PROFILE_PHOTO_URL = STATIC_URL + '/profile_photos/'
