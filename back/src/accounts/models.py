@@ -3,8 +3,8 @@ from django.db import models
 
 
 class Role(models.Model):
-    USER = 1,
-    ADMIN = 2,
+    USER = 1
+    ADMIN = 2
     GUEST = 3
     ROLE_CHOICE = (
         (USER, "user"),
@@ -16,7 +16,7 @@ class Role(models.Model):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    profile_photo_filepath = models.CharField(verbose_name="profile_photo")
+    profile_photo_filepath = models.CharField(max_length=100, verbose_name="profile_photo")
 
     # True if the user has to reset its password upon next login
     reset_password = models.BooleanField(verbose_name="reset_password")
