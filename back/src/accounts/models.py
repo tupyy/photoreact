@@ -23,13 +23,13 @@ class UserProfile(models.Model):
     roles = models.ManyToManyField(Role)
 
     class Meta:
-        ordering = ('user__name',)
+        ordering = ('user__username',)
         verbose_name = "user profile"
         verbose_name_plural = "user profiles"
 
     def __str__(self):
-        return "User_{}_".format(self.user.username)
+        return "<UserProfile: {}>".format(self.user.username)
 
-    @property
-    def display_name(self):
-        return "{} {}".format(self.user.first_name, self.user.last_login)
+    def __repr__(self):
+        return "<UserProfile: {}>".format(self.user.username)
+
