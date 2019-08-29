@@ -1,8 +1,7 @@
-from collections import OrderedDict, Iterable
+from collections import OrderedDict
 
 from django_filters import rest_framework as filters
 from rest_framework import mixins
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
