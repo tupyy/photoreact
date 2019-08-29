@@ -12,7 +12,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'gallery',
     'activity_log',
-    'social'
+    'social',
+    'users'
 ]
 
 MIDDLEWARE = [
