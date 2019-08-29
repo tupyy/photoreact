@@ -27,6 +27,7 @@ class AccountsTestCase(BaseTestCase):
         self.assertEqual(data["email"], self.user.email)
         self.assertEqual(data["first_name"], self.user.first_name)
         self.assertEqual(data["last_name"], self.user.last_name)
+        self.assertTrue(data["photo"] is not None)
         self.assertTrue(isinstance(data["roles"], list))
         self.assertTrue(data.get("password") is None)
         self.assertTrue(data.get("reset_password") is None)
