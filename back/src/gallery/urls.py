@@ -4,8 +4,6 @@ from __future__ import unicode_literals
 
 from rest_framework import routers
 
-import permissions.views
-import social.views
 from gallery import views as gallery_views
 
 app_name = 'gallery'
