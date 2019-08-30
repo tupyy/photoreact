@@ -10,11 +10,7 @@ from split_settings.tools import include
 from .utils import utils
 
 # Managing environment via DJANGO_ENV variable:
-<<<<<<< HEAD
-environ.setdefault('DJANGO_ENV', 'dev_work')
-=======
 environ.setdefault('DJANGO_ENV', 'testing')
->>>>>>> fe39c27402e6e020c45285e19429b348478b3d5f
 ENV = environ['DJANGO_ENV']
 
 base_settings = [
