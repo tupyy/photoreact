@@ -23,8 +23,8 @@ class AlbumPermissionView(GenericViewSet):
     permission_classes = [IsAuthenticated, IsOwner]
 
     @action(methods=['get', 'post', 'delete'],
-            detail=True,
-            url_path='permissions',
+            detail=False,
+            url_path='album/(?P<id>\d+)',
             url_name='get_permissions')
     def handle_object_permissions(self, request, id=None):
         instance = self.get_object()
