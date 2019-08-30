@@ -4,7 +4,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 
 
-class BaseViewTestCase(TestCase):
+class BaseTestCase(TestCase):
     token = None
 
     def login(self, username, password):

@@ -9,10 +9,10 @@ from rest_framework.test import APIClient
 from gallery.models.album import Album
 from activity_log.models import ActivityLog
 from gallery.models.photo import Photo
-from tests.base_testcase import BaseViewTestCase
+from tests.base_testcase import BaseTestCase
 
 
-class TestAlbumSerializer(BaseViewTestCase):
+class TestAlbumSerializer(BaseTestCase):
 
     def setUp(self) -> None:
         self.batman = User.objects.create_superuser('batman', 'batman@gothamcity.org', 'pass')
