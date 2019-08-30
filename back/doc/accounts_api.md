@@ -80,6 +80,8 @@ Response:
 
 ### Admin APIs
 
+*NOT IMPLEMENTED*
+
 Same APIs as per user API but the base URL is `/accounts/admin/user/{}/`.
 
 #### **POST** */accounts/admin/user/{}/password/*
