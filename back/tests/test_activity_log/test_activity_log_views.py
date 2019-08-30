@@ -37,17 +37,17 @@ class TestAlbumSerializer(BaseTestCase):
                                            )
                 activity_log.save()
 
-    def test_get_activities(self):
+    def test_get_activity(self):
         """
         Description: Test basic GET API
         Date: 19/08/2019
         User: cosmin
         Expected return code: 200 OK
-        Expected values: 200 activities logs on 2 pages
+        Expected values: 200 activity logs on 2 pages
         """
         self.login(username='batman', password='pass')
         client = self.get_client()
-        response = client.get('/activities/')
+        response = client.get('/api/activity/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['count'], 200)
         self.assertTrue(response.data.get('total_pages') is not None)
@@ -55,7 +55,7 @@ class TestAlbumSerializer(BaseTestCase):
         self.assertTrue(response.data.get('current_page') is not None)
         self.assertEqual(response.data.get('current_page'), 1)
 
-    def test_get_activities_2(self):
+    def test_get_activity_2(self):
         """
         Description: Test GET API with end date before the first date of the queryset
         Date: 19/08/2019
@@ -65,11 +65,11 @@ class TestAlbumSerializer(BaseTestCase):
         """
         self.login(username='batman', password='pass')
         client = self.get_client()
-        response = client.get('/activities/?activity_to=01/01/2019')
+        response = client.get('/api/activity/?activity_to=01/01/2019')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['count'], 0)
 
-    def test_get_activities_3(self):
+    def test_get_activity_3(self):
         """
         Description: Test GET API. The logged user is not superuser so we expect the queryset to be filtered
         Date: 19/08/2019
@@ -79,14 +79,14 @@ class TestAlbumSerializer(BaseTestCase):
         """
         self.login(username='superman', password='pass')
         client = self.get_client()
-        response = client.get('/activities/')
+        response = client.get('/api/activity/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['count'], 100)
 
     def test_get_activitves_filter(self):
         """
         Description: Test activity type filter
-        API: /activities/?activity_type=C
+        API: /api/activity/?activity_type=C
         Method: GET
         Date: 25/08/2019
         User: cosmin
@@ -95,7 +95,7 @@ class TestAlbumSerializer(BaseTestCase):
         """
         self.login(username='batman', password='pass')
         client = self.get_client()
-        response = client.get('/activities/?activity=C')
+        response = client.get('/api/activity/?activity=C')
         self.assertEqual(response.status_code, 200)
         results = response.data['results']
         for result in results:
@@ -104,7 +104,7 @@ class TestAlbumSerializer(BaseTestCase):
     def test_ordering(self):
         """
         Description: Test activity type filter
-        API: /activities/?ordering=activity
+        API: /api/activity/?ordering=activity
         Method: GET
         Date: 25/08/2019
         User: cosmin
@@ -113,7 +113,7 @@ class TestAlbumSerializer(BaseTestCase):
         """
         self.login(username='batman', password='pass')
         client = self.get_client()
-        response = client.get('/activities/?ordering=activity')
+        response = client.get('/api/activity/?ordering=activity')
         self.assertEqual(response.status_code, 200)
         results = response.data['results']
         self.assertEqual(results[0].get('activity'), 'C')

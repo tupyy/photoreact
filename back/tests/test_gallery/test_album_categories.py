@@ -31,7 +31,7 @@ class AlbumCategoryAPITest(BaseTestCase):
     def test_get_categories(self):
         """
         Description: Get basic categories
-        API: /album/{]/categories/
+        API: /api/album/{]/categories/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -40,14 +40,14 @@ class AlbumCategoryAPITest(BaseTestCase):
         """
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.get('/album/{}/categories/'.format(self.album.id))
+        response = client.get('/api/album/{}/categories/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
 
     def test_get_categories_fail(self):
         """
         Description: Test get categories when user has no view permission on the album
-        API: /album/{}/categories/
+        API: /api/album/{}/categories/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -56,13 +56,13 @@ class AlbumCategoryAPITest(BaseTestCase):
         """
         self.login(username='batman', password='word')
         client = self.get_client()
-        response = client.get('/album/{}/categories/'.format(self.album.id))
+        response = client.get('/api/album/{}/categories/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
     def test_get_categories_404(self):
         """
         Description: Test get categories when album do not exists
-        API: /album/{}/categories/
+        API: /api/album/{}/categories/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -71,13 +71,13 @@ class AlbumCategoryAPITest(BaseTestCase):
         """
         self.login(username='batman', password='word')
         client = self.get_client()
-        response = client.get('/album/{}/categories/'.format(100))
+        response = client.get('/api/album/{}/categories/'.format(100))
         self.assertEqual(response.status_code, 404)
 
     def test_add_categories(self):
         """
         Description: Add new category to album
-        API: /album/{}/category
+        API: /api/album/{}/category
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -89,7 +89,7 @@ class AlbumCategoryAPITest(BaseTestCase):
         data = list()
         cat1 = Category.objects.create(name="hey")
         data.append(cat1.name)
-        response = client.post('/album/{}/category/'.format(self.album.id),
+        response = client.post('/api/album/{}/category/'.format(self.album.id),
                                data=data,
                                format='json')
         self.assertEqual(response.status_code, 200)
@@ -97,7 +97,7 @@ class AlbumCategoryAPITest(BaseTestCase):
     def test_add_categories2(self):
         """
         Description: Test add new categories without permission
-        API: /album/{}/category
+        API: /api/album/{}/category
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -109,7 +109,7 @@ class AlbumCategoryAPITest(BaseTestCase):
         client = self.get_client()
         data = list()
         data.append("test")
-        response = client.post('/album/{}/category/'.format(self.album.id),
+        response = client.post('/api/album/{}/category/'.format(self.album.id),
                                data=data,
                                format='json')
         self.assertEqual(response.status_code, 403)
@@ -117,7 +117,7 @@ class AlbumCategoryAPITest(BaseTestCase):
     def test_delete_category(self):
         """
         Description: Remove category from album
-        API: /album/{id}/category/{name category}/
+        API: /api/album/{id}/category/{name category}/
         Method: DELETE
         Date: 19/08/2019
         User: cosmin
@@ -126,7 +126,7 @@ class AlbumCategoryAPITest(BaseTestCase):
         """
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.delete('/album/{}/category/{}/'.format(self.album.id,
+        response = client.delete('/api/album/{}/category/{}/'.format(self.album.id,
                                                                  self.category_foo.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.album.categories.count(), 1)
@@ -134,7 +134,7 @@ class AlbumCategoryAPITest(BaseTestCase):
     def test_delete_category_fail(self):
         """
         Description: Test delete category with no permission
-        API: /album/{id}/category/{name category}/
+        API: /api/album/{id}/category/{name category}/
         Method: DELETE
         Date: 19/08/2019
         User: cosmin
@@ -144,14 +144,14 @@ class AlbumCategoryAPITest(BaseTestCase):
         assign_perm('view_album', self.batman, self.album)
         self.login(username='batman', password='word')
         client = self.get_client()
-        response = client.delete('/album/{}/category/{}/'.format(self.album.id,
+        response = client.delete('/api/album/{}/category/{}/'.format(self.album.id,
                                                                  self.category_foo.id))
         self.assertEqual(response.status_code, 403)
 
     def test_put_category(self):
         """
         Description: Change category
-        API: /album/{id}/category/{name category}/
+        API: /api/album/{id}/category/{name category}/
         Method: PUT
         Date: 19/08/2019
         User: cosmin
@@ -161,7 +161,7 @@ class AlbumCategoryAPITest(BaseTestCase):
         new_cat = Category.objects.create(name="hey")
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.put('/album/{}/category/{}/'.format(self.album.id,
+        response = client.put('/api/album/{}/category/{}/'.format(self.album.id,
                                                               self.category_foo.id),
                               data={'category_id': new_cat.id},
                               format='json')

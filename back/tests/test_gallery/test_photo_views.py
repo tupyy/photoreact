@@ -49,7 +49,7 @@ class PhotoViewAPITest(BaseTestCase):
     def test_get_photos(self):
         """
         Description: Get photos of album id
-        API: /photo/album/{id}/
+        API: /api/photo/album/{id}/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -58,7 +58,7 @@ class PhotoViewAPITest(BaseTestCase):
         """
         self.login(username="batman", password="word")
         client = self.get_client()
-        response = client.get('/photos/album/{}/'.format(self.album.id))
+        response = client.get('/api/photos/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
 
@@ -66,7 +66,7 @@ class PhotoViewAPITest(BaseTestCase):
         """
         Description: Get photo of album. Superman has the right to view only one photo
                      through group "group"
-        API: /photo/album/{id}/
+        API: /api/photo/album/{id}/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -75,14 +75,14 @@ class PhotoViewAPITest(BaseTestCase):
         """
         self.login(username="superman", password="word")
         client = self.get_client()
-        response = client.get('/photos/album/{}/'.format(self.album.id))
+        response = client.get('/api/photos/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
     def test_get_photos_fail(self):
         """
         Description: Trying to get photo without view permission
-        API: /photo/album/{id}/
+        API: /api/photo/album/{id}/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -91,13 +91,13 @@ class PhotoViewAPITest(BaseTestCase):
         """
         self.login(username="other", password="word")
         client = self.get_client()
-        response = client.get('/photos/album/{}/'.format(self.album.id))
+        response = client.get('/api/photos/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
     def test_sign_photo(self):
         """
         Description: Test photo signing
-        API: /photo/sign/album/{}/
+        API: /api/photo/sign/album/{}/
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -106,7 +106,7 @@ class PhotoViewAPITest(BaseTestCase):
         """
         self.login(username="user", password="pass")
         client = self.get_client()
-        response = client.post('/photo/sign/album/{}/'.format(self.album.id),
+        response = client.post('/api/photo/sign/album/{}/'.format(self.album.id),
                                data={'filename': 'bar.jpg'},
                                format='json')
         self.assertEqual(response.status_code, 200)
@@ -114,7 +114,7 @@ class PhotoViewAPITest(BaseTestCase):
     def test_sign_photo_admin(self):
         """
         Description: Test sign photo by a superuser
-        API: /photo/sign/album/{}/
+        API: /api/photo/sign/album/{}/
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -124,7 +124,7 @@ class PhotoViewAPITest(BaseTestCase):
         _ = User.objects.create_superuser('admin', 'user@gallery', 'pass')
         self.login(username="admin", password="pass")
         client = self.get_client()
-        response = client.post('/photo/sign/album/{}/'.format(self.album.id),
+        response = client.post('/api/photo/sign/album/{}/'.format(self.album.id),
                                data={'filename': 'bar.jpg'},
                                format='json')
         self.assertEqual(response.status_code, 200)
@@ -132,7 +132,7 @@ class PhotoViewAPITest(BaseTestCase):
     def test_sign_photo_fail(self):
         """
         Description: Try to sign a photo for an album for which the current user has no "add_photos" permission
-        API: /photo/sign/album/{}
+        API: /api/photo/sign/album/{}
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -141,13 +141,13 @@ class PhotoViewAPITest(BaseTestCase):
         """
         self.login(username="batman", password="word")
         client = self.get_client()
-        response = client.post('/photo/sign/album/{}/'.format(self.album.id))
+        response = client.post('/api/photo/sign/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
     def test_add_photo(self):
         """
         Description: Test add photo api
-        API: /photo/album/{}/
+        API: /api/photo/album/{}/
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -156,7 +156,7 @@ class PhotoViewAPITest(BaseTestCase):
         """
         self.login(username="user", password="pass")
         client = self.get_client()
-        response = client.post('/photo/album/{}/'.format(self.album.id),
+        response = client.post('/api/photo/album/{}/'.format(self.album.id),
                                data={'filename': 'bar.jpg',
                                      'thumbnail': 'test.jpg'},
                                format='json')
@@ -165,7 +165,7 @@ class PhotoViewAPITest(BaseTestCase):
     def test_delete_photo(self):
         """
         Description: Delete photo
-        API:/photo/{id}/
+        API:/api/photo/{id}/
         Method: DELETE
         Date: 19/08/2019
         User: cosmin
@@ -174,13 +174,13 @@ class PhotoViewAPITest(BaseTestCase):
         """
         self.login(username="user", password="pass")
         client = self.get_client()
-        response = client.delete('/photo/{}/'.format(self.photo.id))
+        response = client.delete('/api/photo/{}/'.format(self.photo.id))
         self.assertEqual(response.status_code, 204)
 
     def test_delete_photo_no_permission(self):
         """
         Description: Delete photo but no "delete_photo" permission
-        API: /photo/{id}
+        API: /api/photo/{id}
         Method: DELETE
         Date: 19/08/2019
         User: cosmin
@@ -189,13 +189,13 @@ class PhotoViewAPITest(BaseTestCase):
         """
         self.login(username="other", password="word")
         client = self.get_client()
-        response = client.delete('/photo/{}/'.format(self.photo.id))
+        response = client.delete('/api/photo/{}/'.format(self.photo.id))
         self.assertEqual(response.status_code, 403)
 
     def test_delete_photo_assign_permission(self):
         """
         Description: Delete photo but assign permission
-        API: /photo/{id}
+        API: /api/photo/{id}
         Method: DELETE
         Date: 19/08/2019
         User: cosmin
@@ -205,5 +205,5 @@ class PhotoViewAPITest(BaseTestCase):
         assign_perm('delete_photos', self.batman, self.album)
         self.login(username="batman", password="word")
         client = self.get_client()
-        response = client.delete('/photo/{}/'.format(self.photo.id))
+        response = client.delete('/api/photo/{}/'.format(self.photo.id))
         self.assertEqual(response.status_code, 204)

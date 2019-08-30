@@ -4,5 +4,5 @@ from rest_framework import routers
 from activity_log.views import ActivityLogView
 
 router = routers.SimpleRouter()
-router.register(r'activities', ActivityLogView, basename='activities')
+router.register(r'api/activity', ActivityLogView, basename='activity')
 urlpatterns = router.urls

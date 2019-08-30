@@ -28,7 +28,7 @@ class AlbumViewTests(BaseTestCase):
     def test_get_album(self):
         """
         Description: Get album
-        API: /album/{id}/
+        API: /api/album/{id}/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -46,7 +46,7 @@ class AlbumViewTests(BaseTestCase):
     def test_get_album2(self):
         """
         Description: Get album without permission
-        API: /album/{id}
+        API: /api/album/{id}
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -61,7 +61,7 @@ class AlbumViewTests(BaseTestCase):
     def test_list_albums(self):
         """
         Description: Get albums
-        API: /albums/
+        API: /api/albums/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -137,7 +137,7 @@ class AlbumViewTests(BaseTestCase):
         """
         Description: Get albums filtered by period
                       The request is made by a user different than owner which have "view_album" permissions
-        API: /albums?album_from=album_from_date&album_to=album_to_date
+        API: /api/albums?album_from=album_from_date&album_to=album_to_date
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -166,7 +166,7 @@ class AlbumViewTests(BaseTestCase):
     def test_list_albums_order_1(self):
         """
         Description: Test ordering by date
-        API: /albums?ordering=name
+        API: /api/albums?ordering=name
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -194,7 +194,7 @@ class AlbumViewTests(BaseTestCase):
     def test_list_albums_order_2(self):
         """
         Description: Test ordering by date
-        API: /albums?ordering=-date
+        API: /api/albums?ordering=-date
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -222,7 +222,7 @@ class AlbumViewTests(BaseTestCase):
     def test_list_albums_404(self):
         """
         Description: Get albums by user with no view permission
-        API: /albums/
+        API: /api/albums/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -287,7 +287,7 @@ class AlbumViewTests(BaseTestCase):
     def test_create_album(self):
         """
         Description: Create album
-        API: /album/
+        API: /api/album/
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -317,7 +317,7 @@ class AlbumViewTests(BaseTestCase):
     def test_create_album_fail(self):
         """
         Description: Test create album when user has no permissions
-        API: /album/
+        API: /api/album/
         Method:POST
         Date: 19/08/2019
         User: cosmin
@@ -336,7 +336,7 @@ class AlbumViewTests(BaseTestCase):
     def test_update_album(self):
         """
         Description: Update album
-        API: /albums/{id}
+        API: /api/albums/{id}
         Method: PUT
         Date: 19/08/2019
         User: cosmin
@@ -356,7 +356,7 @@ class AlbumViewTests(BaseTestCase):
     def test_delete_album(self):
         """
         Description: Delete album
-        API: /album/{id}/
+        API: /api/album/{id}/
         Method: PUT
         Date: 19/08/2019
         User: cosmin
@@ -375,7 +375,7 @@ class AlbumViewTests(BaseTestCase):
     def test_delete_album2(self):
         """
         Description: Delete album but no delete permission
-        API: /album/{id}
+        API: /api/album/{id}
         Method: DELETE
         Date: 19/08/2019
         User: cosmin

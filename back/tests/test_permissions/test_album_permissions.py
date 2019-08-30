@@ -34,10 +34,10 @@ class AlbumPermissionAPITest(BaseTestCase):
         assign_perm('add_photos', self.group, self.album)
         assign_perm('change_album', self.group, self.album)
 
-    def test_get_permissions(self):
+    def test_get_permission(self):
         """
         Description: Get permission for album id
-        API:/permissions/album/{id}/
+        API:/permission/album/{id}/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -46,15 +46,15 @@ class AlbumPermissionAPITest(BaseTestCase):
         """
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.get('/permissions/album/{}/'.format(self.album.id))
+        response = client.get('/api/permission/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data[0]), 3)
         self.assertEqual(len(response.data[1]), 1)
 
-    def test_get_permissions_fail(self):
+    def test_get_permission_fail(self):
         """
         Description:  Get permission for a missing album
-        API: /permissions/album/{id}/
+        API: /permission/album/{id}/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -63,13 +63,13 @@ class AlbumPermissionAPITest(BaseTestCase):
         """
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.get('/permissions/album/{}/'.format(self.album.id + 1))
+        response = client.get('/api/permission/album/{}/'.format(self.album.id + 1))
         self.assertEqual(response.status_code, 404)
 
-    def test_get_permissions_fail2(self):
+    def test_get_permission_fail2(self):
         """
         Description: Try to get permission by another user than the owner
-        API: /permissions/album/{}/
+        API: /permission/album/{}/
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -78,13 +78,13 @@ class AlbumPermissionAPITest(BaseTestCase):
         """
         self.login(username='other', password='word')
         client = self.get_client()
-        response = client.get('/permissions/album/{}/'.format(self.album.id))
+        response = client.get('/api/permission/album/{}/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
-    def test_add_permissions(self):
+    def test_add_permission(self):
         """
         Description: Add permission
-        API: /permissions/album/{id}/
+        API: /permission/album/{id}/
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -93,7 +93,7 @@ class AlbumPermissionAPITest(BaseTestCase):
         """
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.post('/permissions/album/{}/'.format(self.album.id),
+        response = client.post('/api/permission/album/{}/'.format(self.album.id),
                                data=[
                                    {
                                        "user_id": self.batman.id,
@@ -107,10 +107,10 @@ class AlbumPermissionAPITest(BaseTestCase):
                                format="json")
         self.assertEqual(response.status_code, 200)
 
-    def test_delete_permissions(self):
+    def test_delete_permission(self):
         """
-        Description: Delete permissions
-        API: /permissions/album/{id}/
+        Description: Delete permission
+        API: /permission/album/{id}/
         Method: DELETE
         Date: 19/08/2019
         User: cosmin
@@ -119,7 +119,7 @@ class AlbumPermissionAPITest(BaseTestCase):
         """
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.delete('/permissions/album/{}/'.format(self.album.id),
+        response = client.delete('/api/permission/album/{}/'.format(self.album.id),
                                data=[
                                    {
                                        "user_id": self.batman.id,
@@ -135,18 +135,18 @@ class AlbumPermissionAPITest(BaseTestCase):
         self.assertFalse(self.batman.has_perm("add_photos", self.album))
         self.assertTrue(self.batman.has_perm("change_album", self.album))
 
-        # check permissions for superman which is in group
+        # check permission for superman which is in group
         self.assertFalse(self.superman.has_perm("add_photos", self.album))
         self.assertTrue(self.superman.has_perm("change_album", self.album))
 
-        # check permissions for superman which is in group
+        # check permission for superman which is in group
         self.assertTrue(self.user.has_perm("add_photos", self.album))
         self.assertTrue(self.user.has_perm("change_album", self.album))
 
-    def test_delete_permissions2(self):
+    def test_delete_permission2(self):
         """
         Description: Delete permission by another user than owner
-        API: /permissions/album/{id}/
+        API: /permission/album/{id}/
         Method: DELETE
         Date: 19/08/2019
         User: cosmin
@@ -155,7 +155,7 @@ class AlbumPermissionAPITest(BaseTestCase):
         """
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.delete('/permissions/album/{}/'.format(self.album.id),
+        response = client.delete('/api/permission/album/{}/'.format(self.album.id),
                                data=[
                                    {
                                        "user_id": self.user.id,
@@ -169,7 +169,7 @@ class AlbumPermissionAPITest(BaseTestCase):
                                format="json")
         self.assertEqual(response.status_code, 200)
 
-        # check permissions for superman which is in group
+        # check permission for superman which is in group
         self.assertFalse(self.superman.has_perm("add_photos", self.album))
         self.assertTrue(self.superman.has_perm("change_album", self.album))
 

@@ -30,7 +30,7 @@ class AccountViewTest(BaseTestCase):
         """
         self.login('user', 'pass')
         client = self.get_client()
-        response = client.get(reverse('accounts-get_profile'))
+        response = client.get(reverse('account-get_profile'))
         self.assertTrue(response.status_code, 200)
         data = response.data
         self.assertEqual(data["username"], self.user.username)
@@ -58,7 +58,7 @@ class AccountViewTest(BaseTestCase):
         data['first_name'] = "toto"
         data['last_name'] = 'toto'
         data['email'] = 'toto@toto.com'
-        response = client.put(reverse('accounts-get_profile'), data=data, format='json')
+        response = client.put(reverse('account-get_profile'), data=data, format='json')
         self.assertTrue(response.status_code, 200)
         profile = response.data
         self.assertEqual(profile['first_name'], data['first_name'])
@@ -81,7 +81,7 @@ class AccountViewTest(BaseTestCase):
         data['first_name'] = ""
         data['last_name'] = 'toto'
         data['email'] = 'toto@toto.com'
-        response = client.put(reverse('accounts-get_profile'), data=data, format='json')
+        response = client.put(reverse('account-get_profile'), data=data, format='json')
         self.assertTrue(response.status_code, 400)
 
     def test_sign_photo(self):
@@ -98,7 +98,7 @@ class AccountViewTest(BaseTestCase):
         client = self.get_client()
         data = dict()
         data['filename'] = "foo.bar"
-        response = client.post(reverse('accounts-photo-sign'), data=data, format="json")
+        response = client.post(reverse('account-photo-sign'), data=data, format="json")
         self.assertTrue(response.status_code, 200)
         self.assertTrue('foo.bar' in response.data['url'])
 
@@ -116,5 +116,5 @@ class AccountViewTest(BaseTestCase):
         client = self.get_client()
         data = dict()
         data['filename'] = "foo.bar"
-        response = client.post(reverse('accounts-save-photo'), data=data, format="json")
+        response = client.post(reverse('account-save-photo'), data=data, format="json")
         self.assertTrue(response.status_code, 200)

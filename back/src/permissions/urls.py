@@ -5,6 +5,6 @@ from rest_framework import routers
 import permissions.views
 
 router = routers.SimpleRouter()
-router.register(r'permissions', permissions.views.AlbumPermissionView, basename='permissions')
+router.register(r'api/permission', permissions.views.AlbumPermissionView, basename='permission')
 
 urlpatterns = router.urls

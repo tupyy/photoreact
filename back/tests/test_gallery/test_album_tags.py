@@ -33,7 +33,7 @@ class AlbumTagAPITest(BaseTestCase):
     def test_get_tags(self):
         """
         Description: Get tag of album id
-        API: /album/{id}/tags
+        API: /api/album/{id}/tags
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -43,14 +43,14 @@ class AlbumTagAPITest(BaseTestCase):
         self.login(username='user', password='pass')
         client = self.get_client()
 
-        response = client.get('/album/{}/tags/'.format(self.album.id))
+        response = client.get('/api/album/{}/tags/'.format(self.album.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
 
     def test_get_tags_fail(self):
         """
         Description: Get albums tags no view permission
-        API: /album/{id}/tags
+        API: /api/album/{id}/tags
         Method:
         Date: 19/08/2019
         User: cosmin
@@ -59,13 +59,13 @@ class AlbumTagAPITest(BaseTestCase):
         """
         self.login(username='batman', password='word')
         client = self.get_client()
-        response = client.get('/album/{}/tags/'.format(self.album.id))
+        response = client.get('/api/album/{}/tags/'.format(self.album.id))
         self.assertEqual(response.status_code, 403)
 
     def test_get_tags_404(self):
         """
         Description: Get a missing album
-        API: /album/{id}/tags
+        API: /api/album/{id}/tags
         Method: GET
         Date: 19/08/2019
         User: cosmin
@@ -74,13 +74,13 @@ class AlbumTagAPITest(BaseTestCase):
         """
         self.login(username='batman', password='word')
         client = self.get_client()
-        response = client.get('/album/{}/tags/'.format(100))
+        response = client.get('/api/album/{}/tags/'.format(100))
         self.assertEqual(response.status_code, 404)
 
     def test_add_tags(self):
         """
         Description: Add tags
-        API: /album/{id}/tags
+        API: /api/album/{id}/tags
         Method:POST
         Date: 19/08/2019
         User: cosmin
@@ -92,7 +92,7 @@ class AlbumTagAPITest(BaseTestCase):
         data = list()
         tag1 = Tag.objects.create(name="hey")
         data.append(tag1.name)
-        response = client.post('/album/{}/tag/'.format(self.album.id),
+        response = client.post('/api/album/{}/tag/'.format(self.album.id),
                                data=data,
                                format='json')
         self.assertEqual(response.status_code, 200)
@@ -100,7 +100,7 @@ class AlbumTagAPITest(BaseTestCase):
     def test_add_tags2(self):
         """
         Description: Add tag . Create tag because it doesn't exist
-        API: /album/{id}/tags
+        API: /api/album/{id}/tags
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -111,7 +111,7 @@ class AlbumTagAPITest(BaseTestCase):
         client = self.get_client()
         data = list()
         data.append("hey")
-        response = client.post('/album/{}/tag/'.format(self.album.id),
+        response = client.post('/api/album/{}/tag/'.format(self.album.id),
                                data=data,
                                format='json')
         self.assertEqual(response.status_code, 200)
@@ -119,7 +119,7 @@ class AlbumTagAPITest(BaseTestCase):
     def test_add_tags3(self):
         """
         Description: Try to add tag when user hasn't "change" permission
-        API: /album/{id}/tags
+        API: /api/album/{id}/tags
         Method: POST
         Date: 19/08/2019
         User: cosmin
@@ -131,7 +131,7 @@ class AlbumTagAPITest(BaseTestCase):
         client = self.get_client()
         data = list()
         data.append("test")
-        response = client.post('/album/{}/tag/'.format(self.album.id),
+        response = client.post('/api/album/{}/tag/'.format(self.album.id),
                                data=data,
                                format='json')
         self.assertEqual(response.status_code, 403)
@@ -139,7 +139,7 @@ class AlbumTagAPITest(BaseTestCase):
     def test_delete_tag(self):
         """
         Description: Delete tag
-        API: /album/{id}/tag/{id tag}/
+        API: /api/album/{id}/tag/{id tag}/
         Method: DELETE
         Date: 19/08/2019
         User: cosmin
@@ -148,7 +148,7 @@ class AlbumTagAPITest(BaseTestCase):
         """
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.delete('/album/{}/tag/{}/'.format(self.album.id,
+        response = client.delete('/api/album/{}/tag/{}/'.format(self.album.id,
                                                                  self.tag_foo.id))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.album.tags.count(), 1)
@@ -156,7 +156,7 @@ class AlbumTagAPITest(BaseTestCase):
     def test_delete_tag_fail(self):
         """
         Description: Delete tag when user hasn't no permission
-        API: /album/{id}/tag/{id tag}/
+        API: /api/album/{id}/tag/{id tag}/
         Method: DELETE
         Date: 19/08/2019
         User: cosmin
@@ -166,14 +166,14 @@ class AlbumTagAPITest(BaseTestCase):
         assign_perm('view_album', self.batman, self.album)
         self.login(username='batman', password='word')
         client = self.get_client()
-        response = client.delete('/album/{}/tag/{}/'.format(self.album.id,
+        response = client.delete('/api/album/{}/tag/{}/'.format(self.album.id,
                                                                  self.tag_foo.id))
         self.assertEqual(response.status_code, 403)
 
     def test_put_tag(self):
         """
         Description: Change tag
-        API: /album/{id}/tag/{id tag}/
+        API: /api/album/{id}/tag/{id tag}/
         Method: PUT
         Date: 19/08/2019
         User: cosmin
@@ -183,7 +183,7 @@ class AlbumTagAPITest(BaseTestCase):
         new_tag = Tag.objects.create(name="hey")
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.put('/album/{}/tag/{}/'.format(self.album.id,
+        response = client.put('/api/album/{}/tag/{}/'.format(self.album.id,
                                                               self.tag_foo.id),
                               data={'tag_name': new_tag.name},
                               format='json')
@@ -194,7 +194,7 @@ class AlbumTagAPITest(BaseTestCase):
     def test_put_tag2(self):
         """
         Description: Change tag
-        API: /album/{id}/tag/{id tag}/
+        API: /api/album/{id}/tag/{id tag}/
         Method: PUT
         Date: 19/08/2019
         User: cosmin
@@ -203,7 +203,7 @@ class AlbumTagAPITest(BaseTestCase):
         """
         self.login(username='user', password='pass')
         client = self.get_client()
-        response = client.put('/album/{}/tag/{}/'.format(self.album.id,
+        response = client.put('/api/album/{}/tag/{}/'.format(self.album.id,
                                                               self.tag_foo.id),
                               data={'tag_name': "hey"},
                               format='json')
