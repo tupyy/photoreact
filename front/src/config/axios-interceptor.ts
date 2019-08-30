@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getBasePath, Storage } from '../utils';
 
-import { SERVER_API_URL } from '.constants';
+import { SERVER_API_URL } from './constants'; 
 
 const TIMEOUT = 1 * 60 * 1000;
 axios.defaults.timeout = TIMEOUT;
