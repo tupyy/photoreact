@@ -83,3 +83,38 @@ class AccountViewTest(BaseTestCase):
         data['email'] = 'toto@toto.com'
         response = client.put(reverse('accounts-get_profile'), data=data, format='json')
         self.assertTrue(response.status_code, 400)
+
+    def test_sign_photo(self):
+        """
+        Description: Test sign profile photo prior to S3 upload
+        API: /accounts/photo/sign/
+        Method: POST
+        Date: 30/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
+        self.login('user', 'pass')
+        client = self.get_client()
+        data = dict()
+        data['filename'] = "foo.bar"
+        response = client.post(reverse('accounts-photo-sign'), data=data, format="json")
+        self.assertTrue(response.status_code, 200)
+        self.assertTrue('foo.bar' in response.data['url'])
+
+    def test_post_photo(self):
+        """
+        Description: Post photo after uploading to S3
+        API: /accounts/photo/
+        Method: POST
+        Date: 30/08/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values:
+        """
+        self.login('user', 'pass')
+        client = self.get_client()
+        data = dict()
+        data['filename'] = "foo.bar"
+        response = client.post(reverse('accounts-save-photo'), data=data, format="json")
+        self.assertTrue(response.status_code, 200)
