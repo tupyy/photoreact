@@ -20,7 +20,7 @@ class AlbumViewTests(BaseTestCase):
         self.batman = User.objects.create_user('batman', 'batman@gallery', 'word')
 
         today = datetime.date.today()
-        self.album = Album.objects.create(folder_path='foo', date=today, owner=self.user, name='foo')
+        self.album = Album.objects.create(date=today, owner=self.user, name='foo')
         self.photo = Photo.objects.create(album=self.album, filename='bar.jpg', thumbnail_file='thumbnail_file')
 
         self.album.save()
@@ -70,7 +70,7 @@ class AlbumViewTests(BaseTestCase):
         """
         assign_perm('view_album', self.user, self.album)
 
-        album2 = Album.objects.create(folder_path='bar', date=datetime.date.today(), owner=self.user, name='bar')
+        album2 = Album.objects.create(date=datetime.date.today(), owner=self.user, name='bar')
         assign_perm('view_album', self.user, album2)
 
         self.login(username="user", password="pass")
@@ -92,7 +92,7 @@ class AlbumViewTests(BaseTestCase):
         assign_perm('view_album', self.user, self.album)
 
         album_date = datetime.date.today() + datetime.timedelta(days=10)
-        album2 = Album.objects.create(folder_path='bar', date=album_date, owner=self.user, name='bar')
+        album2 = Album.objects.create(date=album_date, owner=self.user, name='bar')
         assign_perm('view_album', self.user, album2)
 
         album2.save()
@@ -120,7 +120,7 @@ class AlbumViewTests(BaseTestCase):
         assign_perm('view_album', self.user, self.album)
 
         album_date = datetime.date.today() + datetime.timedelta(days=10)
-        album2 = Album.objects.create(folder_path='bar', date=album_date, owner=self.user, name='bar')
+        album2 = Album.objects.create(date=album_date, owner=self.user, name='bar')
         assign_perm('view_album', self.user, album2)
 
         album2.save()
@@ -147,7 +147,7 @@ class AlbumViewTests(BaseTestCase):
         assign_perm('view_album', self.user, self.album)
 
         album_date = datetime.date.today() + datetime.timedelta(days=10)
-        album2 = Album.objects.create(folder_path='bar', date=album_date, owner=self.user, name='bar')
+        album2 = Album.objects.create(date=album_date, owner=self.user, name='bar')
         assign_perm('view_album', self.user, album2)
 
         album2.save()
@@ -176,7 +176,7 @@ class AlbumViewTests(BaseTestCase):
         assign_perm('view_album', self.user, self.album)
 
         album_date = datetime.date.today() + datetime.timedelta(days=10)
-        album2 = Album.objects.create(folder_path='bar', date=album_date, owner=self.user, name='bar')
+        album2 = Album.objects.create(date=album_date, owner=self.user, name='bar')
         assign_perm('view_album', self.user, album2)
 
         album2.save()
@@ -204,7 +204,7 @@ class AlbumViewTests(BaseTestCase):
         assign_perm('view_album', self.user, self.album)
 
         album_date = datetime.date.today() + datetime.timedelta(days=10)
-        album2 = Album.objects.create(folder_path='bar', date=album_date, owner=self.user, name='bar')
+        album2 = Album.objects.create(date=album_date, owner=self.user, name='bar')
         assign_perm('view_album', self.user, album2)
 
         album2.save()
@@ -306,7 +306,6 @@ class AlbumViewTests(BaseTestCase):
         self.user.user_permissions.add(permission)
         data = dict()
         data['name'] = 'foo'
-        data['folder_path'] = 'folder_path'
         data['date'] = datetime.date.today()
         data['description'] = "description"
         response = client.post(reverse('album-list'), data=data, format='json')
@@ -328,7 +327,6 @@ class AlbumViewTests(BaseTestCase):
         client = self.get_client()
         data = dict()
         data['name'] = 'foo'
-        data['folder_path'] = 'folder_path'
         data['date'] = datetime.date.today()
         response = client.post(reverse('album-list'), data=data, format='json')
         self.assertEqual(response.status_code, 403)

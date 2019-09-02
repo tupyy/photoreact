@@ -19,7 +19,7 @@ class TestAlbumSerializer(BaseTestCase):
         self.superman = User.objects.create_user('superman', 'superman@kryption.org', 'pass')
 
         today = datetime.today()
-        self.album = Album.objects.create(folder_path='foo', date=today.date(), owner=self.batman, name='foo')
+        self.album = Album.objects.create(date=today.date(), owner=self.batman, name='foo')
         self.photo = Photo.objects.create(album=self.album, filename='bar.jpg', thumbnail_file='thumbnail')
 
         self.album.save()

@@ -22,7 +22,7 @@ class AlbumPermissionAPITest(BaseTestCase):
         self.superman.groups.add(self.group)
 
         today = datetime.date.today()
-        self.album = Album.objects.create(folder_path='foo', date=today, owner=self.user, name='foo')
+        self.album = Album.objects.create(date=today, owner=self.user, name='foo')
         self.photo = Photo.objects.create(album=self.album, filename='bar.jpg', thumbnail_file='thumbnail_file')
 
         self.album.save()

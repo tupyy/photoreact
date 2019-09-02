@@ -19,7 +19,7 @@ class TestAlbumSerializer(TestCase):
         self.batman = User.objects.create_user('batman', 'batman@gallery', 'word')
 
         today = datetime.today()
-        self.album = Album.objects.create(folder_path='foo', date=today.date(), owner=self.user, name='foo')
+        self.album = Album.objects.create(date=today.date(), owner=self.user, name='foo')
         self.photo = Photo.objects.create(album=self.album, filename='bar.jpg', thumbnail_file='thumbnail')
 
         self.album.save()

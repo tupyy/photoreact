@@ -22,11 +22,11 @@ class PhotoViewAPITest(BaseTestCase):
         self.superman.groups.add(self.group)
 
         today = datetime.date.today()
-        self.album = Album.objects.create(folder_path='foo', date=today, owner=self.user, name='foo')
+        self.album = Album.objects.create(date=today, owner=self.user, name='foo')
         self.photo = Photo.objects.create(album=self.album, filename='bar.jpg', thumbnail_file='thumbnail_file')
         self.photo2 = Photo.objects.create(album=self.album, filename='foo.jpg', thumbnail_file='thumbnail_file')
 
-        self.album2 = Album.objects.create(folder_path='bar', date=today, owner=self.user, name='bar')
+        self.album2 = Album.objects.create(date=today, owner=self.user, name='bar')
         self.photo_album2 = Photo.objects.create(album=self.album2, filename='bar2.jpg',
                                                  thumbnail_file='thumbnail_file')
         self.photo2_album_2 = Photo.objects.create(album=self.album2, filename='foo2.jpg',
