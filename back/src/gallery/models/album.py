@@ -30,7 +30,6 @@ class AlbumManager(models.Manager):
 
 @python_2_unicode_compatible
 class Album(models.Model):
-    folder_path = models.CharField(max_length=200, verbose_name="directory path")
     date = models.DateField(verbose_name="creation_date")
     name = models.CharField(max_length=100, blank=True)
     description = models.TextField(verbose_name="description", blank=True)
@@ -41,9 +40,15 @@ class Album(models.Model):
 
     objects = AlbumManager()
 
+    @property
+    def folder_path(self):
+        return "{}/{}_{}_{}".format(str(self.date.year),
+                                    str(self.date.month),
+                                    str(self.date.day),
+                                    self.name)
+
     class Meta:
-        ordering = ('date', 'name', 'folder_path')
-        unique_together = ('folder_path',)
+        ordering = ('date', 'name')
         verbose_name = "album"
         verbose_name_plural = "albums"
         default_permissions = ('add', 'change', 'delete', 'view')
