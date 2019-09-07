@@ -7,7 +7,7 @@ DATABASES_DEV = {
         'NAME': 'photo2',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '172.17.0.3',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
