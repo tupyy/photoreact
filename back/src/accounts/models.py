@@ -25,7 +25,7 @@ class UserProfile(models.Model):
         (ENGLISH, "EN")
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    photo_filename = models.CharField(max_length=100, verbose_name="profile_photo")
+    photo_filename = models.CharField(max_length=100, verbose_name="profile_photo", blank=True)
     lang_key = models.CharField(max_length=2, choices=LangKey, default=ROMANIAN)
 
     # True if the user has to reset its password upon next login
