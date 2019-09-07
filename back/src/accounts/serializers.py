@@ -2,22 +2,24 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
-from accounts.models import UserProfile
+from accounts.models import UserProfile, Role
 from gallery.utils import s3_manager
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source="user.id", read_only=True)
+    active = serializers.BooleanField(source="user.is_active", read_only=True)
     username = serializers.CharField(source="user.username", read_only=True)
     first_name = serializers.CharField(source="user.first_name")
     last_name = serializers.CharField(source="user.last_name")
     email = serializers.CharField(source="user.email")
+    langKey = serializers.CharField(source="lang_key")
     photo = serializers.SerializerMethodField()
-    roles = serializers.SlugRelatedField(read_only=True, many=True, slug_field="id")
+    roles = serializers.SlugRelatedField(read_only=True, many=True, slug_field="role")
 
     class Meta:
         model = UserProfile
-        fields = ["id", "username", "first_name",
+        fields = ["id", "username", "first_name", "langKey", "active",
                   "last_name", "email", "photo", "roles"]
 
     def get_photo(self, obj):
