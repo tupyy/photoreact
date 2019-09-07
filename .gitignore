@@ -4,6 +4,7 @@
 /front/node_modules
 /front/dist
 /front/.idea
+/front/target/
 
 # back
 /back/venv

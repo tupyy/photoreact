@@ -1,12 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import DevTools from './config/devtools';
+import initStore from './config/store';
+import setupAxiosInterceptors from './config/axios-interceptor';
+import { clearAuthentication } from './shared/reducers/authentication';
+import ErrorBoundary from './shared/error/error-boundary';
+import AppComponent from './App';
+import { loadIcons } from './config/icon-loader';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const devTools = process.env.NODE_ENV === 'development' ? <DevTools /> : null;
+
+const store = initStore();
+
+const actions = bindActionCreators({ clearAuthentication }, store.dispatch);
+setupAxiosInterceptors(() => actions.clearAuthentication('login.error.unauthorized'));
+
+loadIcons();
+
+const rootEl = document.getElementById('root');
+
+const render = Component =>
+    ReactDOM.render(
+        <ErrorBoundary>
+            <Provider store={store}>
+                <div>
+                    {/* If this slows down the app in dev disable it and enable when required  */}
+                    {devTools}
+                    <Component />
+                </div>
+            </Provider>
+        </ErrorBoundary>,
+        rootEl
+    );
+
+render(AppComponent);
+
