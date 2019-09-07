@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { blue } from '@material-ui/core/colors';
 
 export interface ILoginModalProps {
     loginError: boolean;
@@ -42,7 +43,7 @@ const useStyles = makeStyles(theme => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main
     },
     form: {
         width: '100%', // Fix IE 11 issue.
