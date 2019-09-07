@@ -104,14 +104,14 @@ export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, 
 export const getSession = () => async (dispatch, getState) => {
     const result = await dispatch({
         type: ACTION_TYPES.GET_SESSION,
-        payload: axios.get<IUser>('api/account/profile/')
+        payload: axios.get('api/account/profile/')
     });
 
     const { account } = getState().authentication;
-    if (account && account.langKey) {
-        const langKey = Storage.session.get('locale', account.langKey);
-        // await dispatch(setLocale(langKey));
-    }
+    // if (account && account.langKey) {
+    //     const langKey = Storage.session.get('locale', account.langKey);
+    //     await dispatch(setLocale(langKey));
+    // }
 };
 
 export const login = (username, password, rememberMe = false) => async (dispatch, getState) => {
