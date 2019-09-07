@@ -7,7 +7,6 @@ import {hot} from 'react-hot-loader';
 
 import {IRootState} from 'app/shared/reducers';
 import {getSession} from 'app/shared/reducers/authentication';
-import {getProfile} from 'app/shared/reducers/application-profile';
 import {setLocale} from 'app/shared/reducers/locale';
 import {hasAnyAuthority} from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
@@ -40,15 +39,13 @@ export const App = (props: IAppProps) => {
     );
 };
 
-const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootState) => ({
+const mapStateToProps = ({ authentication, locale }: IRootState) => ({
     currentLocale: locale.currentLocale,
     isAuthenticated: authentication.isAuthenticated,
     isAdmin: hasAnyAuthority(authentication.account.roles, [AUTHORITIES.ADMIN]),
-    ribbonEnv: applicationProfile.ribbonEnv,
-    isInProduction: applicationProfile.inProduction,
 });
 
-const mapDispatchToProps = { setLocale, getSession, getProfile };
+const mapDispatchToProps = { setLocale, getSession };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
