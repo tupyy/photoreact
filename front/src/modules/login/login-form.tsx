@@ -1,61 +1,43 @@
-import React from 'react';
-import { Translate, translate } from 'react-jhipster';
-import { Link } from 'react-router-dom';
+import React, {useState} from 'react';
 
 export interface ILoginModalProps {
     loginError: boolean;
     handleLogin: Function;
 }
 
-interface ILoginFormState {
-    username: string;
-    password: string;
-}
+const LoginForm = (props: ILoginModalProps) => {
+    const [username, setUsername] = useState('cosmin');
+    const [password, setPassword] = useState('cosmin');
 
-class LoginForm extends React.Component<ILoginModalProps, ILoginFormState> {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            'username': 'cosmin',
-            'password': 'cosmin'
+    const handleSubmit = (event) => {
+            event.preventDefault();
+            const {handleLogin} = props;
+            handleLogin(username,password, false)
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-    handleSubmit(event) {
-        event.preventDefault();
-        const {handleLogin} = this.props;
-        handleLogin(this.state.username, this.state.password, false)
-    }
-    handleChange(event) {
-        if (event.target.name === "username") {
-            this.setState({"username": event.target.value})
-        } else {
-            this.setState({"password": event.target.event})
-        }
-    }
+    const handleChange = (event: any) => {
+        const method = event.target.name === "username" ? setUsername : setPassword;
+        method(event.targe.value);
+    };
 
-    render() {
-        const { loginError } = this.props;
-
-        return (
-            <div>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Username
-                    <input type="text" placeholder="Enter username" name="username" value={this.state.username} onChange={this.handleChange}/>
-                    </label>
-                    <label>
-                        Password
-                    <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
-                    </label>
-                    <button type="submit">Login</button>
-                </form>
-            </div>
-        );
-    }
-}
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    Username
+                    <input type="text" placeholder="Enter username" name="username" value={username}
+                           onChange={handleChange}/>
+                </label>
+                <label>
+                    Password
+                    <input type="password" name="password" value={password}
+                           onChange={handleChange}/>
+                </label>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    )
+};
 
 export default LoginForm;
+
