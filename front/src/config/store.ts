@@ -12,17 +12,17 @@ const defaultMiddlewares = [
   promiseMiddleware,
   loggerMiddleware
 ];
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const composedMiddlewares = middlewares =>
   process.env.NODE_ENV === 'development'
-    ? compose(
+    ? composeEnhancers(
         applyMiddleware(...defaultMiddlewares, ...middlewares),
-        DevTools.instrument()
       )
     : compose(
-        applyMiddleware(...defaultMiddlewares, ...middlewares),
-        DevTools.instrument(),
-      (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
-      (window as any).__REDUX_DEVTOOLS_EXTENSION__());
+        applyMiddleware(...defaultMiddlewares, ...middlewares)
+      );
 
 const initialize = (initialState?: IRootState, middlewares = []) => createStore(
     reducer,

@@ -111,8 +111,7 @@ module.exports = options => ({
         }),
         new ForkTsCheckerWebpackPlugin({ tslint: true }),
         new CopyWebpackPlugin([
-            { from: './static/', to: 'content' },
-//      { from: './src/main/webapp/manifest.webapp', to: 'manifest.webapp' },
+            { from: './static/', to: 'content' }
         ])
     ]
 });
