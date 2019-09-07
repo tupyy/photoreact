@@ -3,6 +3,7 @@ import { Storage } from 'react-jhipster';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { setLocale } from 'app/shared/reducers/locale';
+import {IUser} from "app/shared/model/user.model";
 
 export const ACTION_TYPES = {
     LOGIN: 'authentication/LOGIN',
@@ -12,7 +13,8 @@ export const ACTION_TYPES = {
     ERROR_MESSAGE: 'authentication/ERROR_MESSAGE'
 };
 
-const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
+const AUTH_TOKEN_KEY = 'pr-authenticationToken';
+const AUTH_REFRESH_TOKEN_KEY = "pr-refreshToken";
 
 const initialState = {
     loading: false,
@@ -70,7 +72,7 @@ export default (state: AuthenticationState = initialState, action): Authenticati
                 showModalLogin: true
             };
         case SUCCESS(ACTION_TYPES.GET_SESSION): {
-            const isAuthenticated = action.payload && action.payload.data && action.payload.data.activated;
+            const isAuthenticated = action.payload && action.payload.data && action.payload.data.active;
             return {
                 ...state,
                 isAuthenticated,
@@ -100,15 +102,15 @@ export default (state: AuthenticationState = initialState, action): Authenticati
 export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, message });
 
 export const getSession = () => async (dispatch, getState) => {
-    await dispatch({
+    const result = await dispatch({
         type: ACTION_TYPES.GET_SESSION,
-        payload: axios.get('api/account/profile/')
+        payload: axios.get<IUser>('api/account/profile/')
     });
 
     const { account } = getState().authentication;
     if (account && account.langKey) {
         const langKey = Storage.session.get('locale', account.langKey);
-        await dispatch(setLocale(langKey));
+        // await dispatch(setLocale(langKey));
     }
 };
 
@@ -117,12 +119,15 @@ export const login = (username, password, rememberMe = false) => async (dispatch
         type: ACTION_TYPES.LOGIN,
         payload: axios.post('api/token/', { username, password })
     });
-    const jwt = result.value.access;
-    if (jwt) {
+    const jwt_access = result.value.data.access;
+    const jwt_refresh = result.value.data.refresh;
+    if (jwt_access && jwt_refresh) {
         if (rememberMe) {
-            Storage.local.set(AUTH_TOKEN_KEY, jwt);
+            Storage.local.set(AUTH_REFRESH_TOKEN_KEY, jwt_refresh);
+            Storage.local.set(AUTH_TOKEN_KEY, jwt_access);
         } else {
-            Storage.session.set(AUTH_TOKEN_KEY, jwt);
+            Storage.session.set(AUTH_REFRESH_TOKEN_KEY, jwt_refresh);
+            Storage.session.set(AUTH_TOKEN_KEY, jwt_access);
         }
     }
     await dispatch(getSession());

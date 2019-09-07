@@ -25,6 +25,7 @@ class LoginForm extends React.Component<ILoginModalProps, ILoginFormState> {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(event) {
+        event.preventDefault();
         const {handleLogin} = this.props;
         handleLogin(this.state.username, this.state.password, false)
     }

@@ -18,8 +18,15 @@ const composedMiddlewares = middlewares =>
         applyMiddleware(...defaultMiddlewares, ...middlewares),
         DevTools.instrument()
       )
-    : compose(applyMiddleware(...defaultMiddlewares, ...middlewares));
+    : compose(
+        applyMiddleware(...defaultMiddlewares, ...middlewares),
+        DevTools.instrument(),
+      (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+      (window as any).__REDUX_DEVTOOLS_EXTENSION__());
 
-const initialize = (initialState?: IRootState, middlewares = []) => createStore(reducer, initialState, composedMiddlewares(middlewares));
+const initialize = (initialState?: IRootState, middlewares = []) => createStore(
+    reducer,
+    initialState,
+    composedMiddlewares(middlewares));
 
 export default initialize;
