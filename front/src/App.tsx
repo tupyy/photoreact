@@ -46,7 +46,6 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
     isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
     ribbonEnv: applicationProfile.ribbonEnv,
     isInProduction: applicationProfile.inProduction,
-    isSwaggerEnabled: applicationProfile.isSwaggerEnabled
 });
 
 const mapDispatchToProps = { setLocale, getSession, getProfile };
