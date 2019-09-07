@@ -111,7 +111,8 @@ const LoginForm = (props: ILoginModalProps) => {
                     <FormControlLabel
                         control={
                             <Checkbox 
-                                value="{rememberMe}" 
+                                checked={rememberMe}
+                                onClick={() => setRememberMe(!rememberMe)} 
                                 color="primary" 
                             />}
                         label="Remember me"
