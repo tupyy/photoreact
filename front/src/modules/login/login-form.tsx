@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Container, CssBaseline, Link, makeStyles} from "@material-ui/core";
+import {Container, CssBaseline, Link} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import useStyles from "./login-form-style"
+import useStyles from "./login-form-style";
 
 export interface ILoginModalProps {
     loginError: boolean;
@@ -20,9 +20,8 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Cosmin Tupangiu
-            </Link>{' '}
+            Cosmin Tupangiu
+            {' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
