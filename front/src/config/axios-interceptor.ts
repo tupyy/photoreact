@@ -2,15 +2,18 @@ import axios from 'axios';
 import { getBasePath, Storage } from '../utils';
 
 import { SERVER_API_URL } from './constants';
+import { url } from 'inspector';
 
 const TIMEOUT = 1 * 60 * 1000;
+const AMAZON_AWS_PATTERN = "amazonaws";
+
 axios.defaults.timeout = TIMEOUT;
 axios.defaults.baseURL = SERVER_API_URL;
 
 const setupAxiosInterceptors = (onUnauthenticated: any) => {
     const onRequestSuccess = (config : any) => {
         const token = Storage.local.get('pr-authenticationToken') || Storage.session.get('pr-authenticationToken');
-        if (token) {
+        if (token && isLocalRequest(config.url)) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
@@ -27,4 +30,7 @@ const setupAxiosInterceptors = (onUnauthenticated: any) => {
     axios.interceptors.response.use(onResponseSuccess, onResponseError);
 };
 
+const isLocalRequest = (url: string) => {
+    return url.indexOf(AMAZON_AWS_PATTERN) === -1
+};
 export default setupAxiosInterceptors;
