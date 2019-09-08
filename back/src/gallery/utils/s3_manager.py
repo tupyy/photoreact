@@ -10,7 +10,9 @@ def sign_url(http_method, filename):
     :param filename: filename
     :return: s3 signed url
     """
-    s3 = boto3.client('s3', config=Config(signature_version='s3v4'))
+    s3 = boto3.client('s3',
+                      config=Config(signature_version='s3v4'),
+                      region_name=settings.AWS_DEFAULT_REGION)
     return s3.generate_presigned_url(
         ClientMethod=http_method,
         Params={
