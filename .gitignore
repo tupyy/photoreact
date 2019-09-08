@@ -5,7 +5,7 @@
 /front/dist
 /front/.idea
 /front/target/
-
+/front/.vscode
 # back
 /back/venv
 /back/.idea
