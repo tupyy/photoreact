@@ -11,6 +11,7 @@ import { Avatar,
     CardActions,
     IconButton } from '@material-ui/core';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
+import UserAvatar from 'app/shared/components/user_avatar/user-avatar';
 
 interface IAlbumProps {
     id: number;
@@ -29,9 +30,11 @@ const Album = (props: IAlbumProps) => {
         <Card className={classes.card}>
         <CardHeader
             avatar={
-            <Avatar aria-label="recipe" className={classes.avatar}>
-                R
-            </Avatar>
+            <UserAvatar 
+                firstName={props.owner.first_name}
+                lastName={props.owner.last_name}
+                profilePhoto={props.owner.photo}
+            />
             }
             title={props.name}
             subheader={convertDateTimeFromServer(props.date)}
