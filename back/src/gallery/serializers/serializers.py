@@ -1,6 +1,10 @@
+import json
+
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
+from accounts.models import UserProfile
+from accounts.serializers import SummaryUserProfileSerializer
 from gallery.models.album import Album
 from gallery.models.category import Category, Tag
 from gallery.models.photo import Photo
@@ -22,8 +26,25 @@ class TagSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class OwnerField(serializers.Field):
+    """
+    This class serialize the owner field of the Album models.
+    For create method, we need the user object
+    """
+    def to_representation(self, value):
+        user_profile = UserProfile.objects.filter(user__id=value.id).first()
+        if user_profile is not None:
+            serializer = SummaryUserProfileSerializer(user_profile)
+            return serializer.data
+        return json.dumps({"error": "no profile for user {}".format(value.username)})
+
+    def to_internal_value(self, data):
+        user = User.objects.filter(username__exact=data).first()
+        return user
+
+
 class AlbumSerializer(serializers.ModelSerializer):
-    owner = serializers.CharField(source='owner.username')
+    owner = OwnerField()
 
     # read-only serializers
     preview = serializers.StringRelatedField(read_only=True)
@@ -37,8 +58,7 @@ class AlbumSerializer(serializers.ModelSerializer):
                   'categories', 'tags']
 
     def create(self, validated_data):
-        owner_data = validated_data.pop('owner')
-        owner = User.objects.filter(username__exact=owner_data['username']).first()
+        owner = validated_data.pop('owner')
         album_instance = Album.objects.create(**validated_data, owner=owner)
         return album_instance
 
