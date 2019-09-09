@@ -2,8 +2,25 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
-from accounts.models import UserProfile, Role
+from accounts.models import UserProfile
 from gallery.utils import s3_manager
+
+
+class SummaryUserProfileSerializer(serializers.ModelSerializer):
+    """
+    This serializer is used to add user information for API /albums/
+    """
+    first_name = serializers.CharField(source="user.first_name")
+    last_name = serializers.CharField(source="user.last_name")
+    photo = serializers.SerializerMethodField()
+
+    class Meta:
+        model = UserProfile
+        fields = ["first_name", "last_name", "photo"]
+
+    def get_photo(self, obj):
+        from photogallery.settings import STATIC_PROFILE_PHOTO_URL
+        return s3_manager.get_get_signed_url(STATIC_PROFILE_PHOTO_URL + obj.photo_filename)
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
