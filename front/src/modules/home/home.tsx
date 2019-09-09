@@ -1,13 +1,19 @@
 import './home.scss';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {connect} from 'react-redux';
 import MediaContainer from 'app/shared/components/container/media-container';
+import { IRootState } from 'app/shared/reducers';
+import {showNavBar} from 'app/shared/reducers/navbar';
 
-export type IHomeProp = StateProps;
+export interface IHomeProp extends StateProps, DispatchProps {};
 
 export const Home = (props: IHomeProp) => {
   const { account } = props;
+  
+  useEffect( () => {
+    props.showNavBar();
+  }, [])
 
   return (
       <div>
@@ -17,11 +23,19 @@ export const Home = (props: IHomeProp) => {
   )
 };
 
-const mapStateToProps = storeState => ({
-  account: storeState.authentication.account,
-  isAuthenticated: storeState.authentication.isAuthenticated
+const mapStateToProps = ({authentication}: IRootState) => ({
+  account: authentication.account,
+  isAuthenticated: authentication.isAuthenticated
 });
 
-type StateProps = ReturnType<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  showNavBar
+}
 
-export default connect(mapStateToProps)(Home);
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
