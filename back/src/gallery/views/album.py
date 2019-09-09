@@ -64,6 +64,20 @@ class AlbumListView(PermissionListMixin,
         data['albums'] = serializer.data
         return Response(data)
 
+    def post(self, request):
+        from gallery.utils.validate_data import validate_list
+        ids = validate_list(request.data.get('ids'), int)
+        if len(ids) == 0:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'message': 'list of IDs missing or is corrupted'},
+                            content_type='application/json')
+        qs = self.get_queryset().filter(pk__in=ids)
+        serializer = self.get_serializer(qs, many=True)
+        data = dict()
+        data['size'] = qs.count()
+        data['albums'] = serializer.data
+        return Response(data)
+
     @action(methods=['get'],
             detail=False,
             url_path='owner/(?P<pk>\d+)',
