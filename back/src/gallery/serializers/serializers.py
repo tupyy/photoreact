@@ -9,6 +9,7 @@ from gallery.models.album import Album
 from gallery.models.category import Category, Tag
 from gallery.models.photo import Photo
 from gallery.utils import s3_manager
+from social.models import FavoriteAlbum
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -50,12 +51,18 @@ class AlbumSerializer(serializers.ModelSerializer):
     preview = serializers.StringRelatedField(read_only=True)
     categories = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
     tags = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
+    favorite = serializers.SerializerMethodField(method_name='is_favorite')
+
+    def is_favorite(self, obj):
+        """ Return true if the album is favorite for the current user """
+        user_favorite = FavoriteAlbum.objects.filter(user__id=obj.owner.id).filter(album__id=obj.id).first()
+        return user_favorite is not None
 
     class Meta:
         model = Album
         fields = ['id', 'name', 'date', 'description',
                   'folder_path', 'owner', 'preview',
-                  'categories', 'tags']
+                  'categories', 'tags', 'favorite']
 
     def create(self, validated_data):
         owner = validated_data.pop('owner')
