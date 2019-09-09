@@ -13,9 +13,9 @@ const initialState = {
     recentAlbums: []
 }
 
-export type MediaState = Readonly<typeof initialState>;
+export type AlbumState = Readonly<typeof initialState>;
 
-export default (state: MediaState = initialState, action) : MediaState => {
+export default (state: AlbumState = initialState, action) : AlbumState => {
     switch(action.type) {
         case REQUEST(ACTION_TYPES.GET_RECENT_ALBUMS):
             return {

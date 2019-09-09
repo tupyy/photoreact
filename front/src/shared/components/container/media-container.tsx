@@ -1,5 +1,5 @@
 import React, {useEffect, useState, Dispatch} from 'react';
-import {getRecentAlbums} from 'app/shared/reducers/media';
+import {getRecentAlbums} from 'app/shared/reducers/album';
 import {IRootState} from 'app/shared/reducers';
 import Album from 'app/shared/components/album/album';
 import { connect } from 'react-redux';
