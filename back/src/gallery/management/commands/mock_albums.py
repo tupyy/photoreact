@@ -79,9 +79,8 @@ class Command(BaseCommand):
                 "01/01/{}".format(album_year if album_year else datetime.today().year),
                 "%d/%m/%Y")
             album_date = self.random_date(start_album_date, end_album_date)
-            album, _ = Album.objects.get_or_create(folder_path="photos/{}/{}".format(album_year, k),
-                                                   defaults={
-                                                       "name": k,
+            album, _ = Album.objects.get_or_create(name= k,
+                                                    defaults={
                                                        "date": album_date.date(),
                                                        "owner": owner,
                                                        "description": "Blaba"
