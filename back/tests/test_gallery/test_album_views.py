@@ -471,3 +471,27 @@ class AlbumViewTests(BaseTestCase):
                                data={'ids': ["blaba"]},
                                format='json')
         self.assertEqual(response.status_code, 400)
+
+    def test_get_album_favorite(self):
+        """
+        Description: Get album. the album si favorite
+        API: /api/album/{id}/
+        Method: GET
+        Date: 09/09/2019
+        User: cosmin
+        Expected return code:200
+        Expected values:
+        """
+        from social.models import FavoriteAlbum
+
+        assign_perm('view_album', self.user, self.album)
+        favorite = FavoriteAlbum(user=self.user,
+                                 album=self.album)
+        favorite.save()
+        self.login(username="user", password="pass")
+        client = self.get_client()
+
+        request = client.get(reverse('album-detail', args=[self.album.id]))
+        self.assertEqual(request.status_code, 200)
+        self.assertEqual(request.data['id'], self.album.id)
+        self.assertTrue(request.data.get('favorite'))
