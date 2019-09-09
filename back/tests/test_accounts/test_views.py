@@ -57,6 +57,7 @@ class AccountViewTest(BaseTestCase):
         data = dict()
         data['first_name'] = "toto"
         data['last_name'] = 'toto'
+        data['langKey'] = "RO"
         data['email'] = 'toto@toto.com'
         response = client.put(reverse('account-get_profile'), data=data, format='json')
         self.assertTrue(response.status_code, 200)
