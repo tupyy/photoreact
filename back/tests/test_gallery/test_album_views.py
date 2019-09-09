@@ -384,3 +384,90 @@ class AlbumViewTests(BaseTestCase):
         client = self.get_client()
         response = client.delete(reverse('album-detail', args=[self.album.id]))
         self.assertEqual(response.status_code, 403)
+
+    def test_post_albums(self):
+        """
+        Description: Get albums by id list
+        API: /albums/
+        Method: POST
+        Date: 09/09/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 1 album
+        """
+        assign_perm('view_album', self.user, self.album)
+
+        album2 = Album.objects.create(date=datetime.date.today(), owner=self.user, name='bar')
+        assign_perm('view_album', self.user, album2)
+
+        self.login(username="user", password="pass")
+        client = self.get_client()
+        response = client.post(reverse('albums-list'),
+                              data={'ids': [1]},
+                              format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data.get('albums')), 1)
+
+    def test_post_albums2(self):
+        """
+        Description: Get albums by id list
+        API: /albums/
+        Method: POST
+        Date: 09/09/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 2 album
+        """
+        assign_perm('view_album', self.user, self.album)
+
+        album2 = Album.objects.create(date=datetime.date.today(), owner=self.user, name='bar')
+        assign_perm('view_album', self.user, album2)
+
+        self.login(username="user", password="pass")
+        client = self.get_client()
+        response = client.post(reverse('albums-list'),
+                               data={'ids': [1, 2]},
+                               format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data.get('albums')), 2)
+
+    def test_post_albums3(self):
+        """
+        Description: Get albums by id list. Request 2 albums but for the second the user has no view permission
+        API: /albums/
+        Method: POST
+        Date: 09/09/2019
+        User: cosmin
+        Expected return code: 200
+        Expected values: 1 album
+        """
+        assign_perm('view_album', self.user, self.album)
+
+        album2 = Album.objects.create(date=datetime.date.today(), owner=self.batman, name='bar')
+        self.login(username="user", password="pass")
+        client = self.get_client()
+        response = client.post(reverse('albums-list'),
+                               data={'ids': [1, 2]},
+                               format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data.get('albums')), 1)
+
+    def test_post_albums4(self):
+        """
+        Description: Get albums by id list. Request with invalid data
+        API: /albums/
+        Method: POST
+        Date: 09/09/2019
+        User: cosmin
+        Expected return code: 400
+        Expected values:
+        """
+        assign_perm('view_album', self.user, self.album)
+
+        album2 = Album.objects.create(date=datetime.date.today(), owner=self.user, name='bar')
+        self.login(username="user", password="pass")
+        client = self.get_client()
+        response = client.post(reverse('albums-list'),
+                               data={'ids': ["blaba"]},
+                               format='json')
+        self.assertEqual(response.status_code, 400)
