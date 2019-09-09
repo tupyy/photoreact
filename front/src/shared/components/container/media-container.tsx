@@ -20,6 +20,7 @@ const MediaContainer = (props: IContainerProps) => {
             preview = {album.preview}
             name = {album.name}
             description = {album.description}
+            isFavorite = {true}
         />
     )
 
