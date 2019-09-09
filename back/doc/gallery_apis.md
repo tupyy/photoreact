@@ -3,6 +3,7 @@
 | Method | API                                   | Action                               |       Permission      | Owner | Comment |
 |--------|---------------------------------------|--------------------------------------|:---------------------:|:-----:|---------|
 | GET    | /albums/                              | Get albums                           |       view_album      |       |         |
+| POST   | /albums/                              | Get albums from a list of ids        |       view_album      |       |         |
 | GET    | /album/{id}/                          | Get album                            |       view_album      |       |         |
 | POST   | /album/                               | Create album                         |      create_album     |       |         |
 | DELETE | /album/{id}/                          | Delete album                         |      delete_album     |       |         |
@@ -48,6 +49,48 @@ Response:
     "albums": [
       {
         "id": 1,
+        "owner": {
+            "first_name": "John",
+            "last_name": "Doe",
+            "photo_filename": "S3 url"
+         },
+        "name": "name album",
+        "description": "descriere album",
+        "date": "data album",
+        "preview": "URL preview photo S3",
+        "categories" : [ "categorie_1", "categorie_2" ],
+        "tags" : ["tag 1", "tag 2"]
+      }
+    ]
+}
+```
+
+#### **POST** */albums/*
+Get albums by IDs. The IDs are provided in the request body.
+
+Permissions required:
+- view_album
+
+Request:
+```json
+{
+  "ids": [1]
+}
+```
+
+Response: 
+- status code: 200 OK
+```json
+{
+    "size": 1,
+    "albums": [
+      {
+        "id": 1,
+        "owner": {
+            "first_name": "John",
+            "last_name": "Doe",
+            "photo_filename": "S3 url"
+         },
         "name": "name album",
         "description": "descriere album",
         "date": "data album",
@@ -74,6 +117,11 @@ Response:
       {
         "id": 1,
         "name": "name album",
+        "owner": {
+            "first_name": "John",
+            "last_name": "Doe",
+            "photo_filename": "S3 url"
+         },
         "description": "descriere album",
         "date": "data album",
         "preview": "URL preview photo S3",
