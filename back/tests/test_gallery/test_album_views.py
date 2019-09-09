@@ -403,8 +403,8 @@ class AlbumViewTests(BaseTestCase):
         self.login(username="user", password="pass")
         client = self.get_client()
         response = client.post(reverse('albums-list'),
-                              data={'ids': [1]},
-                              format='json')
+                               data={'ids': [1]},
+                               format='json')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data.get('albums')), 1)
 
