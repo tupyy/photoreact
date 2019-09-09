@@ -9,7 +9,8 @@ import { Avatar,
     CardContent,
     Typography,
     CardActions,
-    IconButton } from '@material-ui/core';
+    IconButton, 
+    Button} from '@material-ui/core';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import UserAvatar from 'app/shared/components/user_avatar/user-avatar';
 
@@ -20,6 +21,7 @@ interface IAlbumProps {
     description?: string;
     date: Date;
     preview: string;
+    isFavorite: boolean;
     categories?: [],
     tags? : []
 }
@@ -36,6 +38,11 @@ const Album = (props: IAlbumProps) => {
                 profilePhoto={props.owner.photo}
             />
             }
+            action={
+                <IconButton aria-label="favorites" color={props.isFavorite ? "secondary" : "disabled"}>
+                   <FavoriteIcon /> 
+                </IconButton>
+            }
             title={props.name}
             subheader={convertDateTimeFromServer(props.date)}
         />
@@ -45,10 +52,10 @@ const Album = (props: IAlbumProps) => {
                 {props.description}
             </Typography>
         </CardContent>
-        <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-            </IconButton>
+        <CardActions className={classes.cardActions} disableSpacing>
+            <Button color="primary" variant="contained">
+                View
+            </Button>
         </CardActions>
         </Card>
   );

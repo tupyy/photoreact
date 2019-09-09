@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme: Theme) =>
     expandOpen: {
       transform: 'rotate(180deg)',
     },
+    cardActions: {
+      display: 'flex',
+      justifyContent: 'center'
+    },
     avatar: {
       backgroundColor: red[500],
     },
