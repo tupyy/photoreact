@@ -10,6 +10,7 @@ import {getSession} from 'app/shared/reducers/authentication';
 import {setLocale} from 'app/shared/reducers/locale';
 import {hasAnyAuthority} from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
+import Header from 'app/shared/layout/header/header';
 import {AUTHORITIES} from 'app/config/constants';
 import AppRoutes from 'app/routes';
 
@@ -28,6 +29,9 @@ export const App = (props: IAppProps) => {
     const paddingTop = '60px';
     return (
         <Router basename={baseHref}>
+            <ErrorBoundary>
+                <Header isAuthenticated={true} isAdmin={false} showNavBar={true} />
+            </ErrorBoundary>
             <div className="app-container" style={{ paddingTop }}>
                 <div className="container-fluid view-container" id="app-view-container">
                     <ErrorBoundary>
