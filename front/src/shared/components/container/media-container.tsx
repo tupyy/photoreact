@@ -31,8 +31,8 @@ const MediaContainer = (props: IContainerProps) => {
     )
 }
 
-const mapStateToProps = ({media} : IRootState) => ({
-    albums: media.recentAlbums
+const mapStateToProps = ({album} : IRootState) => ({
+    albums: album.recentAlbums
 });
 
 const mapDispatchToProps = { getRecentAlbums };
