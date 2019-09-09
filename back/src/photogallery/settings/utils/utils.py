@@ -27,4 +27,4 @@ def load_env(env_file):
         for line in f:
             if "=" in line:
                 env_var = line.split("=")
-                setattr(settings, env_var[0], env_var[1].rstrip())
+                setattr(settings, env_var[0].strip(), env_var[1].strip())
