@@ -1,6 +1,7 @@
 import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
+import { setUserProfile } from './navbar';
 
 
 export const ACTION_TYPES = {
@@ -106,10 +107,12 @@ export const getSession = () => async (dispatch, getState) => {
     });
 
     const { account } = getState().authentication;
-    // if (account && account.langKey) {
-    //     const langKey = Storage.session.get('locale', account.langKey);
-    //     await dispatch(setLocale(langKey));
-    // }
+     if (account) {
+      /*    const langKey = Storage.session.get('locale', account.langKey);
+         await dispatch(setLocale(langKey));
+        */
+       dispatch(setUserProfile(account));
+     }
 };
 
 export const login = (username, password, rememberMe = false) => async (dispatch, getState) => {
