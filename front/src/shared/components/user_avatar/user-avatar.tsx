@@ -10,16 +10,23 @@ interface IUserAvatar {
     profilePhoto?: string
 }
 
-function capitalize(str: string): string {
-    return str.charAt(0).toUpperCase + str.slice(1);
+const capitalize = (str: string): string => {
+    if (str) {
+      return str.charAt(0).toUpperCase + str.slice(1);
+    }
+    return '';
 }
 
-function getFullName(firstName: string, lastName: string): string {
+
+const getFullName = (firstName: string, lastName: string): string => {
     return capitalize(firstName) + " " + capitalize(lastName);
 }
 
-function getAvarName(firstName: string, lastName: string) : string {
-    return firstName.charAt(0).toUpperCase + lastName.charAt(0).toUpperCase;
+const getAvarName = (firstName: string, lastName: string) : string => {
+    if (firstName && lastName) {
+      return firstName.charAt(0).toUpperCase().concat(lastName.charAt(0).toUpperCase());
+    }
+    return "";
 }
 
 const useStyles = makeStyles((theme: Theme) =>

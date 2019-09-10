@@ -13,9 +13,14 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { IRootState } from 'app/shared/reducers';
+import { connect } from 'react-redux';
+import UserAvatar from 'app/shared/components/user_avatar/user-avatar';
+import { checkPropTypes } from 'prop-types';
 
+export interface INavBarProps extends StateProps {};
 
-export default function NavBar() {
+const NavBar = (props: INavBarProps) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -82,9 +87,13 @@ export default function NavBar() {
             aria-haspopup="true"
             color="inherit"
           >
-            <AccountCircle />
+            <UserAvatar 
+                firstName={props.userProfile.first_name}
+                lastName={props.userProfile.last_name}
+                profilePhoto={props.userProfile.photo}
+            />
           </IconButton>
-          <p>Profile</p>
+          <p>Account</p>
         </MenuItem>
       </Menu>
     );
@@ -119,8 +128,12 @@ export default function NavBar() {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                <AccountCircle />
-              </IconButton>
+            <UserAvatar 
+                firstName={props.userProfile.first_name}
+                lastName={props.userProfile.last_name}
+                profilePhoto={props.userProfile.photo}
+            />
+            </IconButton>
             </div>
             <div className={classes.sectionMobile}>
               <IconButton
@@ -140,3 +153,13 @@ export default function NavBar() {
       </div>
     );
   }
+
+const mapStateToProps = ({navbar}: IRootState) => ({
+    userProfile: navbar.userProfile
+});
+
+type StateProps = ReturnType<typeof mapStateToProps>
+
+export default connect(
+    mapStateToProps
+)(NavBar);
