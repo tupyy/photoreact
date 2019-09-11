@@ -1,22 +1,13 @@
-import React from 'react';
-import useStyles from './navbar-styles';
-import {
-    Menu, 
-    MenuItem, 
-    IconButton, 
-    Badge,
-    AppBar,
-    Toolbar,
-    Typography
-} from '@material-ui/core';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import { AppBar, Badge, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { IRootState } from 'app/shared/reducers';
-import { connect } from 'react-redux';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import NavBarNotifications from './navbar-notifications';
 import UserAvatar from 'app/shared/components/user_avatar/user-avatar';
-import { checkPropTypes } from 'prop-types';
+import { IRootState } from 'app/shared/reducers';
+import React from 'react';
+import { connect } from 'react-redux';
+import useStyles from './navbar-styles';
 
 export interface INavBarProps extends StateProps {};
 
@@ -73,11 +64,7 @@ const NavBar = (props: INavBarProps) => {
         onClose={handleMobileMenuClose}
       >
         <MenuItem>
-          <IconButton aria-label="show 11 new notifications" color="inherit">
-            <Badge badgeContent={11} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          <NavBarNotifications />
           <p>Notifications</p>
         </MenuItem>
         <MenuItem onClick={handleProfileMenuOpen}>
@@ -115,11 +102,7 @@ const NavBar = (props: INavBarProps) => {
             </Typography>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+              <NavBarNotifications />
               <IconButton
                 edge="end"
                 aria-label="account of current user"
