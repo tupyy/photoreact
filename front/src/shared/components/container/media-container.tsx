@@ -1,10 +1,10 @@
-import React, { useEffect, useState, Dispatch } from 'react';
-import { getRecentAlbums } from 'app/shared/reducers/album';
-import { IRootState } from 'app/shared/reducers';
+import React, {useEffect} from 'react';
+import {getRecentAlbums} from 'app/shared/reducers/album';
+import {IRootState} from 'app/shared/reducers';
 import Album from 'app/shared/components/album/album';
-import { connect } from 'react-redux';
-import useStyles from './media-container';
-import { Grid, Paper } from '@material-ui/core';
+import {connect} from 'react-redux';
+import useStyles from './media-container-styles';
+import {Grid, Paper} from '@material-ui/core';
 
 export interface IContainerProps extends StateProps, DispatchProps { }
 
@@ -37,7 +37,7 @@ const MediaContainer = (props: IContainerProps) => {
             </Paper>
         </Grid>
     )
-}
+};
 
 const mapStateToProps = ({ album }: IRootState) => ({
     albums: album.recentAlbums
