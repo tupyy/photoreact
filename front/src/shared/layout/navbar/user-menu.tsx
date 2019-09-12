@@ -58,7 +58,7 @@ const UserMenu = (props: IUserMenuProps) => {
             onClose={handleMenuClose}
         >
             <Typography
-                className={classes.userName}>{getFullName(props.userProfile.first_name, props.userProfile.last_name)}</Typography>
+                className={classes.username}>{getFullName(props.userProfile.first_name, props.userProfile.last_name)}</Typography>
             <Divider orientation="horizontal"/>
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
