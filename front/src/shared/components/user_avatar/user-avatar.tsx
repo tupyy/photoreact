@@ -29,21 +29,20 @@ const getAvatarName = (firstName: string, lastName: string): string => {
   return "";
 };
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    photo: {
-      width: '100%'
-    },
-    avatar: {
-      backgroundColor: red[500],
-    },
-  }),
-);
+const useStyles = makeStyles({
+  photo: {
+    width: '100%'
+  },
+  avatar: {
+    backgroundColor: red[500],
+  }
+});
 
 const UserAvatar = (props: IUserAvatar) => {
   const [imgError, setImgError] = useState(false);
 
-  const classes = useStyles()
+  // @ts-ignore
+  const classes = useStyles();
 
   if (props.profilePhoto && !imgError) {
     return (
