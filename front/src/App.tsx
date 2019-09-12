@@ -26,13 +26,12 @@ export const App = (props: IAppProps) => {
         props.getSession();
     }, []);
 
-    const paddingTop = '60px';
     return (
         <Router basename={baseHref}>
             <ErrorBoundary>
                 <Header isAuthenticated={true} isAdmin={false} showNavBar={true} />
             </ErrorBoundary>
-            <div className="app-container" style={{ paddingTop }}>
+            <div className="app-container">
                 <div className="container-fluid view-container" id="app-view-container">
                     <ErrorBoundary>
                         <AppRoutes />
