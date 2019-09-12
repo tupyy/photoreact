@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Avatar, makeStyles} from '@material-ui/core';
+import {Avatar, makeStyles, Theme} from '@material-ui/core';
 import {getNameInitials} from "app/shared/util/user-name-utils";
 
 interface IUserAvatar {
@@ -9,19 +9,26 @@ interface IUserAvatar {
     size?: string
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme:Theme) =>({
     photo: {
         width: '100%'
     },
     bigAvatar: {
-        display: 'block',
         marginRight: 'auto',
         marginLeft: 'auto',
         margin: 10,
         width: 90,
         height: 90,
+        [theme.breakpoints.up("sm")]: {
+            fontSize: '2.5rem'
+        },
+        [theme.breakpoints.only("xs")]: {
+            fontSize: '1.5rem',
+            width: 50,
+            height: 50
+        }
     },
-});
+}));
 
 const UserAvatar = (props: IUserAvatar) => {
     const [imgError, setImgError] = useState(false);
@@ -46,7 +53,7 @@ const UserAvatar = (props: IUserAvatar) => {
         )
     } else {
         return (
-            <Avatar>
+            <Avatar className={props.size === 'xl' ? classes.bigAvatar : null}>
                 {getNameInitials(props.firstName, props.lastName)}
             </Avatar>
         )
