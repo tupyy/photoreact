@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { getBasePath, Storage } from '../utils';
-
+import { Storage } from '../utils';
 import { SERVER_API_URL } from './constants';
-import { url } from 'inspector';
+
 
 const TIMEOUT = 1 * 60 * 1000;
 const AMAZON_AWS_PATTERN = "amazonaws";
