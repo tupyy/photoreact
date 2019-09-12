@@ -3,39 +3,24 @@ import Photo from 'app/shared/components/photo/photo';
 import { Avatar } from '@material-ui/core';
 import { makeStyles, createStyles } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
+import {getNameInitials} from "app/shared/util/user-name-utils";
 
 interface IUserAvatar {
   firstName: string;
   lastName: string;
   profilePhoto?: string
+  size?: string
 }
-
-const capitalize = (str: string): string => {
-  if (str) {
-    return str.charAt(0).toUpperCase + str.slice(1);
-  }
-  return '';
-};
-
-
-const getFullName = (firstName: string, lastName: string): string => {
-  return capitalize(firstName) + " " + capitalize(lastName);
-};
-
-const getAvatarName = (firstName: string, lastName: string): string => {
-  if (firstName && lastName) {
-    return firstName.charAt(0).toUpperCase().concat(lastName.charAt(0).toUpperCase());
-  }
-  return "";
-};
 
 const useStyles = makeStyles({
   photo: {
     width: '100%'
   },
-  avatar: {
-    backgroundColor: red[500],
-  }
+  bigAvatar: {
+    margin: 10,
+    width: 120,
+    height: 120,
+  },
 });
 
 const UserAvatar = (props: IUserAvatar) => {
@@ -47,7 +32,7 @@ const UserAvatar = (props: IUserAvatar) => {
   if (props.profilePhoto && !imgError) {
     return (
       <Avatar
-        className={classes.avatar}
+        className={props.size === 'xl' ? classes.bigAvatar : null}
         src={props.profilePhoto}
         imgProps={
           { "onError": () => {setImgError(true)} }
@@ -58,7 +43,7 @@ const UserAvatar = (props: IUserAvatar) => {
   } else {
     return (
       <Avatar>
-        {getAvatarName(props.firstName, props.lastName)}
+        {getNameInitials(props.firstName, props.lastName)}
       </Avatar>
     )
   }
