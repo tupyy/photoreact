@@ -15,19 +15,19 @@ const capitalize = (str: string): string => {
     return str.charAt(0).toUpperCase + str.slice(1);
   }
   return '';
-}
+};
 
 
 const getFullName = (firstName: string, lastName: string): string => {
   return capitalize(firstName) + " " + capitalize(lastName);
-}
+};
 
 const getAvatarName = (firstName: string, lastName: string): string => {
   if (firstName && lastName) {
     return firstName.charAt(0).toUpperCase().concat(lastName.charAt(0).toUpperCase());
   }
   return "";
-}
+};
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
