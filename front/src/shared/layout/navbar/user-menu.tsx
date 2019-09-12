@@ -5,6 +5,7 @@ import UserAvatar from 'app/shared/components/user_avatar/user-avatar';
 import {IconButton} from '@material-ui/core';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import useStyles from './user-menu-styles';
+import { Link } from 'react-router-dom';
 
 export interface IUserMenuProps {
     userProfile: {},
@@ -63,7 +64,7 @@ const UserMenu = (props: IUserMenuProps) => {
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
             <Divider orientation="horizontal"/>
-            <MenuItem>Logout</MenuItem>
+            <MenuItem component={Link} to={"/logout"}>Logout</MenuItem>
         </Menu>
     );
 
