@@ -1,10 +1,9 @@
-import React from 'react';
-import {Tabs, Tab, Paper, makeStyles, Theme} from '@material-ui/core';
+import React, {useState} from 'react';
+import {makeStyles, Paper, Tab, Tabs, Theme} from '@material-ui/core';
 
 interface IUserProfileTabs {
     tabNames: string[],
-
-    handleTabChange(event, value): void
+    handleChange(value): void
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -21,11 +20,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const UserProfileTabs = (props: IUserProfileTabs) => {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
 
-    const handleChange = (event, newValue) => {
+    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
-        props.handleTabChange(event, newValue);
+        props.handleChange(newValue);
     };
 
     // @ts-ignore
