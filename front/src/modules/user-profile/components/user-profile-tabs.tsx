@@ -25,8 +25,12 @@ const UserProfileTabs = (props: IUserProfileTabs) => {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        props.handleTabChange(event, newValue);
     };
+
+    // @ts-ignore
     const classes = useStyles();
+
     return (
         <Paper square className={classes.root}>
             <Tabs
