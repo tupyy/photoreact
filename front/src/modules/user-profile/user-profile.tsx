@@ -1,16 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {IRootState} from "app/shared/reducers";
 import UserAvatar from "app/shared/components/user_avatar/user-avatar";
 import UserProfileHeader from "app/modules/user-profile/components/user-profile-header";
 import {getFullName} from "app/shared/util/user-name-utils";
 import UserProfileTabs from "app/modules/user-profile/components/user-profile-tabs";
+import {TabContext} from "app/modules/user-profile/tab-context";
+import {Overview} from "app/modules/user-profile/components/overview";
+import TabContainer from "app/modules/user-profile/components/tab-container";
+import {ComponentArray} from "app/modules/user-profile/tab-component-interface";
+import Activity from "app/modules/user-profile/components/activities";
+import AlbumsTab from "app/modules/user-profile/components/albums-tab";
+import PermissionsTab from "app/modules/user-profile/components/permissions-tab";
 
 interface IUserProfileProps extends StateProps {
 
 }
 
+// define the names of the tab
 const TabNames = ["Overview", "Activity", "Albums", "Permissions"];
+
+// define the components which ill be render in the tab container
+const TabComponents: ComponentArray = [Overview, Activity, AlbumsTab, PermissionsTab];
 
 /**
  * Return an user avatar component
@@ -30,9 +41,11 @@ const getUserAvatarComponent = (userProfile) => {
  * Main component to show the user profile.
  */
 const UserProfile = (props: IUserProfileProps) => {
+    const [currentTab, setCurrentTab] = useState(0);
 
-    const handleTabChange = (event, newValue) => {
-       console.log("Tab changed: " + String(newValue));
+    const handleTabChange = (newValue) => {
+        console.log("Tab changed: " + String(newValue));
+        setCurrentTab(newValue);
     };
 
     return (
@@ -43,8 +56,11 @@ const UserProfile = (props: IUserProfileProps) => {
             />
             <UserProfileTabs
                 tabNames={TabNames}
-                handleTabChange={handleTabChange}
+                handleChange={handleTabChange}
             />
+            <TabContext.Provider value={currentTab}>
+                <TabContainer components={TabComponents}/>
+            </TabContext.Provider>
         </div>
     )
 };
