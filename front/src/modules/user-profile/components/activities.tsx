@@ -19,7 +19,7 @@ const Activity: React.SFC<IActivity> = (props: IActivity) => {
     // @ts-ignore
     const classes = useStyles();
     return (
-        <div className={props.index !== tabContext ? classes.hidden : classes.root}>
+        <div className={props.index !== tabContext.currentTab ? classes.hidden : classes.root}>
             Activity component
         </div>
     )

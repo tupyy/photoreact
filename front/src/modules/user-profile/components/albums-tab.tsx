@@ -19,7 +19,7 @@ const AlbumsTab: React.SFC<IAlbumsTab> = (props: IAlbumsTab) => {
     // @ts-ignore
     const classes = useStyles();
     return (
-        <div className={props.index !== tabContext ? classes.hidden : classes.root}>
+        <div className={props.index !== tabContext.currentTab ? classes.hidden : classes.root}>
             Album component
         </div>
     )

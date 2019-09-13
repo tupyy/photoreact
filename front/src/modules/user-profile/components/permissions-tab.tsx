@@ -20,7 +20,7 @@ const PermissionsTab: React.SFC<IPermissionsTab> = (props: IPermissionsTab) => {
     // @ts-ignore
     const classes = useStyles();
     return (
-        <div className={props.index !== tabContext ? classes.hidden : classes.root}>
+        <div className={props.index !== tabContext.currentTab ? classes.hidden : classes.root}>
             Permissions component
         </div>
     )

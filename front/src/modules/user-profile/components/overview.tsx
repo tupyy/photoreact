@@ -18,7 +18,7 @@ export const Overview: React.SFC<IOverview> = (props: IOverview) => {
     // @ts-ignore
     const classes = useStyles();
     return (
-        <div className={props.index !== tabContext ? classes.hidden : classes.root}>
+        <div className={props.index !== tabContext.currentTab ? classes.hidden : classes.root}>
             Overview component
         </div>
     )
