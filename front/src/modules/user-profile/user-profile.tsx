@@ -6,10 +6,10 @@ import UserProfileHeader from "app/modules/user-profile/components/user-profile-
 import {getFullName} from "app/shared/util/user-name-utils";
 import UserProfileTabs from "app/modules/user-profile/components/user-profile-tabs";
 import {TabContext} from "app/modules/user-profile/tab-context";
-import {Overview} from "app/modules/user-profile/components/overview";
+import {Overview} from "app/modules/user-profile/components/overview-tab";
 import TabContainer from "app/modules/user-profile/components/tab-container";
 import {ComponentArray} from "app/modules/user-profile/tab-component-interface";
-import Activity from "app/modules/user-profile/components/activities";
+import Activity from "app/modules/user-profile/components/activities-tab";
 import AlbumsTab from "app/modules/user-profile/components/albums-tab";
 import PermissionsTab from "app/modules/user-profile/components/permissions-tab";
 
@@ -26,8 +26,8 @@ const contextValue = {
    albumTab: {
        url:"/api/albums?limit=5"
    },
-   activityTab: {
-       url:"/api/activity"
+   activity: {
+       url:"api/activity?order=-date"
    }
 }
 /**
