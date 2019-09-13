@@ -1,3 +1,8 @@
 import React from 'react';
 
-export const TabContext = React.createContext(0);
+export const TabContext = React.createContext(
+    {
+        currentTab: 0
+    }
+);
+
