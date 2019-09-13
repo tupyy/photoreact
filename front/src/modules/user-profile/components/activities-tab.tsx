@@ -5,6 +5,7 @@ import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import {ITabComponent} from "app/modules/user-profile/tab-component-interface";
 import combineStyles from "app/shared/util/combine-styles";
 import useTabComponentStyles from "app/modules/user-profile/components/tab-component-styles";
+import ActivityComponent from 'app/modules/user-profile/components/activity-component';
 
 interface IActivity extends ITabComponent{
     index: number
@@ -20,7 +21,10 @@ const Activity: React.SFC<IActivity> = (props: IActivity) => {
     const classes = useStyles();
     return (
         <div className={props.index !== tabContext.currentTab ? classes.hidden : classes.root}>
-            Activity component
+            <ActivityComponent 
+                url={tabContext.activity.url}
+                title="Activities"
+            />
         </div>
     )
 };
