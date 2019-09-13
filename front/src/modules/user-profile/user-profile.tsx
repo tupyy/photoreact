@@ -22,7 +22,14 @@ const TabNames = ["Overview", "Activity", "Albums", "Permissions"];
 
 // define the components which ill be render in the tab container
 const TabComponents: ComponentArray = [Overview, Activity, AlbumsTab, PermissionsTab];
-
+const contextValue = {
+   albumTab: {
+       url:"/api/albums?limit=5"
+   },
+   activityTab: {
+       url:"/api/activity"
+   }
+}
 /**
  * Return an user avatar component
  */
@@ -58,7 +65,12 @@ const UserProfile = (props: IUserProfileProps) => {
                 tabNames={TabNames}
                 handleChange={handleTabChange}
             />
-            <TabContext.Provider value={currentTab}>
+            <TabContext.Provider 
+                value={{
+                    currentTab: currentTab,
+                    ...contextValue
+                }}
+            >
                 <TabContainer components={TabComponents}/>
             </TabContext.Provider>
         </div>
