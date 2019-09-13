@@ -1,5 +1,10 @@
 import React from 'react';
-import {Container, makeStyles, Typography} from "@material-ui/core";
+import {
+    Container,
+    makeStyles,
+    Typography,
+    Theme
+} from "@material-ui/core";
 
 interface IUserProfileHeader {
     // component to show user avatar
@@ -34,13 +39,15 @@ const useStyles = makeStyles((theme: Theme) => ({
  */
 const UserProfileHeader = (props: IUserProfileHeader) => {
 
+    // @ts-ignore
     const classes = useStyles();
+
     return (
         <Container
             className={classes.root}
             maxWidth="xl"
         >
-            <div className={class.secondary}>
+            <div className={classes.secondary}>
                 {props.avatarComponent}
                 <Typography variant="h6" className={classes.title}>{props.title}</Typography>
             </div>
