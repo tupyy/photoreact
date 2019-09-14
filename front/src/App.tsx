@@ -29,7 +29,7 @@ export const App = (props: IAppProps) => {
     return (
         <Router basename={baseHref}>
             <ErrorBoundary>
-                <Header isAuthenticated={true} isAdmin={false} showNavBar={true} />
+            <Header isAuthenticated={true} isAdmin={false} showNavBar={true} />
             </ErrorBoundary>
             <div className="app-container">
                 <div className="container-fluid view-container" id="app-view-container">
