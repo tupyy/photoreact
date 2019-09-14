@@ -3,6 +3,7 @@ import { blue, green, lime, red } from '@material-ui/core/colors';
 import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {APP_LOCAL_DATETIME_FORMAT} from 'app/config/constants';
 
 interface IActivityItem {
     id: number,
@@ -20,14 +21,14 @@ const useStyles = makeStyles( (theme: Theme) => ({
     },
     paper: {
         paddingTop: '5px',
-        paddingBottom: '5px'
+        paddingBottom: '5px',
         marginTop: '10px',
         borderBottom: '1px solid #f0f0f0',
         lineHeight: '20px'
 
     },
     titleContainer: {
-        display: 'flex'
+        display: 'flex',
         alignContent: 'left',
         marginBottom: 5
     },
@@ -84,14 +85,7 @@ const ActivityItem = (props:IActivityItem) => {
      * @param date ISO INSTANT fromat
      */
     const formatDate = (dateString: string) : string => {
-    return moment(dateString).calendar(null,{
-                                lastDay : '[Yesterday]',
-                                sameDay : '[Today]',
-                                nextDay : '[Tomorrow]',
-                                lastWeek : '[last] dddd',
-                                nextWeek : 'dddd',
-                                sameElse : 'L'
-                                })
+	    return moment(dateString).format(APP_LOCAL_DATETIME_FORMAT)
     }
     
     
