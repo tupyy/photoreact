@@ -12,6 +12,9 @@ import {ComponentArray} from "app/modules/user-profile/tab-component-interface";
 import Activity from "app/modules/user-profile/components/activities-tab";
 import AlbumsTab from "app/modules/user-profile/components/albums-tab";
 import PermissionsTab from "app/modules/user-profile/components/permissions-tab";
+import {timedelta} from 'app/shared/util/date-utils';
+import { APP_LOCAL_DATETIME_FORMAT_2 } from 'app/config/constants';
+import moment from 'moment';
 
 interface IUserProfileProps extends StateProps {
 
@@ -27,7 +30,7 @@ const contextValue = {
        url:"/api/albums?limit=5"
    },
    activity: {
-       url:"api/activity?order=-date"
+       url:"api/activity?activity_from=" +timedelta(-7) + '&activity_to=' + moment().format(APP_LOCAL_DATETIME_FORMAT_2) + "&ordering=date"
    }
 }
 /**
