@@ -1,7 +1,8 @@
+import { Chip, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import { blue, green, lime, red } from '@material-ui/core/colors';
+import moment from 'moment';
 import React from 'react';
-import { Paper, Grid, Typography, Chip, makeStyles, Theme, createMuiTheme } from '@material-ui/core';
-import {red, blue, lime, green} from '@material-ui/core/colors';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface IActivityItem {
     id: number,
@@ -77,6 +78,22 @@ const ActivityItem = (props:IActivityItem) => {
     const location = {
         pathname: '/album/' + String(props.id) + '/'
     }
+
+    /**
+     * Format the date from server to a simple format
+     * @param date ISO INSTANT fromat
+     */
+    const formatDate = (dateString: string) : string => {
+    return moment(dateString).calendar(null,{
+                                lastDay : '[Yesterday]',
+                                sameDay : '[Today]',
+                                nextDay : '[Tomorrow]',
+                                lastWeek : '[last] dddd',
+                                nextWeek : 'dddd',
+                                sameElse : 'L'
+                                })
+    }
+    
     
     // @ts-ignore
     const classes = useStyles(chipData.color);
@@ -98,7 +115,7 @@ const ActivityItem = (props:IActivityItem) => {
                             </Typography>
                         </div>
                         <Typography className={classes.date}>
-                            {props.date}
+                            {formatDate(props.date)}
                         </Typography>
                     </Grid>
                     <Grid item className={classes.chipContainer} xs={2} xl={2}>
