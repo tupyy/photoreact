@@ -9,6 +9,7 @@ import {getAlbums} from 'app/shared/reducers/user-profile';
 import LoadingComponent from 'app/shared/components/loading/loading-component';
 import {IAlbum} from 'app/shared/model/album.model';
 import {connect} from 'react-redux';
+import AlbumComponent from 'app/modules/user-profile/components/album-component';
 
 interface IAlbumTabProps extends ITabComponent, StateProps, DispatchProps {}
 
@@ -55,7 +56,10 @@ const AlbumsTab: React.SFC<IAlbumTabProps> = (props: IAlbumTabProps) => {
 		return (
 			<div>
 				<div className={classes.root}>
-					<p>albums</p>
+					<AlbumComponent
+						title="Albums"
+						data={props.albums}
+					/>
 				</div>
 			</div>
 			)
