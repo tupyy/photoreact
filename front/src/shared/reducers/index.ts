@@ -5,13 +5,15 @@ import locale, { LocaleState } from './locale';
 import authentication, { AuthenticationState } from './authentication';
 import album, {AlbumState} from './album';
 import navbar, {NavBarState} from './navbar';
+import userProfile, {UserProfileState} from './user-profile';
 
 export interface IRootState {
   readonly authentication: AuthenticationState;
   readonly locale: LocaleState;
   readonly loadingBar: any;
-  readonly album: AlbumState
-  readonly navbar: NavBarState
+  readonly album: AlbumState;
+  readonly navbar: NavBarState;
+  readonly userProfile: UserProfileState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -19,7 +21,8 @@ const rootReducer = combineReducers<IRootState>({
   locale,
   loadingBar,
   album,
-  navbar
+  navbar,
+  userProfile
 });
 
 export default rootReducer;
