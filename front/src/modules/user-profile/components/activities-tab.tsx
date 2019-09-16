@@ -22,9 +22,10 @@ const Activity: React.SFC<IActivity> = (props: IActivity) => {
     return (
         <div className={props.index !== tabContext.currentTab ? classes.hidden : classes.root}>
             <ActivityComponent 
-                url={tabContext.activity.url}
-                title="Activities"
-            />
+				title="Activities"
+				visible={props.index == tabContext.currentTab}
+			>
+			</ActivityComponent>
         </div>
     )
 };
