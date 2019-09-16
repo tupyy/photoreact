@@ -1,12 +1,25 @@
 import React, {useState, useEffect} from 'react';
+import {Container} from '@material-ui/core';
+import {IAlbum} from 'app/shared/model/album.model';
+import AlbumItem from 'app/modules/user-profile/components/album-item';
 
 interface IAlbumProps {
-	url: string
+	title: string,
+	data : IAlbum[]
 }
 
 const AlbumComponent = (props: IAlbumProps) => {
-	const [data, setData] = useState(null);
-	useEffect( () => {
-		async function fetchData
-	}
+	return (
+		<Container maxWidth="xl">
+			{props.data.map( (item:IAlbum, index:number) => 
+				<AlbumItem
+					key={String(index)}
+					album={item}
+				/>
+					
+				)}
+		</Container>
+	)
 }
+
+export default AlbumComponent;
