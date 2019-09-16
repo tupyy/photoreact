@@ -20,7 +20,7 @@ const initialState = {
 }
 
 const URL_ACTIVITIES = "api/activity?activity_from=" +timedelta(-7) + '&activity_to=' + moment().format(APP_LOCAL_DATETIME_FORMAT_2) + "&ordering=date";
-const URL_ALBUMS = "";
+const URL_ALBUMS = "api/albums?limit=5";
 
 export type UserProfileState = Readonly<typeof initialState>;
 
@@ -43,7 +43,7 @@ export default (state: UserProfileState = initialState, action): UserProfileStat
 		   return {
 				...state,
 				loading: false,
-				albums: action.payload
+				albums: action.payload.data.albums
 		};
 		case SUCCESS(ACTION_TYPES.GET_USER_ACTIVITY):
 			return {
