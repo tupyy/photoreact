@@ -44,7 +44,7 @@ export const App = (props: IAppProps) => {
 
 const mapStateToProps = ({ authentication, locale }: IRootState) => ({
     currentLocale: locale.currentLocale,
-    isAuthenticated: authentication.isAuthenticated,
+    IsAuthenticated: authentication.isAuthenticated,
     isAdmin: hasAnyAuthority(authentication.account.roles, [AUTHORITIES.ADMIN]),
 });
 

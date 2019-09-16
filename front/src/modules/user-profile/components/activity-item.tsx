@@ -20,14 +20,14 @@ const useStyles = makeStyles( (theme: Theme) => ({
     },
     paper: {
         paddingTop: '5px',
-        paddingBottom: '5px'
+        paddingBottom: '5px',
         marginTop: '10px',
         borderBottom: '1px solid #f0f0f0',
         lineHeight: '20px'
 
     },
     titleContainer: {
-        display: 'flex'
+        display: 'flex',
         alignContent: 'left',
         marginBottom: 5
     },
