@@ -1,8 +1,7 @@
-import { Chip, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import { Chip, Grid, makeStyles, Paper, Theme, Typography, Button } from '@material-ui/core';
 import { blue, green, lime, red } from '@material-ui/core/colors';
 import moment from 'moment';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {APP_LOCAL_DATETIME_FORMAT} from 'app/config/constants';
 
 interface IActivityItem {
@@ -33,6 +32,8 @@ const useStyles = makeStyles( (theme: Theme) => ({
         marginBottom: 5
     },
     owner: {
+		display: 'flex',
+		alignItems: 'center',
         paddingLeft: '5px',
         color: '#707070'
     },
@@ -76,9 +77,7 @@ const getChipData = (char: string):Object => {
 const ActivityItem = (props:IActivityItem) => {
 
     const chipData = getChipData(props.activity);
-    const location = {
-        pathname: '/album/' + String(props.id) + '/'
-    }
+    const location = '/album/' + String(props.id) + '/';
 
     /**
      * Format the date from server to a simple format
@@ -99,11 +98,14 @@ const ActivityItem = (props:IActivityItem) => {
                 <Grid container spacing={2}>
                     <Grid item className={classes.textContainer} xs={10}>
                         <div className={classes.titleContainer}>
-                            <Typography className={classes.title}>
-                                <Link to={location}>
-                                    {props.title}
-                                </Link>
-                            </Typography>
+							<Button 
+								variant="contained"
+								size="small"
+								className={classes.title}
+								href={location}
+							>
+                                {props.title}
+                            </Button>
                             <Typography className={classes.owner}>
                                 @{props.user}
                             </Typography>
