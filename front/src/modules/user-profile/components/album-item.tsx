@@ -1,63 +1,53 @@
-import { Chip, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
-import { blue, green, lime, red } from '@material-ui/core/colors';
+import { Chip, Grid, makeStyles, Divider, Theme, Typography, Button } from '@material-ui/core';
 import moment from 'moment';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {APP_LOCAL_DATETIME_FORMAT} from 'app/config/constants';
 import {IAlbum} from 'app/shared/model/album.model';
-import Photo from 'app/shared/components/photo/photo';
 
 export interface IAlbumItemProps {
 	album: IAlbum
+
+	// if true show categories 
+	hasCategories: boolean,
+
+	// show tags
+	hasTags: boolean
 }
 
 // @ts-ignore
 const useStyles = makeStyles( (theme: Theme) => ({
-    root: {
-        display: 'block',
-        margin: 'auto'
-    },
-    paper: {
-        paddingTop: '5px',
-        paddingBottom: '5px',
-        marginTop: '10px',
-        borderBottom: '1px solid #f0f0f0',
-        lineHeight: '20px'
-
-    },
-    nameContainer: {
-        display: 'block',
-        marginBottom: 5
-    },
-    owner: {
-        paddingLeft: '5px',
-        color: '#707070'
-    },
-    textContainer: {},
-    photo: {
-        fontWeight: 'bold'
-    },
-    date: {
-        marginBottom: 5
-    },
-    chipContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
+	root: {
+	  display: 'block',
+	  margin: 'auto',
+      width: '100%',
+      backgroundColor: theme.palette.background.paper,
     },
     chip: {
-        color: 'black',
-        fontWeight: 'bold',
-        border: '1px solid #f0f0f0',
-    }
+      marginRight: theme.spacing(1),
+    },
+    section1: {
+      paddingTop: '5px',
+      marginTop: '10px',
+      lineHeight: '20px'
+    },
+    section2: {
+      margin: theme.spacing(1),
+    },
+    section3: {
+      margin: theme.spacing(3, 1, 1),
+    },
+	buttonContainer: {
+		paddingBottom: '5px'
+	},
+	button: {
+		fontWeight: 'bold'
+	}
 }));
 
 
 const AlbumItem = (props:IAlbumItemProps) => {
 
-    const location = {
-        pathname: '/album/' + String(props.album.id) + '/'
-    }
+    const location = '/album/' + String(props.album.id) + '/';
 
     /**
      * Format the date from server to a simple format
@@ -67,31 +57,58 @@ const AlbumItem = (props:IAlbumItemProps) => {
 	    return moment(dateString).format(APP_LOCAL_DATETIME_FORMAT)
     }
     
-    
+    const renderCategories = (categories: string[]) => {
+		return (
+			<div className={classes.section2}>
+				{categories.map( (category:string) => 
+					<Chip className={classes.chip} color='primary' label={category} />
+				)}
+			</div>	
+		)	
+	};
+
+	const renderTags = (tags: string[]) => {
+		return (
+			<div className={classes.section2}>
+				{tags.map( (tag:string) => 
+					<Chip className={classes.chip} color='secondary' label={tag} />
+				)}
+			</div>
+		)
+	}
+
     // @ts-ignore
     const classes = useStyles();
     return (
         <div className={classes.root}>
-            <Paper 
-                elevation={0}
-                className={classes.paper}>
-                <Grid container spacing={2}>
-                    <Grid item className={classes.textContainer} xs={4}>
-                        <div className={classes.nameContainer}>
-                            <Link to={location}>
-								<Typography className={classes.name} >
-									{props.album.name}
-								</Typography>
-                            </Link>
-							<Typography className={classes.date}>
-                        	    {formatDate(String(props.album.date))}
-                        	</Typography>
-                        </div>
+			<div className={classes.section1}>
+                <Grid container alignItems="center" className={classes.buttonContainer} >
+                    <Grid item xs >
+						<Button 
+							variant="contained" 
+							size="small"
+							href={location} 
+							className={classes.button}>
+							{props.album.name}
+						</Button>
 					</Grid>
-                    <Grid item className={classes.chipContainer} xs={2} xl={2}>
-                    </Grid>
-                </Grid>
-            </Paper>
+					<Grid item>
+						<Typography gutterBottom variant="subtitle2">
+							{formatDate(String(props.album.date))}
+						</Typography>
+					</Grid>
+				</Grid>
+				<Typography color="textSecondary" variant="body2">
+					{props.album.description}
+					</Typography>
+			</div>
+			{props.hasCategories && 
+				renderCategories(props.album.categories)
+			}
+			{props.hasTags &&
+				renderTags(props.album.tags)
+			}
+			<Divider variant="middle" />
         </div>   
     )
 };
