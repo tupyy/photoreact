@@ -15,6 +15,8 @@ const AlbumComponent = (props: IAlbumProps) => {
 				<AlbumItem
 					key={String(index)}
 					album={item}
+					hasCategories={true}
+					hasTags={true}
 				/>
 					
 				)}
