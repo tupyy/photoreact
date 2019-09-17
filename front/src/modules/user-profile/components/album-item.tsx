@@ -60,8 +60,13 @@ const AlbumItem = (props:IAlbumItemProps) => {
     const renderCategories = (categories: string[]) => {
 		return (
 			<div className={classes.section2}>
-				{categories.map( (category:string) => 
-					<Chip className={classes.chip} color='primary' label={category} />
+				{categories.map( (category:string, index:number) => 
+						<Chip 
+							key={index.toString()}
+							className={classes.chip}
+							color='primary'
+							label={category} 
+						/>
 				)}
 			</div>	
 		)	
@@ -70,8 +75,13 @@ const AlbumItem = (props:IAlbumItemProps) => {
 	const renderTags = (tags: string[]) => {
 		return (
 			<div className={classes.section2}>
-				{tags.map( (tag:string) => 
-					<Chip className={classes.chip} color='secondary' label={tag} />
+				{tags.map( (tag:string, index:number) => 
+					  <Chip 
+						  key={index.toString()}
+						  className={classes.chip}
+						  color='secondary'
+						  label={tag} 
+					  />
 				)}
 			</div>
 		)
