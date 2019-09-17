@@ -2,22 +2,22 @@ import React, {useContext, useEffect} from 'react';
 import {TabContext} from "app/modules/user-profile/tab-context";
 import {makeStyles} from "@material-ui/core";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
-import {IActivity} from 'app/shared/model/activity.model';
+import {IActivityTab} from 'app/shared/model/activity.model';
 import {ITabComponent} from "app/modules/user-profile/tab-component-interface";
 import LoadingComponent from 'app/shared/components/loading/loading-component';
 import combineStyles from "app/shared/util/combine-styles";
 import useTabComponentStyles from "app/modules/user-profile/components/tab-component-styles";
-import ActivityComponent from 'app/modules/user-profile/components/activity-component';
+import ActivityTabComponent from 'app/modules/user-profile/components/activity-component';
 import {IRootState} from 'app/shared/reducers';
 import {getActivities} from 'app/shared/reducers/user-profile';
 import {connect} from 'react-redux';
 
-interface IActivityProps extends ITabComponent, StateProps, DispatchProps {}
+interface IActivityTabProps extends ITabComponent, StateProps, DispatchProps {}
 
 const useStyles = combineStyles(useTabComponentStyles, makeStyles( (theme: Theme) => ({
 })));
 
-const Activity: React.SFC<IActivityProps> = (props: IActivityProps) => {
+const ActivityTab: React.SFC<IActivityTabProps> = (props: IActivityTabProps) => {
     const tabContext = useContext(TabContext);
 
 	useEffect( () => {
@@ -37,7 +37,7 @@ const Activity: React.SFC<IActivityProps> = (props: IActivityProps) => {
 	/**
 	 * Return true if data has been fetched from server
 	 */
-	const hasData = (arr: Array<IActivity>) => {
+	const hasData = (arr: Array<IActivityTab>) => {
 		return arr.length !== 0;
 	};
 
@@ -56,7 +56,7 @@ const Activity: React.SFC<IActivityProps> = (props: IActivityProps) => {
 		return (
 			<div>
 				<div className={classes.root}>
-					<ActivityComponent
+					<ActivityTabComponent
 						title="Activities"
 						data={props.activities}
 					/>
@@ -83,4 +83,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Activity);
+)(ActivityTab);
