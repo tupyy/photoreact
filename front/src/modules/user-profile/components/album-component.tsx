@@ -13,7 +13,7 @@ const AlbumComponent = (props: IAlbumProps) => {
 		<Container maxWidth="xl">
 			{props.data.map( (item:IAlbum, index:number) => 
 				<AlbumItem
-					key={String(index)}
+					key={index.toString()}
 					album={item}
 					hasCategories={true}
 					hasTags={true}

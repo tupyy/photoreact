@@ -6,25 +6,21 @@ import UserProfileHeader from "app/modules/user-profile/components/user-profile-
 import {getFullName} from "app/shared/util/user-name-utils";
 import UserProfileTabs from "app/modules/user-profile/components/user-profile-tabs";
 import {TabContext} from "app/modules/user-profile/tab-context";
-import {Overview} from "app/modules/user-profile/components/overview-tab";
 import TabContainer from "app/modules/user-profile/components/tab-container";
 import {ComponentArray} from "app/modules/user-profile/tab-component-interface";
-import Activity from "app/modules/user-profile/components/activities-tab";
+import ActivityTab from "app/modules/user-profile/components/activities-tab";
 import AlbumsTab from "app/modules/user-profile/components/albums-tab";
 import PermissionsTab from "app/modules/user-profile/components/permissions-tab";
-import {timedelta} from 'app/shared/util/date-utils';
-import { APP_LOCAL_DATETIME_FORMAT_2 } from 'app/config/constants';
-import moment from 'moment';
 
 interface IUserProfileProps extends StateProps {
 
 }
 
 // define the names of the tab
-const TabNames = ["Overview", "Activity", "Albums", "Permissions"];
+const TabNames = ["Activity", "Albums", "Permissions"];
 
 // define the components which ill be render in the tab container
-const TabComponents: ComponentArray = [Overview, Activity, AlbumsTab, PermissionsTab];
+const TabComponents: ComponentArray = [ActivityTab, AlbumsTab, PermissionsTab];
 /**
  * Return an user avatar component
  */

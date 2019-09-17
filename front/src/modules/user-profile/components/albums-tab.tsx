@@ -2,8 +2,6 @@ import React, {useContext,useEffect} from 'react';
 import {ITabComponent} from "app/modules/user-profile/tab-component-interface";
 import {TabContext} from "app/modules/user-profile/tab-context";
 import {makeStyles, Theme} from "@material-ui/core";
-import combineStyles from "app/shared/util/combine-styles";
-import useTabComponentStyles from "app/modules/user-profile/components/tab-component-styles";
 import {IRootState} from 'app/shared/reducers';
 import {getAlbums} from 'app/shared/reducers/user-profile';
 import LoadingComponent from 'app/shared/components/loading/loading-component';
@@ -13,9 +11,9 @@ import AlbumComponent from 'app/modules/user-profile/components/album-component'
 
 interface IAlbumTabProps extends ITabComponent, StateProps, DispatchProps {}
 
-const useStyles = combineStyles(useTabComponentStyles,makeStyles( (theme: Theme) => {
+const useStyles = makeStyles( (theme: Theme) => {
 
-}));
+});
 
 const AlbumsTab: React.SFC<IAlbumTabProps> = (props: IAlbumTabProps) => {
     const tabContext = useContext(TabContext);
