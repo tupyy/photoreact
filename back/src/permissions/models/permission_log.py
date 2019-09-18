@@ -26,7 +26,7 @@ class PermissionLog(models.Model):
     user_from = models.ForeignKey(User, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
-    date = models.DateField(verbose_name="log date")
+    date = models.DateField(verbose_name="log date", auto_now_add=True)
     action = models.CharField(max_length=15, choices=ACTION_TYPES, default=ADD)
 
     class Meta:
