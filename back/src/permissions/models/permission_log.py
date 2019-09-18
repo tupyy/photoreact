@@ -11,7 +11,7 @@ class PermissionLog(models.Model):
     ADD = 0
     DELETE = 1
     MODIFY = 2
-    ACTION_TYPES = (
+    OPERATION_TYPES = (
         (ADD, "add"),
         (DELETE, "delete"),
         (MODIFY, "modify")
@@ -27,7 +27,7 @@ class PermissionLog(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
     date = models.DateField(verbose_name="log date", auto_now_add=True)
-    action = models.CharField(max_length=15, choices=ACTION_TYPES, default=ADD)
+    operation = models.CharField(max_length=15, choices=OPERATION_TYPES, default=ADD)
 
     class Meta:
         ordering = ('date',)

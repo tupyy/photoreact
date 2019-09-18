@@ -28,5 +28,5 @@ class PermissionLogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PermissionLog
-        fields = ['user_from', 'content_object','date', 'permission', 'action']
-        read_only_fields = ['user_from', 'content_object','date', 'permission', 'action']
+        fields = ['user_from', 'content_object','date', 'permission', 'operation']
+        read_only_fields = ['user_from', 'content_object','date', 'permission', 'operation']
