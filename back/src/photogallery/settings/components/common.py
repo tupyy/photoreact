@@ -13,7 +13,8 @@ INSTALLED_APPS = [
     'gallery',
     'activity_log',
     'social',
-    'accounts'
+    'accounts',
+    'permissions'
 ]
 
 MIDDLEWARE = [
