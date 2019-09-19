@@ -61,7 +61,7 @@ export default (state: UserProfileState = initialState, action): UserProfileStat
 			return {
 				...state,
 				loading: false,
-				permissionLog: action.payload.data.logs
+				permissionLog: action.payload
 		};
 		default:
 			return state
@@ -82,7 +82,7 @@ export const getActivities = () => async (dispatch) => {
 	});
 };
 
-export const getPermissionLog = () => async (dispatch) => {
+export const getPermissionLogs = () => async (dispatch) => {
 	await dispatch({
 		type: ACTION_TYPES.GET_USER_PERMISSION_LOG,
 		payload: getPermissionLogData()
