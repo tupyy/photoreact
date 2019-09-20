@@ -2,8 +2,9 @@ import random
 from datetime import datetime
 from datetime import timedelta
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 
+from accounts.models import UserProfile
 from activity_log.models import ActivityLog
 from gallery.models.album import Album
 from permissions.models import PermissionLog
@@ -23,7 +24,13 @@ class TestAlbumSerializer(BaseTestCase):
         permission_log1 = PermissionLog(content_object=self.batman,
                                         user_from=self.superman,
                                         album=self.album,
-                                        operation=0)
+                                        permission=Permission.objects.first(),
+                                        operation=PermissionLog.ADD)
+
+        user_profile = UserProfile.objects.create(user=self.batman,
+                                                  photo_filename="foo.jpg")
+        user_profile.save()
+        permission_log1.save()
 
     def test_get_log1(self):
         """
@@ -35,7 +42,13 @@ class TestAlbumSerializer(BaseTestCase):
         Expected return code: 200
         Expected values: log for the current user only
         """
-        self.login("batman", "pass")
+        self.login("superman", "pass")
         client = self.get_client()
-        response = client.get("/api/permission/log")
+        response = client.get("/api/permission/log/")
         self.assertEqual(response.status_code, 200)
+
+        logs = response.data.get('logs')
+        self.assertFalse(logs is None)
+        self.assertEqual(logs[0].get('user_from'), 'superman')
+        self.assertFalse(logs[0].get('content_object').get('profile') is None)
+        self.assertEqual(logs[0].get('content_object').get('profile').get('username'), 'batman')
