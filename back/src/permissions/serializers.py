@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from accounts.models import UserProfile
 from accounts.serializers import UserProfileSerializer
+from gallery.serializers.serializers import AlbumSerializer
 from permissions.models import PermissionLog
 
 
@@ -41,8 +42,9 @@ class PermissionLogSerializer(serializers.ModelSerializer):
     content_object = ObjectRelatedField(read_only=True)
     user_from = serializers.CharField(source='user_from.username')
     permission = serializers.StringRelatedField(source='permission.codename')
+    album = AlbumSerializer()
 
     class Meta:
         model = PermissionLog
-        fields = ['user_from', 'content_object', 'date', 'permission', 'operation']
-        read_only_fields = ['user_from', 'content_object', 'date', 'permission', 'operation']
+        fields = ['user_from', 'content_object', 'date', 'permission', 'album', 'operation']
+        read_only_fields = ['user_from', 'content_object', 'date', 'permission', 'album', 'operation']
