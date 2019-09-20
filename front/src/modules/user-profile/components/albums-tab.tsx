@@ -62,7 +62,7 @@ const AlbumsTab: React.SFC<IAlbumTabProps> = (props: IAlbumTabProps) => {
 			</div>
 			)
 	}
-	return (<div></div>);
+	return (<div/>);
 };
 
 const mapStateToProps = ({userProfile}: IRootState) => ({

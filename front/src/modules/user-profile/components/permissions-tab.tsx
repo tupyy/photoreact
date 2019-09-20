@@ -62,8 +62,9 @@ const PermissionsTab: React.SFC<IPermissionsTab> = (props: IPermissionsTab) => {
 				</div>
 			</div>
 			)
+	} else {
+		return (<div />);
 	}
-	return (<div></div>);
 };
 
 const mapStateToProps = ({userProfile}: IRootState) => ({

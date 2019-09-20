@@ -64,7 +64,7 @@ const ActivityTab: React.SFC<IActivityTabProps> = (props: IActivityTabProps) => 
 			</div>
 			)
 	}
-	return (<div></div>);
+	return (<div/>);
 };
 
 const mapStateToProps = ({userProfile}: IRootState) => ({
