@@ -1,5 +1,4 @@
-from django_filters import filters
-from guardian.mixins import PermissionListMixin
+from django_filters import rest_framework as filters
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
