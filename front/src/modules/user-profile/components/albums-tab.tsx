@@ -36,7 +36,7 @@ const AlbumsTab: React.SFC<IAlbumTabProps> = (props: IAlbumTabProps) => {
 	 * Return true if data has been fetched from server
 	 */
 	const hasData = (arr: Array<IAlbum>) => {
-		return arr.length !== 0;
+		return arr !== null;
 	};
 
     // @ts-ignore

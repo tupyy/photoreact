@@ -87,12 +87,12 @@ const PermissionLogItem = (props: IPermissionLogItem) => {
 					<Grid item xs container direction="column" className={classes.mainContainer} >
 						<Grid item xs>
 							<Typography gutterBottom variant="subtitle2">
-								{props.permissionLog.contentObject.type === 'user' ? (
+								{props.permissionLog.content_object.type === 'user' ? (
 									<FontAwesomeIcon icon={faUser} className={classes.icon} />
 								) : (
 									<FontAwesomeIcon icon={faUsers} className={classes.icon} />
 								)}
-								<span> {props.permissionLog.contentObject.name} </span>
+								<span> {props.permissionLog.content_object.name} </span>
 							</Typography>
 							<div className={classes.dateAlbumContainer}>
 								<div className={classes.date}>
