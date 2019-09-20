@@ -26,3 +26,5 @@ yarn-error.log*
 *.swp
 back/.idea/back.iml
 back/.idea/
+
+tags

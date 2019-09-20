@@ -2,6 +2,7 @@ import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util'
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 import { setUserProfile } from './navbar';
+import {IUser} from "app/shared/model/user.model";
 
 
 export const ACTION_TYPES = {
@@ -21,7 +22,7 @@ const initialState = {
     loginSuccess: false,
     loginError: false, // Errors returned from server side
     showModalLogin: false,
-    account: {} as any,
+    account: {} as IUser,
     errorMessage: null as string, // Errors returned from server side
     redirectMessage: null as string,
     sessionHasBeenFetched: false,

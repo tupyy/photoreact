@@ -1,5 +1,5 @@
 import random
-
+from datetime import datetime
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
@@ -19,5 +19,13 @@ class Command(BaseCommand):
             random_activity_type = ActivityLog.ACTIVITY_TYPE[random.randint(0, 3)]
             activity_log = ActivityLog(content_object=random_album,
                                        activity=random_activity_type[0],
+                                       date=self.random_date(datetime.strptime('01/01/2019','%d/%m/%Y'),
+                                                             datetime.strptime('15/09/2019', '%d/%m/%Y')),
                                        user=random_user)
             activity_log.save()
+
+    def random_date(self, start_date, end_date):
+        timestamp_start = start_date.timestamp()
+        timestamp_end = end_date.timestamp()
+        random_timestamp = timestamp_start + random.random() * (timestamp_end - timestamp_start)
+        return datetime.utcfromtimestamp(random_timestamp)
