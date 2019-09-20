@@ -68,7 +68,7 @@ const PermissionsTab: React.SFC<IPermissionsTab> = (props: IPermissionsTab) => {
 
 const mapStateToProps = ({userProfile}: IRootState) => ({
 	loading: userProfile.loading,
-	permissionLogs: userProfile.permissionLog,
+	permissionLogs: userProfile.permissionLogs,
 	errorMessage: userProfile.errorMessage
 });
 
