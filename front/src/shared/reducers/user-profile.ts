@@ -14,10 +14,10 @@ export const ACTION_TYPES = {
 
 const initialState = {
 	loading: false,
-	albums: [] as IAlbum[],
-	activities: [] as IActivity[],
+	albums: null as IAlbum[],
+	activities: null as IActivity[],
 	errorMessage: null as string,
-	permissionLogs: [] as IPermissionLog[]
+	permissionLogs: null as IPermissionLog[]
 }
 
 
