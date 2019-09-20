@@ -10,7 +10,7 @@ from permissions.models import PermissionLog
 
 class Command(BaseCommand):
     permissions = ['add_photos', 'change_album', 'delete_album', 'view_album']
-    operation = [(0, 'add'), (1, 'delete'), (2, 'modify')]
+    operation = [('add', 'add'), ('delete', 'delete'), ('modify', 'modify')]
 
     def handle(self, *args, **options):
         user_from = User.objects.filter(username__exact='cosmin').first()
@@ -27,8 +27,7 @@ class Command(BaseCommand):
                 if permission is not None:
                     permission_log = PermissionLog(user_from=user_from,
                                                    content_object=user,
-                                                   album = album,
+                                                   album=album,
                                                    permission=permission,
                                                    operation=_operation[0])
                     permission_log.save()
-
