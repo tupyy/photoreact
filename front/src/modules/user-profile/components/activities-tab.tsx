@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import {TabContext} from "app/modules/user-profile/tab-context";
 import {makeStyles} from "@material-ui/core";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
-import {IActivityTab} from 'app/shared/model/activity.model';
+import {IActivity} from 'app/shared/model/activity.model';
 import {ITabComponent} from "app/modules/user-profile/tab-component-interface";
 import LoadingComponent from 'app/shared/components/loading/loading-component';
 import combineStyles from "app/shared/util/combine-styles";
@@ -37,8 +37,8 @@ const ActivityTab: React.SFC<IActivityTabProps> = (props: IActivityTabProps) => 
 	/**
 	 * Return true if data has been fetched from server
 	 */
-	const hasData = (arr: Array<IActivityTab>) => {
-		return arr.length !== 0;
+	const hasData = (arr: Array<IActivity>) => {
+		return arr !== null;
 	};
 
     // @ts-ignore

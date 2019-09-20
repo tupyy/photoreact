@@ -39,7 +39,7 @@ const PermissionsTab: React.SFC<IPermissionsTab> = (props: IPermissionsTab) => {
 	 * Return true if data has been fetched from server
 	 */
 	const hasData = (arr: Array<IPermissionLog>) => {
-		return arr.length !== 0;
+		return arr !== null;
 	};
 
 	const classes = useStyles();
