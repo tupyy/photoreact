@@ -8,9 +8,9 @@ from gallery.models.album import Album
 
 
 class PermissionLog(models.Model):
-    ADD = 0
-    DELETE = 1
-    MODIFY = 2
+    ADD = 'ADD'
+    DELETE = 'DELETE'
+    MODIFY = 'MODIFY'
     OPERATION_TYPES = (
         (ADD, "add"),
         (DELETE, "delete"),
@@ -26,7 +26,7 @@ class PermissionLog(models.Model):
     user_from = models.ForeignKey(User, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
-    date = models.DateField(verbose_name="log date", auto_now_add=True)
+    date = models.DateTimeField(verbose_name="log date", auto_now_add=True)
     operation = models.CharField(max_length=15, choices=OPERATION_TYPES, default=ADD)
 
     class Meta:
