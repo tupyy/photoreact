@@ -1,19 +1,14 @@
+import {IUser} from 'app/shared/model/user.model';
+
 export interface IAlbum {
     id: number,
+	owner: IUser,
     name?: string,
     description?: string,
     date: Date,
     preview: string,
     categories?: string[],
     tags?: string[]
+	isFavorite: boolean
 }
 
-export const defaultValue: Readonly<IAlbum> = {
-    id: -1,
-    name: '',
-    description: '',
-    date: new Date(),
-    preview: '',
-    categories: [],
-    tags: [] 
-}
