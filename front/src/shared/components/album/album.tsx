@@ -11,7 +11,10 @@ import { Avatar,
     Typography,
     CardActions,
     IconButton, 
-    Button} from '@material-ui/core';
+	Button,
+	Link
+
+} from '@material-ui/core';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import UserAvatar from 'app/shared/components/user_avatar/user-avatar';
 
@@ -20,6 +23,17 @@ interface IAlbumProps {
 }
 
 const Album = (props: IAlbumProps) => {
+
+	const renderCardTitle = () => {
+		return (
+			<Link href={'album/' + props.data.id + '/'}> 
+				<Typography variant='body2' className={classes.link}>
+					{props.data.name}
+				</Typography>
+			</Link>
+		)
+	}
+
     const classes = useStyles();
     return (
         <Card className={classes.card}>
@@ -32,24 +46,21 @@ const Album = (props: IAlbumProps) => {
             />
             }
             action={
-                <IconButton aria-label="favorites" color={props.data.isFavorite ? "secondary" : "disabled"}>
+                <IconButton aria-label="favorites" color={props.data.isFavorite ? "secondary" : "default"}>
                    <FavoriteIcon /> 
                 </IconButton>
             }
-            title={props.data.name}
+	        title={renderCardTitle()}
             subheader={convertDateTimeFromServer(props.data.date)}
         />
-        <Photo className={classes.media} url={props.data.preview} />
+		<Link href={'album/' + props.data.id + '/'} >
+	        <Photo className={classes.media} url={props.data.preview} />
+		</Link>
         <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography variant="body2" color="textPrimary" component="p">
                 {props.data.description}
             </Typography>
         </CardContent>
-        <CardActions className={classes.cardActions} disableSpacing>
-            <Button color="primary" variant="contained">
-                View
-            </Button>
-        </CardActions>
         </Card>
   );
 }

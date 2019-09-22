@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 230,
     },
     media: {
-      width: '100%'
+		width: '100%',
+		cursor: 'pointer'
     },
     expand: {
       transform: 'rotate(0deg)',
@@ -26,6 +27,9 @@ const useStyles = makeStyles((theme: Theme) =>
     avatar: {
       backgroundColor: red[500],
     },
+	link: {
+		cursor: "pointer"
+	}
   }),
 );
 
