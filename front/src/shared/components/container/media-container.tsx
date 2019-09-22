@@ -1,17 +1,13 @@
-import React, {useEffect} from 'react';
-import {getRecentAlbums} from 'app/shared/reducers/album';
-import {IRootState} from 'app/shared/reducers';
-import Album from 'app/shared/components/album/album';
-import {connect} from 'react-redux';
-import useStyles from './media-container-styles';
+import React  from 'react';
 import {Grid, Paper} from '@material-ui/core';
+import useStyles from 'app/shared/components/container/media-container-styles';
 
-export interface IContainerProps extends StateProps, DispatchProps { }
+export interface IContainerProps {
+	component: React.SFC<any>,
+	data: any[], 
+};
 
 const MediaContainer = (props: IContainerProps) => {
-    useEffect(() => {
-        props.getRecentAlbums();
-    }, []);
 
     const classes = useStyles();
     return (
@@ -19,17 +15,11 @@ const MediaContainer = (props: IContainerProps) => {
             <Paper>
             <Grid item xs={12}>
                 <Grid container justify="center" spacing={2}>
-                    {props.albums.map( (album) =>
-                    <Grid key={String(album.id)} item>
-                        <Album
-                            id={album.id}
-                            owner={album.owner}
-                            date={album.date}
-                            preview={album.preview}
-                            name={album.name}
-                            description={album.description}
-                            isFavorite={true}
-                        />
+                    {props.data.map( (entry: {}, index: number) =>
+					<Grid key={index.toString()} item>
+						<props.component 
+							data={entry}
+						/>
                     </Grid>
                     )}
                 </Grid>
@@ -39,17 +29,4 @@ const MediaContainer = (props: IContainerProps) => {
     )
 };
 
-const mapStateToProps = ({ album }: IRootState) => ({
-    albums: album.recentAlbums
-});
-
-const mapDispatchToProps = { getRecentAlbums };
-
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MediaContainer);
-
+export default MediaContainer;

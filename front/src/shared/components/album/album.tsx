@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {IAlbum} from 'app/shared/model/album.model';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Photo from 'app/shared/components/photo/photo';
 import useStyles from './album-styles';
@@ -15,15 +16,7 @@ import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import UserAvatar from 'app/shared/components/user_avatar/user-avatar';
 
 interface IAlbumProps {
-    id: number;
-    owner: string;
-    name?: string;
-    description?: string;
-    date: Date;
-    preview: string;
-    isFavorite: boolean;
-    categories?: [],
-    tags? : []
+	data: IAlbum
 }
 
 const Album = (props: IAlbumProps) => {
@@ -33,23 +26,23 @@ const Album = (props: IAlbumProps) => {
         <CardHeader
             avatar={
             <UserAvatar 
-                firstName={props.owner.first_name}
-                lastName={props.owner.last_name}
-                profilePhoto={props.owner.photo}
+                firstName={props.data.owner.first_name}
+                lastName={props.data.owner.last_name}
+                profilePhoto={props.data.owner.photo}
             />
             }
             action={
-                <IconButton aria-label="favorites" color={props.isFavorite ? "secondary" : "disabled"}>
+                <IconButton aria-label="favorites" color={props.data.isFavorite ? "secondary" : "disabled"}>
                    <FavoriteIcon /> 
                 </IconButton>
             }
-            title={props.name}
-            subheader={convertDateTimeFromServer(props.date)}
+            title={props.data.name}
+            subheader={convertDateTimeFromServer(props.data.date)}
         />
-        <Photo className={classes.media} url={props.preview} />
+        <Photo className={classes.media} url={props.data.preview} />
         <CardContent>
             <Typography variant="body2" color="textSecondary" component="p">
-                {props.description}
+                {props.data.description}
             </Typography>
         </CardContent>
         <CardActions className={classes.cardActions} disableSpacing>
