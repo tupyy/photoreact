@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {IAlbum} from 'app/shared/model/album.model';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Photo from 'app/shared/components/photo/photo';
-import useStyles from './album-styles';
+import useStyles, {theme} from './album-styles';
+import {ThemeProvider} from '@material-ui/styles';
 import { Avatar, 
     Card, 
     CardHeader, 
@@ -36,6 +37,7 @@ const Album = (props: IAlbumProps) => {
 
     const classes = useStyles();
     return (
+		<ThemeProvider theme={theme} >
         <Card className={classes.card}>
         <CardHeader
             avatar={
@@ -57,11 +59,12 @@ const Album = (props: IAlbumProps) => {
 	        <Photo className={classes.media} url={props.data.preview} />
 		</Link>
         <CardContent>
-            <Typography variant="body2" color="textPrimary" component="p">
+            <Typography variant="body2" color="textPrimary" component="p" className={classes.description}>
                 {props.data.description}
             </Typography>
         </CardContent>
-        </Card>
+		</Card>
+	</ThemeProvider>
   );
 }
 
