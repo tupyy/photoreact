@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
-import {Avatar, makeStyles, Theme} from '@material-ui/core';
+import React, {useState, useEffect} from 'react';
+import {Avatar, Popover, makeStyles, Theme, Typography} from '@material-ui/core';
 import {getNameInitials} from "app/shared/util/user-name-utils";
+import useHover from 'app/shared/hook/use-hover';
 
 interface IUserAvatar {
     firstName: string;
@@ -32,6 +33,42 @@ const useStyles = makeStyles((theme:Theme) =>({
 
 const UserAvatar = (props: IUserAvatar) => {
     const [imgError, setImgError] = useState(false);
+	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+	function handlePopoverOpen(event: React.MouseEvent<HTMLElement, MouseEvent>) {
+		setAnchorEl(event.currentTarget);
+	}
+
+	function handlePopoverClose() {
+		setAnchorEl(null);
+	}
+
+	const open = Boolean(anchorEl);
+
+	const renderPopover = (classes: {}) => {
+		return (
+		<Popover
+			id="avatar-popover"
+			className={classes.popover}
+			classes={{
+				paper: classes.paper,
+			}}
+			open={open}
+			anchorEl={anchorEl}
+			anchorOrigin={{
+				vertical: 'bottom',
+				horizontal: 'left',
+			}}
+			transformOrigin={{
+				vertical: 'top',
+				horizontal: 'left'
+			}}
+			onClose={handlePopoverClose}
+			disableResponseFocus
+		>
+		<Typography>Popover</Typography>
+		</Popover>
+	)}
 
     // @ts-ignore
     const classes = useStyles();
@@ -53,9 +90,16 @@ const UserAvatar = (props: IUserAvatar) => {
         )
     } else {
         return (
-            <Avatar className={props.size === 'xl' ? classes.bigAvatar : null}>
-                {getNameInitials(props.firstName, props.lastName)}
-            </Avatar>
+			<div>
+				<div onMouseEnter={handlePopoverOpen}>
+					<Avatar 
+						className={props.size === 'xl' ? classes.bigAvatar : null}
+					>
+						{getNameInitials(props.firstName, props.lastName)}
+					</Avatar>
+				</div>
+				{renderPopover(classes)}
+			</div>
         )
     }
 }
