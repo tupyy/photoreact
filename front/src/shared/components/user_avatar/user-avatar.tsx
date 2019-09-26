@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme:Theme) =>({
             height: 50
         }
     },
+	test: {
+		backgroundColor: 'red',
+	}
 }));
 
 const UserAvatar = (props: IUserAvatar) => {
@@ -37,10 +40,12 @@ const UserAvatar = (props: IUserAvatar) => {
 
 	function handlePopoverOpen(event: React.MouseEvent<HTMLElement, MouseEvent>) {
 		setAnchorEl(event.currentTarget);
+		console.log("on mouse enter");
 	}
 
-	function handlePopoverClose() {
+	function handlePopoverClose(event) {
 		setAnchorEl(null);
+		console.log("on mouse exit");
 	}
 
 	const open = Boolean(anchorEl);
@@ -64,7 +69,6 @@ const UserAvatar = (props: IUserAvatar) => {
 				horizontal: 'left'
 			}}
 			onClose={handlePopoverClose}
-			disableResponseFocus
 		>
 		<Typography>Popover</Typography>
 		</Popover>
@@ -75,18 +79,24 @@ const UserAvatar = (props: IUserAvatar) => {
 
     if (props.profilePhoto && !imgError) {
         return (
-            <Avatar
-                className={props.size === 'xl' ? classes.bigAvatar : null}
-                src={props.profilePhoto}
-                imgProps={
-                    {
-                        "onError": () => {
-                            setImgError(true)
-                        }
-                    }
-                }
-            >
-            </Avatar>
+			<div
+					onMouseEnter={handlePopoverOpen}
+					onMouseLeave={handlePopoverClose}
+			>
+            		<Avatar
+            		    className={props.size === 'xl' ? classes.bigAvatar : null}
+            		    src={props.profilePhoto}
+            		    imgProps={
+            		        {
+            		            "onError": () => {
+            		                setImgError(true)
+            		            }
+            		        }
+            		    }
+            		>
+					</Avatar>
+				{renderPopover(classes)}
+			</div>
         )
     } else {
         return (
