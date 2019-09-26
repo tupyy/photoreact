@@ -1,5 +1,16 @@
-import {makeStyles, Theme, createStyles} from '@material-ui/core';
+import {makeStyles, Theme, createStyles, createMuiTheme} from '@material-ui/core';
 import {red} from '@material-ui/core/colors'
+
+export const theme = createMuiTheme({
+	typography: {
+		fontFamily: [
+			'Ubuntu',
+			'Lato',
+			'Roboto',
+			'sans-serif',
+		].join(','),
+	},
+});
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -7,7 +18,8 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 230,
     },
     media: {
-      width: '100%'
+		width: '100%',
+		cursor: 'pointer'
     },
     expand: {
       transform: 'rotate(0deg)',
@@ -26,6 +38,13 @@ const useStyles = makeStyles((theme: Theme) =>
     avatar: {
       backgroundColor: red[500],
     },
+	link: {
+		fontFamily: 'Roboto sans-serif',
+		cursor: "pointer"
+	},
+	description: {
+		fontFamily: 'Ubuntu Regular sans-serif',
+	}
   }),
 );
 
