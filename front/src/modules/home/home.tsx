@@ -6,7 +6,7 @@ import MediaContainer from 'app/shared/components/container/media-container';
 import Album from 'app/shared/components/album/album';
 import { IRootState } from 'app/shared/reducers';
 import {showNavBar} from 'app/shared/reducers/navbar';
-import {getRecentAlbums} from 'app/shared/reducers/album';
+import {getRecentAlbums} from 'app/shared/reducers/albums';
 
 
 export interface IHomeProp extends StateProps, DispatchProps {};
@@ -30,10 +30,10 @@ export const Home = (props: IHomeProp) => {
   )
 };
 
-const mapStateToProps = ({authentication, album}: IRootState) => ({
+const mapStateToProps = ({authentication, albums}: IRootState) => ({
   account: authentication.account,
 	isAuthenticated: authentication.isAuthenticated,
-	recentAlbums: album.recentAlbums
+	recentAlbums: albums.recentAlbums
 });
 
 const mapDispatchToProps = {
