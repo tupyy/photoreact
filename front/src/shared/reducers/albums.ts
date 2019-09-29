@@ -12,9 +12,9 @@ const initialState = {
     recentAlbums: []
 }
 
-export type AlbumState = Readonly<typeof initialState>;
+export type AlbumsState = Readonly<typeof initialState>;
 
-export default (state: AlbumState = initialState, action) : AlbumState => {
+export default (state: AlbumsState = initialState, action) : AlbumsState => {
     switch(action.type) {
         case REQUEST(ACTION_TYPES.GET_RECENT_ALBUMS):
             return {
