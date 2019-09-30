@@ -4,12 +4,14 @@ import Photo from 'app/shared/components/photo/photo';
 import { Theme, createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import {Link} from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useCurrentWidth } from 'react-socks';
 
 interface IPhotoContainer {
 	photos: IPhoto[],
 	selectedPhotos: IPhoto[],
+	albumHRef: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,10 +62,12 @@ const PhotoContainer = (props: IPhotoContainer) => {
 		  <GridList cellHeight={160} className={classes.gridList} cols={columnCount()}>
 			{props.photos.map( (photo:IPhoto, index: number) => (
 			  <GridListTile key={index.toString()} cols={1} className={classes.tile}>
-				  <Photo 
+				  <Link href={props.albumHRef + 'photo/' + photo.id + '/'}>
+					  <Photo 
 					  url={photo.get_thumbnail_url} 
 					  className={classes.photo}
 				  />
+				 </Link>
 			  </GridListTile>
 			))}
 		  </GridList>
