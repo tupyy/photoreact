@@ -15,12 +15,13 @@ export const AlbumView = (props: IAlbumView) => {
 	}, []);
 
 
-	const renderPhotos = () => {
+	const renderThumbnails = () => {
 		if (props.photos) {
 			return (
 				<PhotoContainer 
 					photos={props.photos}
 					selectedPhotos={props.selectedPhotos}
+					albumHRef={'album/' + props.match.params.id + '/'}
 				/>);
 		} else {
 			return (<div>None</div>);
@@ -32,7 +33,7 @@ export const AlbumView = (props: IAlbumView) => {
 			{ props.loading ? (
 				<LoadingComponent />
 			): (
-				renderPhotos()
+				renderThumbnails()
 			)}
 		</div>
 	)
