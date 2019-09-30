@@ -50,6 +50,6 @@ export default (state: AlbumState = initialState, action) : AlbumState => {
 export const getPhotos = (id:string) => async (dispatch) => {
     await dispatch({
         type: ACTION_TYPES.GET_PHOTOS,
-        payload: axios.get('api/photos/' + id + '/')
+        payload: axios.get('api/photos/album/' + id + '/')
     });
 }
