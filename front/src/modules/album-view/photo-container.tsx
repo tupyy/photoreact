@@ -6,7 +6,6 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import {Link} from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useCurrentWidth } from 'react-socks';
 
 interface IPhotoContainer {
 	photos: IPhoto[],
