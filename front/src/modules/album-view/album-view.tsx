@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {IRootState} from 'app/shared/reducers';
 import {getPhotos} from 'app/shared/reducers/album';
@@ -10,6 +10,8 @@ interface IAlbumView extends StateProps, DispatchProps {
 }
 
 export const AlbumView = (props: IAlbumView) => {
+	const [selectedPhotos, setSelectedPhoto] = useState([]);
+
 	useEffect( () => {
 		props.getPhotos(props.match.params.id);
 	}, []);
@@ -20,7 +22,7 @@ export const AlbumView = (props: IAlbumView) => {
 			return (
 				<PhotoContainer 
 					photos={props.photos}
-					selectedPhotos={props.selectedPhotos}
+					selectedPhotos={selectedPhotos}
 					albumHRef={'album/' + props.match.params.id + '/'}
 				/>);
 		} else {

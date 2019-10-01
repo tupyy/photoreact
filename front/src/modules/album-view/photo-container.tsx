@@ -9,7 +9,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 interface IPhotoContainer {
 	photos: IPhoto[],
-	selectedPhotos: IPhoto[],
+	selectedPhotos: number[],
 	albumHRef: string
 }
 
@@ -24,8 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	tile: {
 		display: 'flex',
 		justifyContent: 'center'
-	},
-	photo: {}
+	}
   }),
 );
 
@@ -63,9 +62,9 @@ const PhotoContainer = (props: IPhotoContainer) => {
 			  <GridListTile key={index.toString()} cols={1} className={classes.tile}>
 				  <Link href={props.albumHRef + 'photo/' + photo.id + '/'}>
 					  <Photo 
-					  url={photo.get_thumbnail_url} 
-					  className={classes.photo}
-				  />
+						  url={photo.get_thumbnail_url} 
+						  selected={true}
+				  	  />
 				 </Link>
 			  </GridListTile>
 			))}
